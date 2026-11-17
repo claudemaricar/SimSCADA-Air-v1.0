@@ -112,7 +112,13 @@ export const L6_ResultsFeedback: React.FC<ResultsFeedbackProps> = ({
     return items;
   }, [result.alarmLogs, result.actionLogs]);
 
-  const correctActionCount = result.actionLogs.filter((a) => a.isCorrect !== false).length;
+  const prematureClearRejectedCount = result.actionLogs.filter(
+    (a) => a.isCorrect === false && a.action.includes('Percobaan Clear Alarm')
+  ).length;
+  const evaluatedOperationalActions = result.actionLogs.filter(
+    (a) => !a.action.includes('Percobaan Clear Alarm')
+  );
+  const correctActionCount = evaluatedOperationalActions.filter((a) => a.isCorrect !== false).length;
   const clearedAlarmsCount = result.alarmLogs.filter((a) => a.status === 'clear').length;
 
   return (
@@ -186,8 +192,8 @@ export const L6_ResultsFeedback: React.FC<ResultsFeedbackProps> = ({
                     {scoreTindakan} <span className="text-xs font-normal text-slate-500">/ 40</span>
                   </div>
                   <div className="text-[9px] text-emerald-400 mt-1">
-                    {result.actionLogs.length > 0
-                      ? `${correctActionCount}/${result.actionLogs.length} aksi sesuai SOP`
+                    {evaluatedOperationalActions.length > 0
+                      ? `${correctActionCount}/${evaluatedOperationalActions.length} aksi sesuai SOP`
                       : 'Tidak ada pelanggaran SOP'}
                   </div>
                 </div>
@@ -222,6 +228,11 @@ export const L6_ResultsFeedback: React.FC<ResultsFeedbackProps> = ({
                       ? `${clearedAlarmsCount}/${result.alarmLogs.length} alarm clear`
                       : '0 alarm aktif saat selesai'}
                   </div>
+                  {prematureClearRejectedCount > 0 && (
+                    <div className="text-[9px] text-amber-400 mt-0.5">
+                      {prematureClearRejectedCount} percobaan Clear ditolak (penyebab belum ditangani)
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
