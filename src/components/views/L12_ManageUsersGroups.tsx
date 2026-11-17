@@ -32,6 +32,7 @@ const TRACK_LABELS: Record<string, { label: string; colorClass: string }> = {
 
 export const L12_ManageUsersGroups: React.FC = () => {
   const {
+    currentUser,
     currentTenant,
     getVisibleUsers,
     getVisibleGroups,
@@ -42,15 +43,21 @@ export const L12_ManageUsersGroups: React.FC = () => {
     archiveGroup,
     resetPreTestForUser,
     userPrePostTests,
+    preTestHistory,
+    auditLogs,
     setCurrentView,
     setVerificationCertNo,
     showTechnicalRefs,
   } = useApp();
 
+  const isTenantAdmin = currentUser?.role === 'admin_lembaga';
+
   const [searchQuery, setSearchQuery] = useState('');
   const [showAllParticipants, setShowAllParticipants] = useState(false);
   const [showAddUserModal, setShowAddUserModal] = useState(false);
   const [showAddGroupModal, setShowAddGroupModal] = useState(false);
+  const [resetTargetUser, setResetTargetUser] = useState<(ReturnType<typeof getVisibleUsers>[number]) | null>(null);
+  const [resetReason, setResetReason] = useState('');
   const [actionFeedback, setActionFeedback] = useState<string | null>(null);
   const [actionFeedbackType, setActionFeedbackType] = useState<'success' | 'error'>('success');
 
@@ -165,6 +172,23 @@ export const L12_ManageUsersGroups: React.FC = () => {
     setActionFeedbackType('success');
     setActionFeedback(`Status akun ${username} ditandai nonaktif untuk pengujian (${currentTenant.code}).`);
   };
+
+  const handleConfirmResetPreTest = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!resetTargetUser) return;
+    const res = resetPreTestForUser(resetTargetUser.id, resetReason);
+    if (!res.success) {
+      setActionFeedbackType('error');
+      setActionFeedback(res.message);
+      return;
+    }
+    setActionFeedbackType('success');
+    setActionFeedback(res.message);
+    setResetTargetUser(null);
+    setResetReason('');
+  };
+
+  const tenantAuditLogs = auditLogs.filter((log) => log.tenantId === currentTenant.id);
 
   const getUserSummaryNote = (u: typeof visibleUsers[number]) => {
     if (u.role === 'admin_lembaga') {
@@ -417,7 +441,12 @@ export const L12_ManageUsersGroups: React.FC = () => {
                       )}
                     </td>
                     <td className="py-3 px-3 text-[11px] text-slate-400">
-                      {getUserSummaryNote(u)}
+                      <div>{getUserSummaryNote(u)}</div>
+                      {(preTestHistory[u.id] || []).length > 0 && (
+                        <div className="text-[10px] text-amber-400/90 font-mono mt-0.5">
+                          Riwayat nilai Pre-Test lama: {(preTestHistory[u.id] || []).map((h) => h.score).join(', ')}
+                        </div>
+                      )}
                     </td>
                     <td className="py-3 px-3 text-right space-x-2 whitespace-nowrap">
                       {issuedCert && (
@@ -432,15 +461,12 @@ export const L12_ManageUsersGroups: React.FC = () => {
                           Piagam{showTechnicalRefs ? ' (L8)' : ''}
                         </button>
                       )}
-                      {hasPre && (
+                      {hasPre && isTenantAdmin && (
                         <button
                           type="button"
                           onClick={() => {
-                            resetPreTestForUser(u.id);
-                            setActionFeedbackType('success');
-                            setActionFeedback(
-                              `Pre-Test untuk ${u.username} (${u.fullName}) berhasil di-reset oleh Admin Lembaga.`
-                            );
+                            setResetTargetUser(u);
+                            setResetReason('');
                           }}
                           className="text-amber-400 hover:underline font-semibold text-[11px] cursor-pointer"
                         >
@@ -621,6 +647,126 @@ export const L12_ManageUsersGroups: React.FC = () => {
                   className="px-4 py-2 bg-sky-600 text-white font-bold rounded-xl cursor-pointer"
                 >
                   Simpan Pengguna
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* Jejak Audit Reset Pre-Test (NFR-07) */}
+      <div className="bg-[#0f172a] rounded-2xl border border-[#24324d] p-6 space-y-4 shadow-xl">
+        <div>
+          <h2 className="text-base font-bold text-white">
+            Jejak Audit Reset Pre-Test · {currentTenant.name}
+          </h2>
+          <p className="text-xs text-slate-400">
+            Catatan resmi setiap pembukaan ulang Pre-Test oleh Admin Lembaga beserta nilai lama yang tetap tersimpan di riwayat.
+          </p>
+        </div>
+
+        <div className="overflow-x-auto rounded-xl border border-[#1e293b] bg-[#0b1120]">
+          <table className="w-full text-left text-xs text-slate-300">
+            <thead className="bg-[#0f172a] text-slate-400 text-[10px] uppercase tracking-wider border-b border-[#1e293b] font-bold">
+              <tr>
+                <th className="py-2.5 px-3">Waktu</th>
+                <th className="py-2.5 px-3">Pelaku (Admin)</th>
+                <th className="py-2.5 px-3">Peserta</th>
+                <th className="py-2.5 px-3">Nilai Lama Tersimpan</th>
+                <th className="py-2.5 px-3">Alasan Reset</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-[#1e293b]">
+              {tenantAuditLogs.length === 0 ? (
+                <tr>
+                  <td colSpan={5} className="py-5 px-3 text-center text-slate-500 text-xs">
+                    Belum ada catatan reset Pre-Test pada {currentTenant.name}.
+                  </td>
+                </tr>
+              ) : (
+                tenantAuditLogs.map((log) => (
+                  <tr key={log.id} className="hover:bg-[#1e293b]/40">
+                    <td className="py-2.5 px-3 font-mono text-[11px] text-slate-400 whitespace-nowrap">
+                      {new Date(log.timestamp).toLocaleString('id-ID', {
+                        day: '2-digit',
+                        month: 'short',
+                        year: 'numeric',
+                        hour: '2-digit',
+                        minute: '2-digit',
+                      })}
+                    </td>
+                    <td className="py-2.5 px-3 font-mono text-emerald-400 font-semibold">
+                      {log.actorUsername}
+                    </td>
+                    <td className="py-2.5 px-3">
+                      <span className="font-semibold text-white">{log.targetName}</span>{' '}
+                      <span className="font-mono text-[11px] text-sky-400">({log.targetUsername})</span>
+                    </td>
+                    <td className="py-2.5 px-3 font-mono font-bold text-amber-400">
+                      {log.previousScore !== null ? `${log.previousScore} / 100` : '–'}
+                    </td>
+                    <td className="py-2.5 px-3 text-slate-200">{log.reason}</td>
+                  </tr>
+                ))
+              )}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      {/* Modal Reset Pre-Test (Admin Lembaga + Alasan Wajib) */}
+      {resetTargetUser && isTenantAdmin && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-xs p-4">
+          <div className="bg-[#0f172a] rounded-2xl border border-amber-500/40 p-6 max-w-md w-full space-y-4 shadow-2xl">
+            <h3 className="text-base font-bold text-white">
+              Konfirmasi Reset Pre-Test Peserta
+            </h3>
+            <div className="p-3 rounded-xl bg-amber-950/30 border border-amber-500/30 text-xs text-slate-200 space-y-1">
+              <div>
+                Peserta: <strong className="text-white">{resetTargetUser.fullName}</strong> (
+                <span className="font-mono text-sky-400">{resetTargetUser.username}</span>)
+              </div>
+              <div>
+                Nilai Pre-Test saat ini:{' '}
+                <strong className="text-amber-400 font-mono">
+                  {userPrePostTests.find((t) => t.userId === resetTargetUser.id && t.type === 'pre')?.score ?? '–'} / 100
+                </strong>
+              </div>
+              <p className="text-[11px] text-slate-400 pt-1">
+                Nilai lama tetap disimpan dalam riwayat dan tercatat di jejak audit. Nilai Pre-Test baru setelah dikerjakan ulang menjadi baseline aktif perhitungan kenaikan kompetensi.
+              </p>
+            </div>
+            <form onSubmit={handleConfirmResetPreTest} className="space-y-3 text-xs">
+              <div>
+                <label className="block text-slate-300 font-semibold mb-1">
+                  Alasan Reset Pre-Test (Wajib Diisi)
+                </label>
+                <textarea
+                  value={resetReason}
+                  onChange={(e) => setResetReason(e.target.value)}
+                  placeholder="Contoh: Gangguan koneksi listrik saat pengerjaan awal sesuai berita acara kelas."
+                  rows={3}
+                  className="w-full p-2.5 bg-[#0b1120] border border-[#334155] rounded-xl text-white"
+                  required
+                />
+              </div>
+              <div className="flex justify-end gap-2 pt-1">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setResetTargetUser(null);
+                    setResetReason('');
+                  }}
+                  className="px-4 py-2 bg-[#1e293b] text-slate-300 rounded-xl cursor-pointer"
+                >
+                  Batal
+                </button>
+                <button
+                  type="submit"
+                  disabled={!resetReason.trim()}
+                  className="px-4 py-2 bg-amber-500 hover:bg-amber-400 disabled:opacity-40 text-slate-950 font-bold rounded-xl cursor-pointer"
+                >
+                  Konfirmasi Reset &amp; Catat Audit
                 </button>
               </div>
             </form>

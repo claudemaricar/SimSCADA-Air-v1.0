@@ -202,6 +202,20 @@ export function formatIntegerID(value: number): string {
   return Math.round(value).toLocaleString('id-ID');
 }
 
+export function formatNumberID(value: number, decimals = 0, unit?: string): string {
+  const formatted = value.toLocaleString('id-ID', {
+    minimumFractionDigits: decimals,
+    maximumFractionDigits: decimals,
+  });
+  return unit ? `${formatted} ${unit}` : formatted;
+}
+
+export function formatRangeID(min: number, max: number, decimals = 1, unit?: string): string {
+  const minStr = formatNumberID(min, decimals);
+  const maxStr = formatNumberID(max, decimals);
+  return unit ? `${minStr}–${maxStr} ${unit}` : `${minStr}–${maxStr}`;
+}
+
 export function stripOptionPrefix(text: string): string {
   return text.replace(/^[A-D]\.\s*/i, '').trim();
 }

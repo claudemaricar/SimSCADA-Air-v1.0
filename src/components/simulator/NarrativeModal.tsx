@@ -6,6 +6,7 @@
 import React, { useEffect } from 'react';
 import { ControlPointDef, ScadaState } from '../../types';
 import { useApp } from '../../context/AppContext';
+import { formatNumberID } from '../../utils/gamification';
 import { 
   AlertTriangle, 
   ArrowDownRight, 
@@ -51,12 +52,12 @@ export const NarrativeModal: React.FC<NarrativeModalProps> = ({
           <>
             <div className="flex justify-between border-b border-[#1e293b] pb-1">
               <span className="text-slate-400">Debit Air Baku:</span>
-              <span className="text-sky-300 font-bold font-mono">{scada.rawWaterFlow.toFixed(0)} L/s (Target: 75–100 L/s)</span>
+              <span className="text-sky-300 font-bold font-mono">{formatNumberID(scada.rawWaterFlow, 0, 'L/s')} (Target: 75–100 L/s)</span>
             </div>
             <div className="flex justify-between border-b border-[#1e293b] pb-1">
               <span className="text-slate-400">Kekeruhan Air Baku:</span>
               <span className={`font-bold font-mono ${scada.rawWaterTurbidity > 50 ? 'text-amber-400' : 'text-emerald-400'}`}>
-                {scada.rawWaterTurbidity.toFixed(1).replace('.', ',')} NTU
+                {formatNumberID(scada.rawWaterTurbidity, 1, 'NTU')}
               </span>
             </div>
             <div className="flex justify-between">
@@ -73,19 +74,19 @@ export const NarrativeModal: React.FC<NarrativeModalProps> = ({
             <div className="flex justify-between border-b border-[#1e293b] pb-1">
               <span className="text-slate-400">Kekeruhan Baku:</span>
               <span className={`font-bold font-mono ${scada.rawWaterTurbidity > 50 ? 'text-amber-400' : 'text-emerald-400'}`}>
-                {scada.rawWaterTurbidity.toFixed(1).replace('.', ',')} NTU {scada.rawWaterTurbidity > 50 ? '(Tinggi!)' : '(Normal)'}
+                {formatNumberID(scada.rawWaterTurbidity, 1, 'NTU')} {scada.rawWaterTurbidity > 50 ? '(Tinggi!)' : '(Normal)'}
               </span>
             </div>
             <div className="flex justify-between border-b border-[#1e293b] pb-1">
               <span className="text-slate-400">Dosis Koagulan PAC:</span>
               <span className="text-sky-300 font-bold font-mono">
-                {scada.coagulantActualDose.toFixed(1).replace('.', ',')} mg/L
+                {formatNumberID(scada.coagulantActualDose, 1, 'mg/L')}
               </span>
             </div>
             <div className="flex justify-between border-b border-[#1e293b] pb-1">
               <span className="text-slate-400">Derajat pH:</span>
               <span className={`font-bold font-mono ${scada.waterPh < 6.5 || scada.waterPh > 8.5 ? 'text-rose-400' : 'text-emerald-400'}`}>
-                {scada.waterPh.toFixed(2).replace('.', ',')} pH ({scada.waterPh >= 6.5 && scada.waterPh <= 8.5 ? 'Normal ✓' : 'Koreksi'})
+                {formatNumberID(scada.waterPh, 2)} pH ({scada.waterPh >= 6.5 && scada.waterPh <= 8.5 ? 'Normal ✓' : 'Koreksi'})
               </span>
             </div>
             <div className="flex justify-between">
@@ -101,12 +102,12 @@ export const NarrativeModal: React.FC<NarrativeModalProps> = ({
           <>
             <div className="flex justify-between border-b border-[#1e293b] pb-1">
               <span className="text-slate-400">Kecepatan Pengaduk:</span>
-              <span className="text-sky-300 font-bold font-mono">{scada.flocculatorRpm.toFixed(0)} RPM</span>
+              <span className="text-sky-300 font-bold font-mono">{formatNumberID(scada.flocculatorRpm, 0, 'RPM')}</span>
             </div>
             <div className="flex justify-between border-b border-[#1e293b] pb-1">
               <span className="text-slate-400">Indeks Pembentukan Flok:</span>
               <span className={`font-bold font-mono ${scada.flocQualityScore >= 75 ? 'text-emerald-400' : 'text-amber-400'}`}>
-                {scada.flocQualityScore.toFixed(0)}%
+                {formatNumberID(scada.flocQualityScore, 0)}%
               </span>
             </div>
             <div className="flex justify-between">
@@ -123,13 +124,13 @@ export const NarrativeModal: React.FC<NarrativeModalProps> = ({
             <div className="flex justify-between border-b border-[#1e293b] pb-1">
               <span className="text-slate-400">Kekeruhan Air Mengendap:</span>
               <span className={`font-bold font-mono ${scada.settledWaterTurbidity > 5 ? 'text-amber-400' : 'text-emerald-400'}`}>
-                {scada.settledWaterTurbidity.toFixed(1).replace('.', ',')} NTU
+                {formatNumberID(scada.settledWaterTurbidity, 1, 'NTU')}
               </span>
             </div>
             <div className="flex justify-between border-b border-[#1e293b] pb-1">
               <span className="text-slate-400">Selimut Lumpur (Sludge):</span>
               <span className={`font-bold font-mono ${scada.sludgeLevelPercent > 60 ? 'text-amber-400' : 'text-sky-300'}`}>
-                {scada.sludgeLevelPercent.toFixed(0)}%
+                {formatNumberID(scada.sludgeLevelPercent, 0)}%
               </span>
             </div>
             <div className="flex justify-between">
@@ -146,13 +147,13 @@ export const NarrativeModal: React.FC<NarrativeModalProps> = ({
             <div className="flex justify-between border-b border-[#1e293b] pb-1">
               <span className="text-slate-400">Kekeruhan Air Olahan:</span>
               <span className={`font-bold font-mono ${scada.filteredWaterTurbidity >= 3.0 ? 'text-rose-400' : 'text-emerald-400'}`}>
-                {scada.filteredWaterTurbidity.toFixed(2).replace('.', ',')} NTU (Target &lt; 3,0)
+                {formatNumberID(scada.filteredWaterTurbidity, 2, 'NTU')} (Target &lt; 3,0)
               </span>
             </div>
             <div className="flex justify-between border-b border-[#1e293b] pb-1">
               <span className="text-slate-400">Headloss Filter 1 / 2:</span>
               <span className="text-sky-300 font-bold font-mono">
-                {scada.filter1Headloss.toFixed(2).replace('.', ',')} m / {scada.filter2Headloss.toFixed(2).replace('.', ',')} m
+                {formatNumberID(scada.filter1Headloss, 2, 'm')} / {formatNumberID(scada.filter2Headloss, 2, 'm')}
               </span>
             </div>
             <div className="flex justify-between">
@@ -168,12 +169,12 @@ export const NarrativeModal: React.FC<NarrativeModalProps> = ({
           <>
             <div className="flex justify-between border-b border-[#1e293b] pb-1">
               <span className="text-slate-400">Setpoint Dosis Klor:</span>
-              <span className="text-sky-300 font-bold font-mono">{scada.chlorineDoseSetpoint.toFixed(2).replace('.', ',')} mg/L</span>
+              <span className="text-sky-300 font-bold font-mono">{formatNumberID(scada.chlorineDoseSetpoint, 2, 'mg/L')}</span>
             </div>
             <div className="flex justify-between border-b border-[#1e293b] pb-1">
               <span className="text-slate-400">Sisa Klor Bebas:</span>
               <span className={`font-bold font-mono ${scada.freeResidualChlorine < 0.2 || scada.freeResidualChlorine > 0.5 ? 'text-rose-400' : 'text-emerald-400'}`}>
-                {scada.freeResidualChlorine.toFixed(2).replace('.', ',')} mg/L (0,20–0,50)
+                {formatNumberID(scada.freeResidualChlorine, 2, 'mg/L')} (0,20–0,50)
               </span>
             </div>
           </>
@@ -184,13 +185,13 @@ export const NarrativeModal: React.FC<NarrativeModalProps> = ({
             <div className="flex justify-between border-b border-[#1e293b] pb-1">
               <span className="text-slate-400">Level Reservoir:</span>
               <span className="text-sky-300 font-bold font-mono">
-                {scada.reservoirLevelMeters.toFixed(2).replace('.', ',')} m ({scada.reservoirLevelPercent.toFixed(0)}%)
+                {formatNumberID(scada.reservoirLevelMeters, 2, 'm')} ({formatNumberID(scada.reservoirLevelPercent, 0)}%)
               </span>
             </div>
             <div className="flex justify-between border-b border-[#1e293b] pb-1">
               <span className="text-slate-400">Sisa Klor Bebas:</span>
               <span className={`font-bold font-mono ${scada.freeResidualChlorine < 0.2 || scada.freeResidualChlorine > 0.5 ? 'text-rose-400' : 'text-emerald-400'}`}>
-                {scada.freeResidualChlorine.toFixed(2).replace('.', ',')} mg/L
+                {formatNumberID(scada.freeResidualChlorine, 2, 'mg/L')}
               </span>
             </div>
             <div className="flex justify-between">
@@ -207,12 +208,12 @@ export const NarrativeModal: React.FC<NarrativeModalProps> = ({
             <div className="flex justify-between border-b border-[#1e293b] pb-1">
               <span className="text-slate-400">Tekanan Keluar (Discharge):</span>
               <span className={`font-bold font-mono ${scada.distDischargePressure < 3.0 ? 'text-rose-400' : 'text-sky-300'}`}>
-                {scada.distDischargePressure.toFixed(2).replace('.', ',')} bar
+                {formatNumberID(scada.distDischargePressure, 2, 'bar')}
               </span>
             </div>
             <div className="flex justify-between border-b border-[#1e293b] pb-1">
               <span className="text-slate-400">Total Debit Distribusi:</span>
-              <span className="text-sky-300 font-bold font-mono">{scada.distTotalFlow.toFixed(0)} L/s</span>
+              <span className="text-sky-300 font-bold font-mono">{formatNumberID(scada.distTotalFlow, 0, 'L/s')}</span>
             </div>
             <div className="flex justify-between">
               <span className="text-slate-400">Status Pompa P-101 / P-102:</span>
@@ -227,7 +228,7 @@ export const NarrativeModal: React.FC<NarrativeModalProps> = ({
           <>
             <div className="flex justify-between border-b border-[#1e293b] pb-1">
               <span className="text-slate-400">Setpoint Tekanan PRV:</span>
-              <span className="text-amber-400 font-bold font-mono">{scada.prvSetpointBar.toFixed(2).replace('.', ',')} bar</span>
+              <span className="text-amber-400 font-bold font-mono">{formatNumberID(scada.prvSetpointBar, 2, 'bar')}</span>
             </div>
             <div className="flex justify-between border-b border-[#1e293b] pb-1">
               <span className="text-slate-400">Valve Isolasi Ruas Bocor:</span>
@@ -250,17 +251,17 @@ export const NarrativeModal: React.FC<NarrativeModalProps> = ({
             <div className="flex justify-between border-b border-[#1e293b] pb-1">
               <span className="text-slate-400">Tekanan Zona 1 / Zona 2:</span>
               <span className={`font-bold font-mono ${scada.zone1Pressure < 2.0 || scada.zone2Pressure < 2.0 ? 'text-rose-400' : 'text-emerald-400'}`}>
-                {scada.zone1Pressure.toFixed(2).replace('.', ',')} / {scada.zone2Pressure.toFixed(2).replace('.', ',')} bar (Target 2,0–2,8)
+                {formatNumberID(scada.zone1Pressure, 2)} / {formatNumberID(scada.zone2Pressure, 2, 'bar')} (Target 2,0–2,8)
               </span>
             </div>
             <div className="flex justify-between border-b border-[#1e293b] pb-1">
               <span className="text-slate-400">Debit Zona 1 / Zona 2:</span>
-              <span className="text-sky-300 font-bold font-mono">{scada.zone1Flow.toFixed(0)} / {scada.zone2Flow.toFixed(0)} L/s</span>
+              <span className="text-sky-300 font-bold font-mono">{formatNumberID(scada.zone1Flow, 0)} / {formatNumberID(scada.zone2Flow, 0, 'L/s')}</span>
             </div>
             <div className="flex justify-between">
               <span className="text-slate-400">Sisa Klor Ujung Jaringan:</span>
               <span className={`font-bold font-mono ${scada.zoneChlorineEnd < 0.2 ? 'text-rose-400' : 'text-emerald-400'}`}>
-                {scada.zoneChlorineEnd.toFixed(2).replace('.', ',')} mg/L
+                {formatNumberID(scada.zoneChlorineEnd, 2, 'mg/L')}
               </span>
             </div>
           </>

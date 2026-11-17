@@ -5,6 +5,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { LineChart } from 'lucide-react';
+import { formatNumberID, formatRangeID } from '../../utils/gamification';
 
 interface TrendPoint {
   timeSec: number;
@@ -53,7 +54,7 @@ export const TrendChart: React.FC<TrendChartProps> = ({
     turbidity: {
       name: 'Kekeruhan Air Olahan (Filtrasi)',
       unit: 'NTU',
-      target: '< 3.0 NTU',
+      target: '< 3,0 NTU',
       color: '#f43f5e',
       min: 0,
       max: 6,
@@ -63,7 +64,7 @@ export const TrendChart: React.FC<TrendChartProps> = ({
     freeChlorine: {
       name: 'Sisa Klor Bebas (Reservoir)',
       unit: 'mg/L',
-      target: '0.2 - 0.5 mg/L',
+      target: formatRangeID(0.2, 0.5, 2, 'mg/L'),
       color: '#38bdf8',
       min: 0,
       max: 1.0,
@@ -73,8 +74,8 @@ export const TrendChart: React.FC<TrendChartProps> = ({
     },
     reservoirLevel: {
       name: 'Level Ketinggian Reservoir',
-      unit: 'meter',
-      target: '2.0 - 4.8 m',
+      unit: 'm',
+      target: formatRangeID(2.0, 4.8, 1, 'm'),
       color: '#34d399',
       min: 0,
       max: 5.0,
@@ -85,7 +86,7 @@ export const TrendChart: React.FC<TrendChartProps> = ({
     zonePressure: {
       name: 'Tekanan Jaringan (Zona 1)',
       unit: 'bar',
-      target: '2.0 - 2.8 bar',
+      target: formatRangeID(2.0, 2.8, 1, 'bar'),
       color: '#fbbf24',
       min: 0,
       max: 4.0,
@@ -154,7 +155,7 @@ export const TrendChart: React.FC<TrendChartProps> = ({
           <div className="text-right pl-2 border-l border-[#1e293b]">
             <span className="text-[10px] text-slate-400 mr-1 font-mono">Nilai Terkini:</span>
             <span className={`text-xs font-black font-mono ${isOutOfRange ? 'text-rose-400' : 'text-emerald-400'}`}>
-              {latestVal.toFixed(2)} {currConfig.unit}
+              {formatNumberID(latestVal, 2, currConfig.unit)}
             </span>
           </div>
         </div>
@@ -169,13 +170,13 @@ export const TrendChart: React.FC<TrendChartProps> = ({
 
           {/* Y Axis Labels */}
           <text x={paddingX - 6} y={paddingY + 4} fill="#64748b" fontSize="8" textAnchor="end" fontFamily="monospace">
-            {currConfig.max}
+            {formatNumberID(currConfig.max, 1)}
           </text>
           <text x={paddingX - 6} y={svgHeight / 2 + 3} fill="#64748b" fontSize="8" textAnchor="end" fontFamily="monospace">
-            {((currConfig.max + currConfig.min) / 2).toFixed(1)}
+            {formatNumberID((currConfig.max + currConfig.min) / 2, 1)}
           </text>
           <text x={paddingX - 6} y={svgHeight - paddingY} fill="#64748b" fontSize="8" textAnchor="end" fontFamily="monospace">
-            {currConfig.min}
+            {formatNumberID(currConfig.min, 0)}
           </text>
 
           {/* Safe threshold reference line (3.0 NTU for turbidity) */}

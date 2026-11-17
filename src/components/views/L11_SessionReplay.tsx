@@ -194,7 +194,7 @@ export const L11_SessionReplay: React.FC<SessionReplayProps> = ({
             <div className="p-3.5 rounded-xl bg-[#0b1120] border border-[#1e293b] space-y-1">
               <span className="text-[10px] text-slate-400 uppercase tracking-wider block font-bold">3. Filtrasi Pasir Cepat</span>
               <div className="text-xs text-white">Kekeruhan: <strong className="text-rose-400 font-mono">3,4 NTU</strong></div>
-              <div className="text-xs text-white">Headloss: <strong className="text-slate-300 font-mono">1,6 Meter</strong></div>
+              <div className="text-xs text-white">Headloss: <strong className="text-slate-300 font-mono">1,60 m</strong></div>
               <div className="text-[10px] text-rose-400 font-semibold pt-1">Alarm Tinggi Diakui</div>
             </div>
 
@@ -330,6 +330,93 @@ export const L11_SessionReplay: React.FC<SessionReplayProps> = ({
           </div>
         </div>
 
+      </div>
+
+      {/* Log Kejadian Alarm Terstruktur (Snapshot Saat Kejadian) */}
+      <div className="bg-[#0f172a] rounded-2xl border border-[#24324d] p-6 space-y-3 shadow-lg">
+        <div>
+          <h2 className="text-base font-bold text-white">
+            Log Kejadian Alarm Sesi (Snapshot Nilai Saat Kejadian{showTechnicalRefs ? ' · PRD §10' : ''})
+          </h2>
+          <p className="text-xs text-slate-400">
+            Menyimpan nilai proses tepat saat alarm muncul sebagai catatan tetap yang terpisah dari waktu ACK, tindakan, dan waktu clear.
+          </p>
+        </div>
+
+        <div className="overflow-x-auto rounded-xl border border-[#1e293b] bg-[#0b1120]">
+          <table className="w-full text-left text-xs text-slate-300">
+            <thead className="bg-[#0f172a] text-slate-400 text-[10px] uppercase tracking-wider border-b border-[#1e293b]">
+              <tr>
+                <th className="py-2.5 px-3">Waktu Kejadian</th>
+                <th className="py-2.5 px-3">Titik Kontrol &amp; Prioritas</th>
+                <th className="py-2.5 px-3">Pesan &amp; Nilai Saat Kejadian</th>
+                <th className="py-2.5 px-3">Waktu ACK</th>
+                <th className="py-2.5 px-3">Tindakan</th>
+                <th className="py-2.5 px-3">Waktu Clear</th>
+                <th className="py-2.5 px-3">Cara Clear</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-[#1e293b]">
+              {!focusResult || focusResult.alarmLogs.length === 0 ? (
+                <tr>
+                  <td colSpan={7} className="py-6 text-center text-slate-500">
+                    Tidak ada kejadian alarm terekam pada sesi ini.
+                  </td>
+                </tr>
+              ) : (
+                focusResult.alarmLogs.map((a) => (
+                  <tr key={a.id} className="hover:bg-[#1e293b]/40">
+                    <td className="py-2.5 px-3 font-mono text-slate-400 whitespace-nowrap">
+                      {a.timestamp}
+                    </td>
+                    <td className="py-2.5 px-3">
+                      <div className="font-semibold text-white">{a.controlPointName}</div>
+                      <span
+                        className={`text-[9px] font-bold uppercase ${
+                          a.priority === 'kritis'
+                            ? 'text-rose-400'
+                            : a.priority === 'tinggi'
+                            ? 'text-amber-400'
+                            : 'text-sky-400'
+                        }`}
+                      >
+                        {a.priority}
+                      </span>
+                    </td>
+                    <td className="py-2.5 px-3">
+                      <div className="text-slate-200">{a.message}</div>
+                      {a.triggerSnapshotValue && (
+                        <div className="text-[10px] font-mono text-sky-400">
+                          Snapshot: {a.triggerSnapshotValue}
+                        </div>
+                      )}
+                    </td>
+                    <td className="py-2.5 px-3 font-mono text-sky-300 whitespace-nowrap">
+                      {a.ackTimestamp || 'Belum ACK'}
+                    </td>
+                    <td className="py-2.5 px-3 text-slate-300">
+                      {a.actionSummary || 'Belum ada tindakan koreksi tercatat'}
+                    </td>
+                    <td className="py-2.5 px-3 font-mono text-emerald-400 whitespace-nowrap">
+                      {a.clearedTimestamp || (a.status === 'clear' ? 'Selesai' : '–')}
+                    </td>
+                    <td className="py-2.5 px-3 whitespace-nowrap">
+                      {a.status === 'clear' ? (
+                        <span className="px-2 py-0.5 rounded-md bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 text-[10px] font-semibold">
+                          {a.clearMethod === 'manual' ? 'Manual' : 'Otomatis (10 dtk)'}
+                        </span>
+                      ) : (
+                        <span className="px-2 py-0.5 rounded-md bg-rose-500/20 text-rose-300 border border-rose-500/30 text-[10px] font-semibold">
+                          Belum Clear
+                        </span>
+                      )}
+                    </td>
+                  </tr>
+                ))
+              )}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   );

@@ -19,6 +19,7 @@ import { AlarmPanel } from '../simulator/AlarmPanel';
 import { TrendChart, TrendParamKey } from '../simulator/TrendChart';
 import { NarrativeModal } from '../simulator/NarrativeModal';
 import { scadaAudio } from '../../utils/audio';
+import { formatNumberID } from '../../utils/gamification';
 import {
   Building2,
   Check,
@@ -291,7 +292,10 @@ export const L5_ScadaSimulator: React.FC<ScadaSimulatorProps> = ({
 
     if (updates.distPump1Running === false && !scadaRef.current.distPump2Running && actionName.includes('Stop')) {
       isCorrect = false;
-      feedback = 'Tindakan Tidak Aman: Menghentikan seluruh pompa pasokan mendadak (-15 Poin)';
+      feedback = 'Tindakan Tidak Aman: Menghentikan seluruh pompa pasokan mendadak (−15 Poin)';
+    } else if (updates.chlorineDoseSetpoint !== undefined && updates.chlorineDoseSetpoint >= 2.5) {
+      isCorrect = false;
+      feedback = 'Tindakan Tidak Aman: Overdosis klorin ekstrem (≥ 2,50 mg/L) membahayakan mutu air minum (−15 Poin)';
     }
 
     const newLog: ActionLog = {
@@ -352,10 +356,13 @@ export const L5_ScadaSimulator: React.FC<ScadaSimulatorProps> = ({
   // Alarm Acknowledge
   const handleAcknowledgeAlarm = (alarmId: string) => {
     scadaAudio.playAcknowledgeChime();
-    const ackTimeStr = formatSimTime(elapsedSecRef.current);
+    const ackSec = elapsedSecRef.current;
+    const ackTimeStr = formatSimTime(ackSec);
 
     const updatedAlarms = alarmsRef.current.map((a) =>
-      a.id === alarmId ? { ...a, status: 'aktif_diakui' as const } : a
+      a.id === alarmId
+        ? { ...a, status: 'aktif_diakui' as const, ackAtSec: a.ackAtSec ?? ackSec, ackTimestamp: a.ackTimestamp ?? ackTimeStr }
+        : a
     );
     alarmsRef.current = updatedAlarms;
     setAlarms(updatedAlarms);
@@ -404,7 +411,7 @@ export const L5_ScadaSimulator: React.FC<ScadaSimulatorProps> = ({
     if (alarm.isLatched && !alarm.latchedResetDone) {
       return recordRejection(
         'Percobaan Clear Alarm Sebelum Reset Trip (Ditolak)',
-        'Pelanggaran SOP: Alarm pompa trip wajib di-reset di panel kontrol sebelum di-clear! (-15 Poin)',
+        'Kesalahan Penanganan Alarm: Penyebab belum ditangani — alarm pompa trip wajib di-reset di panel kontrol sebelum di-clear.',
         'Penyebab belum ditangani: Pompa trip harus di-reset terlebih dahulu!'
       );
     }
@@ -413,7 +420,7 @@ export const L5_ScadaSimulator: React.FC<ScadaSimulatorProps> = ({
     if (alarm.id === 'alarm-intake-trip' && !curr.intakePump1Running && !curr.intakePump2Running) {
       return recordRejection(
         'Percobaan Clear Alarm Intake Trip Tanpa Pompa Aktif (Ditolak)',
-        'Pelanggaran SOP: Jalankan Pompa Intake 2 (Standby) terlebih dahulu agar aliran air baku pulih! (-15 Poin)',
+        'Kesalahan Penanganan Alarm: Penyebab belum ditangani — jalankan Pompa Intake 2 (Standby) terlebih dahulu agar aliran air baku pulih.',
         'Penyebab belum ditangani: Jalankan Pompa Intake 2 (Standby) sebelum Clear!'
       );
     }
@@ -421,7 +428,7 @@ export const L5_ScadaSimulator: React.FC<ScadaSimulatorProps> = ({
     if (alarm.id === 'alarm-dist-trip' && !curr.distPump1Running && !curr.distPump2Running) {
       return recordRejection(
         'Percobaan Clear Alarm Distribusi Trip Tanpa Pompa Aktif (Ditolak)',
-        'Pelanggaran SOP: Jalankan Pompa Distribusi P-102 (Standby) terlebih dahulu! (-15 Poin)',
+        'Kesalahan Penanganan Alarm: Penyebab belum ditangani — jalankan Pompa Distribusi P-102 (Standby) terlebih dahulu.',
         'Penyebab belum ditangani: Jalankan Pompa P-102 (Standby) sebelum Clear!'
       );
     }
@@ -430,8 +437,8 @@ export const L5_ScadaSimulator: React.FC<ScadaSimulatorProps> = ({
     if (alarm.controlPointId === 'filtrasi' && curr.filteredWaterTurbidity >= 3.0) {
       return recordRejection(
         'Percobaan Clear Alarm Kekeruhan Tinggi Saat Masih Abnormal (Ditolak)',
-        'Pelanggaran SOP: Tombol Clear ditekan saat kekeruhan air olahan masih ≥ 3,0 NTU! (-15 Poin)',
-        `Penyebab belum ditangani: Kekeruhan air olahan ${curr.filteredWaterTurbidity.toFixed(2)} NTU ≥ 3,0 NTU!`
+        'Kesalahan Penanganan Alarm: Penyebab belum ditangani — kekeruhan air olahan masih ≥ 3,0 NTU.',
+        `Penyebab belum ditangani: Kekeruhan air olahan ${formatNumberID(curr.filteredWaterTurbidity, 2, 'NTU')} masih ≥ 3,0 NTU!`
       );
     }
 
@@ -439,8 +446,8 @@ export const L5_ScadaSimulator: React.FC<ScadaSimulatorProps> = ({
     if (alarm.id === 'alarm-intake-turb' && curr.rawWaterTurbidity > 50) {
       return recordRejection(
         'Percobaan Clear Alarm Kekeruhan Baku Saat Masih Tinggi (Ditolak)',
-        'Pelanggaran SOP: Kekeruhan air baku masih di atas ambang 50 NTU!',
-        `Penyebab belum ditangani: Kekeruhan air baku ${curr.rawWaterTurbidity.toFixed(0)} NTU masih di atas ambang!`
+        'Kesalahan Penanganan Alarm: Penyebab belum ditangani — kekeruhan air baku masih di atas ambang 50,0 NTU.',
+        `Penyebab belum ditangani: Kekeruhan air baku ${formatNumberID(curr.rawWaterTurbidity, 1, 'NTU')} masih di atas ambang!`
       );
     }
 
@@ -448,8 +455,8 @@ export const L5_ScadaSimulator: React.FC<ScadaSimulatorProps> = ({
     if (alarm.controlPointId === 'desinfeksi' && (curr.freeResidualChlorine < 0.2 || curr.freeResidualChlorine > 0.5)) {
       return recordRejection(
         'Percobaan Clear Alarm Klorin Saat Sisa Klor Masih Abnormal (Ditolak)',
-        'Pelanggaran SOP: Sisa klor bebas masih di luar rentang 0,20–0,50 mg/L! (-15 Poin)',
-        `Penyebab belum ditangani: Sisa klor ${curr.freeResidualChlorine.toFixed(2)} mg/L belum di rentang 0,20–0,50 mg/L!`
+        'Kesalahan Penanganan Alarm: Penyebab belum ditangani — sisa klor bebas masih di luar rentang 0,20–0,50 mg/L.',
+        `Penyebab belum ditangani: Sisa klor ${formatNumberID(curr.freeResidualChlorine, 2, 'mg/L')} belum di rentang 0,20–0,50 mg/L!`
       );
     }
 
@@ -457,7 +464,7 @@ export const L5_ScadaSimulator: React.FC<ScadaSimulatorProps> = ({
     if (alarm.controlPointId === 'valve_prv' && curr.pipeLeakActive && curr.valveIsolasiBocorOpen) {
       return recordRejection(
         'Percobaan Clear Alarm Kebocoran Sebelum Isolasi Valve (Ditolak)',
-        'Pelanggaran SOP: Valve Isolasi Ruas Bocor belum ditutup! (-15 Poin)',
+        'Kesalahan Penanganan Alarm: Penyebab belum ditangani — Valve Isolasi Ruas Bocor belum ditutup.',
         'Penyebab belum ditangani: Tutup Valve Isolasi Kebocoran terlebih dahulu!'
       );
     }
@@ -466,15 +473,26 @@ export const L5_ScadaSimulator: React.FC<ScadaSimulatorProps> = ({
     if (alarm.controlPointId === 'titik_pantau_jaringan' && curr.zone1Pressure < 2.0) {
       return recordRejection(
         'Percobaan Clear Alarm Tekanan Drop Saat Masih Rendah (Ditolak)',
-        'Pelanggaran SOP: Tekanan zona masih < 2,00 bar! (-15 Poin)',
-        `Penyebab belum ditangani: Tekanan zona ${curr.zone1Pressure.toFixed(2)} bar masih < 2,00 bar!`
+        'Kesalahan Penanganan Alarm: Penyebab belum ditangani — tekanan zona masih < 2,00 bar.',
+        `Penyebab belum ditangani: Tekanan zona ${formatNumberID(curr.zone1Pressure, 2, 'bar')} masih < 2,00 bar!`
       );
     }
 
     // Allowed Clear
     scadaAudio.playSuccessFanfare();
+    const clearSec = elapsedSecRef.current;
+    const clearStr = formatSimTime(clearSec);
     const updatedAlarms = alarmsRef.current.map((a) =>
-      a.id === alarmId ? { ...a, status: 'clear' as const, clearMethod: 'manual' as const } : a
+      a.id === alarmId
+        ? {
+            ...a,
+            status: 'clear' as const,
+            clearMethod: 'manual' as const,
+            clearedAtSec: clearSec,
+            clearedTimestamp: clearStr,
+            clearNote: 'Di-clear manual oleh operator setelah penyebab ditangani',
+          }
+        : a
     );
     alarmsRef.current = updatedAlarms;
     setAlarms(updatedAlarms);

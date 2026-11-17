@@ -115,7 +115,7 @@ export const AlarmPanel: React.FC<AlarmPanelProps> = ({
         <div className="p-3 rounded-xl bg-rose-950/60 border border-rose-500/60 text-rose-200 text-xs font-bold flex items-center justify-between shadow-lg animate-bounce">
           <div className="flex items-center gap-2">
             <XCircle className="w-4 h-4 text-rose-400 shrink-0" />
-            <span>Penolakan Tindakan: {rejectMessage} (Terhitung kesalahan penanganan SOP -15 Poin)</span>
+            <span>Clear Ditolak — {rejectMessage} (Memengaruhi skor Penanganan Alarm)</span>
           </div>
           <button onClick={() => setRejectMessage(null)} className="text-rose-400 hover:text-white p-1">
             ✕
@@ -128,10 +128,11 @@ export const AlarmPanel: React.FC<AlarmPanelProps> = ({
         <table className="w-full text-left text-xs text-slate-300">
           <thead className="bg-[#0f172a] text-slate-400 text-[10px] uppercase tracking-wider border-b border-[#1e293b] font-bold">
             <tr>
-              <th className="py-2.5 px-3">Waktu</th>
+              <th className="py-2.5 px-3">Waktu Kejadian</th>
               <th className="py-2.5 px-3">Bentuk / Prioritas</th>
               <th className="py-2.5 px-3">Titik Kontrol</th>
-              <th className="py-2.5 px-3">Pesan Alarm & Nilai Proses</th>
+              <th className="py-2.5 px-3">Pesan &amp; Nilai Saat Kejadian</th>
+              <th className="py-2.5 px-3">Waktu ACK / Clear</th>
               <th className="py-2.5 px-3">Status Alarm</th>
               <th className="py-2.5 px-3 text-right">Aksi Operator</th>
             </tr>
@@ -139,7 +140,7 @@ export const AlarmPanel: React.FC<AlarmPanelProps> = ({
           <tbody className="divide-y divide-[#1e293b] font-sans">
             {alarms.length === 0 ? (
               <tr>
-                <td colSpan={6} className="py-6 text-center text-slate-500 text-xs">
+                <td colSpan={7} className="py-6 text-center text-slate-500 text-xs">
                   Tidak ada rekaman alarm aktif pada sesi ini.
                 </td>
               </tr>
@@ -164,7 +165,18 @@ export const AlarmPanel: React.FC<AlarmPanelProps> = ({
                       {alarm.controlPointName}
                     </td>
                     <td className="py-2.5 px-3 text-slate-200">
-                      {alarm.message}
+                      <div>{alarm.message}</div>
+                      {alarm.triggerSnapshotValue && (
+                        <div className="text-[10px] font-mono text-sky-400 mt-0.5">
+                          Snapshot kejadian: {alarm.triggerSnapshotValue}
+                        </div>
+                      )}
+                    </td>
+                    <td className="py-2.5 px-3 font-mono text-[10px] text-slate-400 whitespace-nowrap">
+                      <div>ACK: {alarm.ackTimestamp || '–'}</div>
+                      <div>
+                        Clear: {alarm.clearedTimestamp ? `${alarm.clearedTimestamp} (${alarm.clearMethod === 'manual' ? 'Manual' : 'Otomatis'})` : '–'}
+                      </div>
                     </td>
                     <td className="py-2.5 px-3">
                       {getStatusBadge(alarm.status)}

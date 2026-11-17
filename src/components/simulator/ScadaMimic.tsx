@@ -5,6 +5,7 @@
 
 import React from 'react';
 import { AlarmItem, LearningTrack, ScadaState } from '../../types';
+import { formatNumberID, formatRangeID } from '../../utils/gamification';
 import { Info, AlertTriangle } from 'lucide-react';
 
 interface ScadaMimicProps {
@@ -137,9 +138,9 @@ export const ScadaMimic: React.FC<ScadaMimicProps> = ({
 
               {/* Unit Title */}
               <text x="30" y="70" fill="#f8fafc" fontSize="11" fontWeight="bold">INTAKE AIR BAKU</text>
-              <text x="30" y="86" fill="#38bdf8" fontSize="10">Q: {scada.rawWaterFlow.toFixed(0)} L/s</text>
+              <text x="30" y="86" fill="#38bdf8" fontSize="10">Q: {formatNumberID(scada.rawWaterFlow, 0, 'L/s')}</text>
               <text x="30" y="100" fill={scada.rawWaterTurbidity > 50 ? '#f43f5e' : '#e2e8f0'} fontSize="10" fontWeight={scada.rawWaterTurbidity > 50 ? 'bold' : 'normal'}>
-                NTU: {scada.rawWaterTurbidity.toFixed(1)}
+                NTU: {formatNumberID(scada.rawWaterTurbidity, 1)}
               </text>
               <text x="30" y="114" fill={scada.intakePumpTripped ? '#f43f5e' : '#10b981'} fontSize="9" fontWeight="bold">
                 {scada.intakePumpTripped ? 'P1 TRIP!' : scada.intakePump1Running ? 'P1 RUN (DUTY)' : 'STANDBY'}
@@ -219,8 +220,8 @@ export const ScadaMimic: React.FC<ScadaMimicProps> = ({
               />
 
               <text x="185" y="70" fill="#f8fafc" fontSize="11" fontWeight="bold">KOAGULASI</text>
-              <text x="185" y="85" fill="#f59e0b" fontSize="10">PAC: {scada.coagulantActualDose.toFixed(1)} mg/L</text>
-              <text x="185" y="98" fill="#e2e8f0" fontSize="10">pH: {scada.waterPh.toFixed(2)}</text>
+              <text x="185" y="85" fill="#f59e0b" fontSize="10">PAC: {formatNumberID(scada.coagulantActualDose, 1, 'mg/L')}</text>
+              <text x="185" y="98" fill="#e2e8f0" fontSize="10">pH: {formatNumberID(scada.waterPh, 2)}</text>
               <text x="185" y="112" fill={scada.flashMixerRunning ? '#10b981' : '#f43f5e'} fontSize="9" fontWeight="bold">
                 {scada.flashMixerRunning ? 'MIXER CEPAT ON' : 'OFF'}
               </text>
@@ -283,8 +284,8 @@ export const ScadaMimic: React.FC<ScadaMimicProps> = ({
               <circle cx="400" cy="165" r="8" fill="#38bdf8" opacity="0.4" className={scada.flocculatorMixerRunning ? 'animate-spin' : ''} />
 
               <text x="325" y="70" fill="#f8fafc" fontSize="11" fontWeight="bold">FLOKULASI</text>
-              <text x="325" y="85" fill="#38bdf8" fontSize="10">RPM: {scada.flocculatorRpm.toFixed(0)}</text>
-              <text x="325" y="98" fill="#a7f3d0" fontSize="10">Flok Index: {scada.flocQualityScore.toFixed(0)}%</text>
+              <text x="325" y="85" fill="#38bdf8" fontSize="10">RPM: {formatNumberID(scada.flocculatorRpm, 0)}</text>
+              <text x="325" y="98" fill="#a7f3d0" fontSize="10">Flok Index: {formatNumberID(scada.flocQualityScore, 0)}%</text>
               <text x="325" y="112" fill={scada.flocculatorMixerRunning ? '#10b981' : '#f43f5e'} fontSize="9" fontWeight="bold">
                 {scada.flocculatorMixerRunning ? 'PENGADUK ON' : 'OFF'}
               </text>
@@ -345,8 +346,8 @@ export const ScadaMimic: React.FC<ScadaMimicProps> = ({
               <circle cx="518" cy="225" r="7" fill={scada.clarifierBlowdownOpen ? '#10b981' : '#64748b'} />
 
               <text x="465" y="70" fill="#f8fafc" fontSize="11" fontWeight="bold">SEDIMENTASI</text>
-              <text x="465" y="85" fill="#38bdf8" fontSize="10">Kekeruhan: {scada.settledWaterTurbidity.toFixed(1)} NTU</text>
-              <text x="465" y="98" fill="#fbbf24" fontSize="10">Sludge: {scada.sludgeLevelPercent.toFixed(0)}%</text>
+              <text x="465" y="85" fill="#38bdf8" fontSize="10">Kekeruhan: {formatNumberID(scada.settledWaterTurbidity, 1, 'NTU')}</text>
+              <text x="465" y="98" fill="#fbbf24" fontSize="10">Sludge: {formatNumberID(scada.sludgeLevelPercent, 0)}%</text>
               <text x="465" y="112" fill={scada.clarifierBlowdownOpen ? '#10b981' : '#94a3b8'} fontSize="9">
                 Blowdown: {scada.clarifierBlowdownOpen ? 'OPEN' : 'CLOSED'}
               </text>
@@ -403,7 +404,7 @@ export const ScadaMimic: React.FC<ScadaMimicProps> = ({
               <rect x="622" y="160" width="51" height="40" fill="url(#sandFilterGrad)" />
               <text x="626" y="145" fill="#e2e8f0" fontSize="9" fontWeight="bold">F-1</text>
               <text x="626" y="156" fill={scada.filter1Headloss > 2.0 ? '#f43f5e' : '#38bdf8'} fontSize="8">
-                HL: {scada.filter1Headloss.toFixed(2)}m
+                HL: {formatNumberID(scada.filter1Headloss, 2, 'm')}
               </text>
               {scada.filter1Backwashing && (
                 <rect x="620" y="130" width="55" height="90" fill="#38bdf8" opacity="0.3" className="animate-pulse" />
@@ -414,7 +415,7 @@ export const ScadaMimic: React.FC<ScadaMimicProps> = ({
               <rect x="687" y="160" width="51" height="40" fill="url(#sandFilterGrad)" />
               <text x="691" y="145" fill="#e2e8f0" fontSize="9" fontWeight="bold">F-2</text>
               <text x="691" y="156" fill={scada.filter2Headloss > 2.0 ? '#f43f5e' : '#38bdf8'} fontSize="8">
-                HL: {scada.filter2Headloss.toFixed(2)}m
+                HL: {formatNumberID(scada.filter2Headloss, 2, 'm')}
               </text>
               {scada.filter2Backwashing && (
                 <rect x="685" y="130" width="55" height="90" fill="#38bdf8" opacity="0.3" className="animate-pulse" />
@@ -422,10 +423,10 @@ export const ScadaMimic: React.FC<ScadaMimicProps> = ({
 
               <text x="620" y="70" fill="#f8fafc" fontSize="11" fontWeight="bold">FILTRASI PASIR CEPAT</text>
               <text x="620" y="85" fill={scada.filteredWaterTurbidity >= 3.0 ? '#f43f5e' : '#10b981'} fontSize="10" fontWeight="bold">
-                Air Bersih: {scada.filteredWaterTurbidity.toFixed(2)} NTU
+                Air Bersih: {formatNumberID(scada.filteredWaterTurbidity, 2, 'NTU')}
               </text>
               <text x="620" y="98" fill="#94a3b8" fontSize="9">
-                Permenkes: &lt; 3.0 NTU
+                Permenkes: &lt; 3,0 NTU
               </text>
               <text x="620" y="112" fill={scada.filter1Backwashing || scada.filter2Backwashing ? '#38bdf8' : '#e2e8f0'} fontSize="9">
                 {scada.filter1Backwashing ? 'BW: FILTER 1 CUCI...' : scada.filter2Backwashing ? 'BW: FILTER 2 CUCI...' : 'KEDUA FILTER RUN'}
@@ -484,12 +485,12 @@ export const ScadaMimic: React.FC<ScadaMimicProps> = ({
               <polygon points="836,166 844,166 840,172" fill="#22d3ee" />
 
               <text x="790" y="70" fill="#f8fafc" fontSize="11" fontWeight="bold">DESINFEKSI (KLOR)</text>
-              <text x="790" y="85" fill="#22d3ee" fontSize="10">Dosis: {scada.chlorineDoseSetpoint.toFixed(2)} mg/L</text>
+              <text x="790" y="85" fill="#22d3ee" fontSize="10">Dosis: {formatNumberID(scada.chlorineDoseSetpoint, 2, 'mg/L')}</text>
               <text x="790" y="100" fill={scada.freeResidualChlorine < 0.2 || scada.freeResidualChlorine > 0.5 ? '#f43f5e' : '#10b981'} fontSize="10" fontWeight="bold">
-                Sisa Klor: {scada.freeResidualChlorine.toFixed(2)} mg/L
+                Sisa Klor: {formatNumberID(scada.freeResidualChlorine, 2, 'mg/L')}
               </text>
               <text x="790" y="114" fill="#94a3b8" fontSize="9">
-                Target: 0.2 - 0.5 mg/L
+                Target: {formatRangeID(0.2, 0.5, 2, 'mg/L')}
               </text>
             </g>
 
@@ -564,16 +565,16 @@ export const ScadaMimic: React.FC<ScadaMimicProps> = ({
 
           {/* Level Gauge lines */}
           <line x1="975" y1="365" x2="985" y2="365" stroke="#94a3b8" strokeWidth="1.5" />
-          <text x="990" y="368" fill="#94a3b8" fontSize="8">75% (3.75m)</text>
+          <text x="990" y="368" fill="#94a3b8" fontSize="8">75% (3,75 m)</text>
           <line x1="975" y1="410" x2="985" y2="410" stroke="#94a3b8" strokeWidth="1.5" />
-          <text x="990" y="413" fill="#94a3b8" fontSize="8">50% (2.50m)</text>
+          <text x="990" y="413" fill="#94a3b8" fontSize="8">50% (2,50 m)</text>
 
           <text x="975" y="272" fill="#f8fafc" fontSize="12" fontWeight="bold">RESERVOIR AIR BERSIH</text>
           <text x="975" y="290" fill="#38bdf8" fontSize="11" fontWeight="bold">
-            Level: {scada.reservoirLevelMeters.toFixed(2)} m ({scada.reservoirLevelPercent.toFixed(0)}%)
+            Level: {formatNumberID(scada.reservoirLevelMeters, 2, 'm')} ({formatNumberID(scada.reservoirLevelPercent, 0)}%)
           </text>
           <text x="975" y="306" fill="#a7f3d0" fontSize="10">
-            Sisa Klor: {scada.freeResidualChlorine.toFixed(2)} mg/L
+            Sisa Klor: {formatNumberID(scada.freeResidualChlorine, 2, 'mg/L')}
           </text>
         </g>
 
@@ -660,9 +661,9 @@ export const ScadaMimic: React.FC<ScadaMimicProps> = ({
 
               <text x="720" y="322" fill="#f8fafc" fontSize="11" fontWeight="bold">POMPA DISTRIBUSI</text>
               <text x="720" y="338" fill={scada.distDischargePressure < 3.0 ? '#f43f5e' : '#38bdf8'} fontSize="10" fontWeight="bold">
-                Tekanan: {scada.distDischargePressure.toFixed(2)} bar
+                Tekanan: {formatNumberID(scada.distDischargePressure, 2, 'bar')}
               </text>
-              <text x="720" y="352" fill="#e2e8f0" fontSize="10">Debit: {scada.distTotalFlow.toFixed(0)} L/s</text>
+              <text x="720" y="352" fill="#e2e8f0" fontSize="10">Debit: {formatNumberID(scada.distTotalFlow, 0, 'L/s')}</text>
               <text x="720" y="366" fill={scada.distPumpTripped ? '#f43f5e' : '#10b981'} fontSize="9" fontWeight="bold">
                 {scada.distPumpTripped ? 'P-101 TRIP!' : scada.distPump1Running ? 'P-101 RUN (DUTY)' : 'STANDBY'}
               </text>
@@ -729,7 +730,7 @@ export const ScadaMimic: React.FC<ScadaMimicProps> = ({
               <text x="498" y="357" fill="#ffffff" fontSize="7" fontWeight="bold">ISO</text>
 
               <text x="485" y="322" fill="#f8fafc" fontSize="11" fontWeight="bold">VALVE ZONA & PRV</text>
-              <text x="485" y="338" fill="#f59e0b" fontSize="10">PRV Setpoint: {scada.prvSetpointBar.toFixed(2)} bar</text>
+              <text x="485" y="338" fill="#f59e0b" fontSize="10">PRV Setpoint: {formatNumberID(scada.prvSetpointBar, 2, 'bar')}</text>
               <text x="485" y="415" fill={scada.valveIsolasiBocorOpen ? '#34d399' : '#f43f5e'} fontSize="9">
                 Valve Bocor: {scada.valveIsolasiBocorOpen ? 'OPEN (TERBUKA)' : 'ISOLATED (TERTUTUP)'}
               </text>
@@ -806,22 +807,22 @@ export const ScadaMimic: React.FC<ScadaMimicProps> = ({
               <rect x="30" y="335" width="205" height="60" fill="#0f172a" rx="4" stroke="#334155" />
               <text x="40" y="352" fill="#38bdf8" fontSize="10" fontWeight="bold">ZONA 1 (KOTA / RESIDENSIAL)</text>
               <text x="40" y="368" fill={scada.zone1Pressure < 2.0 ? '#f43f5e' : '#10b981'} fontSize="11" fontWeight="bold">
-                P: {scada.zone1Pressure.toFixed(2)} bar
+                P: {formatNumberID(scada.zone1Pressure, 2, 'bar')}
               </text>
-              <text x="135" y="368" fill="#e2e8f0" fontSize="10">Q: {scada.zone1Flow.toFixed(0)} L/s</text>
-              <text x="40" y="385" fill="#94a3b8" fontSize="9">Batas Standar: 2.0 - 2.8 bar</text>
+              <text x="135" y="368" fill="#e2e8f0" fontSize="10">Q: {formatNumberID(scada.zone1Flow, 0, 'L/s')}</text>
+              <text x="40" y="385" fill="#94a3b8" fontSize="9">Batas Standar: {formatRangeID(2.0, 2.8, 1, 'bar')}</text>
 
               {/* Zone 2 Card */}
               <rect x="30" y="405" width="205" height="75" fill="#0f172a" rx="4" stroke="#334155" />
               <text x="40" y="422" fill="#38bdf8" fontSize="10" fontWeight="bold">ZONA 2 (KOMERSIAL & UJUNG)</text>
               <text x="40" y="438" fill={scada.zone2Pressure < 2.0 ? '#f43f5e' : '#10b981'} fontSize="11" fontWeight="bold">
-                P: {scada.zone2Pressure.toFixed(2)} bar
+                P: {formatNumberID(scada.zone2Pressure, 2, 'bar')}
               </text>
-              <text x="135" y="438" fill="#e2e8f0" fontSize="10">Q: {scada.zone2Flow.toFixed(0)} L/s</text>
+              <text x="135" y="438" fill="#e2e8f0" fontSize="10">Q: {formatNumberID(scada.zone2Flow, 0, 'L/s')}</text>
               <text x="40" y="456" fill={scada.zoneChlorineEnd < 0.2 ? '#f43f5e' : '#34d399'} fontSize="10" fontWeight="bold">
-                Sisa Klor Ujung: {scada.zoneChlorineEnd.toFixed(2)} mg/L
+                Sisa Klor Ujung: {formatNumberID(scada.zoneChlorineEnd, 2, 'mg/L')}
               </text>
-              <text x="40" y="470" fill="#94a3b8" fontSize="8">Target: &gt; 0.20 mg/L di sambungan terjauh</text>
+              <text x="40" y="470" fill="#94a3b8" fontSize="8">Target: ≥ 0,20 mg/L di sambungan terjauh</text>
 
               <text x="30" y="322" fill="#f8fafc" fontSize="11" fontWeight="bold">TELEMETRI JARINGAN</text>
             </g>

@@ -4,7 +4,7 @@
  */
 
 import { ActionLog, AlarmItem, LearningTrack, Mission, MissionResult, ScadaState } from '../types';
-import { computeMissionXP, computeStarsFromScore } from '../utils/gamification';
+import { computeMissionXP, computeStarsFromScore, formatNumberID } from '../utils/gamification';
 
 export const INITIAL_SCADA_STATE: ScadaState = {
   intakePump1Running: true,
@@ -100,8 +100,6 @@ export function formatSimTime(sec: number): string {
   return `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
 }
 
-const fmtDec = (val: number, digits = 2) => val.toFixed(digits).replace('.', ',');
-
 export function tickSimulation(
   current: ScadaState,
   mission: Mission,
@@ -130,6 +128,7 @@ export function tickSimulation(
     if (!allowIpaAlarms) return;
     next.rawWaterTurbidity = 185.0;
     if (!alarms.some((a) => a.id === 'alarm-intake-turb')) {
+      const snap = formatNumberID(185.0, 1, 'NTU');
       alarms.push({
         id: 'alarm-intake-turb',
         timestamp: formatSimTime(sec),
@@ -137,7 +136,8 @@ export function tickSimulation(
         priority: 'sedang',
         controlPointId: 'intake',
         controlPointName: 'Intake Air Baku',
-        message: 'Kekeruhan air baku tinggi (185,0 NTU, ambang normal ≤ 50 NTU)',
+        message: `Kekeruhan air baku tinggi (${snap}, ambang normal ≤ 50 NTU)`,
+        triggerSnapshotValue: snap,
         status: 'aktif_belum_diakui',
         clearMethod: 'auto',
       });
@@ -148,6 +148,9 @@ export function tickSimulation(
     if (!allowDistAlarms) return;
     next.pipeLeakActive = true;
     if (!alarms.some((a) => a.id === 'alarm-leak')) {
+      const flowSnap = formatNumberID(next.valveZone1Open ? 48 : 20, 0, 'L/s');
+      const pressSnap = formatNumberID(Math.max(0.6, next.prvSetpointBar - 1.3), 2, 'bar');
+      const snap = `Debit ${flowSnap} · Tekanan ${pressSnap}`;
       alarms.push({
         id: 'alarm-leak',
         timestamp: formatSimTime(sec),
@@ -155,7 +158,8 @@ export function tickSimulation(
         priority: 'tinggi',
         controlPointId: 'valve_prv',
         controlPointName: 'Valve Zona & PRV',
-        message: 'Pipa Distribusi Zona 1 Bocor! Debit melonjak (48 L/s) & tekanan drop (1,20 bar).',
+        message: `Pipa Distribusi Zona 1 Bocor! Debit saat kejadian: ${flowSnap} · Tekanan: ${pressSnap}`,
+        triggerSnapshotValue: snap,
         status: 'aktif_belum_diakui',
         clearMethod: 'auto',
       });
@@ -173,7 +177,9 @@ export function tickSimulation(
         if (simTrack === 'distribusi') {
           next.distPump1Running = false;
           next.distPumpTripped = true;
+          const distFlowAtTrip = next.distPump2Running ? 45 : 0;
           if (!alarms.some((a) => a.id === 'alarm-dist-trip')) {
+            const snap = `Aliran ${formatNumberID(distFlowAtTrip, 0, 'L/s')}`;
             alarms.push({
               id: 'alarm-dist-trip',
               timestamp: formatSimTime(elapsedSec),
@@ -181,7 +187,8 @@ export function tickSimulation(
               priority: 'kritis',
               controlPointId: 'pompa_distribusi',
               controlPointName: 'Pompa Distribusi',
-              message: 'Pompa Distribusi P-101 Trip Overload! Tekanan jaringan turun.',
+              message: `Pompa Distribusi P-101 Trip Overload! Aliran saat kejadian: ${formatNumberID(distFlowAtTrip, 0, 'L/s')}`,
+              triggerSnapshotValue: snap,
               status: 'aktif_belum_diakui',
               isLatched: true,
               latchedResetDone: false,
@@ -193,6 +200,7 @@ export function tickSimulation(
           next.intakePumpTripped = true;
           next.rawWaterFlow = next.intakePump2Running ? 100 : 0;
           if (!alarms.some((a) => a.id === 'alarm-intake-trip')) {
+            const snap = `Aliran ${formatNumberID(next.rawWaterFlow, 0, 'L/s')}`;
             alarms.push({
               id: 'alarm-intake-trip',
               timestamp: formatSimTime(elapsedSec),
@@ -200,7 +208,8 @@ export function tickSimulation(
               priority: 'kritis',
               controlPointId: 'intake',
               controlPointName: 'Intake & Pompa Air Baku',
-              message: 'Pompa Intake P1 Trip Overload! Aliran air baku terhenti (0 L/s).',
+              message: `Pompa Intake P1 Trip Overload! Aliran saat kejadian: ${formatNumberID(next.rawWaterFlow, 0, 'L/s')}`,
+              triggerSnapshotValue: snap,
               status: 'aktif_belum_diakui',
               isLatched: true,
               latchedResetDone: false,
@@ -214,6 +223,7 @@ export function tickSimulation(
         next.chlorineDoseSetpoint = 0.4;
         next.freeResidualChlorine = 0.08;
         if (!alarms.some((a) => a.id === 'alarm-cl-low')) {
+          const snap = formatNumberID(next.freeResidualChlorine, 2, 'mg/L');
           alarms.push({
             id: 'alarm-cl-low',
             timestamp: formatSimTime(elapsedSec),
@@ -221,7 +231,8 @@ export function tickSimulation(
             priority: 'kritis',
             controlPointId: 'desinfeksi',
             controlPointName: 'Desinfeksi (Klorinasi)',
-            message: 'Sisa klor bebas < 0,20 mg/L (Terukur: 0,08 mg/L)! Periksa pompa dosing klor.',
+            message: `Sisa klor bebas < 0,20 mg/L (Terukur saat kejadian: ${snap})! Periksa pompa dosing klor.`,
+            triggerSnapshotValue: snap,
             status: 'aktif_belum_diakui',
             clearMethod: 'auto',
           });
@@ -236,6 +247,7 @@ export function tickSimulation(
         next.prvSetpointBar = 1.4;
         next.zone1Pressure = 1.3;
         if (!alarms.some((a) => a.id === 'alarm-pdrop')) {
+          const snap = formatNumberID(next.zone1Pressure, 2, 'bar');
           alarms.push({
             id: 'alarm-pdrop',
             timestamp: formatSimTime(elapsedSec),
@@ -243,7 +255,8 @@ export function tickSimulation(
             priority: 'tinggi',
             controlPointId: 'titik_pantau_jaringan',
             controlPointName: 'Titik Pantau Jaringan',
-            message: 'Tekanan zona di bawah batas layanan (< 2,00 bar · Terukur: 1,30 bar)!',
+            message: `Tekanan zona di bawah batas layanan (< 2,00 bar · Terukur saat kejadian: ${snap})!`,
+            triggerSnapshotValue: snap,
             status: 'aktif_belum_diakui',
             clearMethod: 'auto',
           });
@@ -272,11 +285,19 @@ export function tickSimulation(
   const pacRatio = next.coagulantActualDose / targetPac;
   const retentionBonus = next.rawWaterFlow <= 80 && next.rawWaterFlow > 0 ? 0.1 : 0;
 
-  if (next.flashMixerRunning && intakePumpsActive > 0) {
-    if (pacRatio + retentionBonus >= 0.85 && pacRatio <= 2.6) {
-      next.flocQualityScore = Math.min(95, next.flocQualityScore + 3);
+  if (next.flashMixerRunning) {
+    if (intakePumpsActive > 0) {
+      if (pacRatio + retentionBonus >= 0.85 && pacRatio <= 2.6) {
+        next.flocQualityScore = Math.min(95, next.flocQualityScore + 3);
+      } else {
+        next.flocQualityScore = Math.max(25, next.flocQualityScore - 5);
+      }
     } else {
-      next.flocQualityScore = Math.max(25, next.flocQualityScore - 5);
+      // Saat pompa intake berhenti sementara (misal trip/transisi ke P2),
+      // perubahan debit tidak boleh menjatuhkan mutu koagulasi bila air baku & PAC normal.
+      if (next.rawWaterTurbidity > 35 && pacRatio < 0.85) {
+        next.flocQualityScore = Math.max(25, next.flocQualityScore - 2);
+      }
     }
   } else {
     next.flocQualityScore = Math.max(15, next.flocQualityScore - 4);
@@ -284,9 +305,9 @@ export function tickSimulation(
 
   // Sedimentation settling
   if (next.flocQualityScore >= 70 && next.flocculatorMixerRunning && next.waterPh >= 6.5 && next.waterPh <= 8.5) {
-    const settleRate = next.rawWaterFlow <= 80 ? 0.84 : 0.90;
+    const settleRate = next.rawWaterFlow <= 80 ? 0.84 : 0.9;
     next.settledWaterTurbidity = Math.max(1.5, next.settledWaterTurbidity * settleRate + 1.5 * (1 - settleRate));
-  } else {
+  } else if (intakePumpsActive > 0 || next.rawWaterTurbidity > 35) {
     next.settledWaterTurbidity = Math.min(18.0, next.settledWaterTurbidity + 0.9);
   }
 
@@ -317,15 +338,16 @@ export function tickSimulation(
       0.9,
       next.filteredWaterTurbidity * recoveryFactor + 1.0 * (1 - recoveryFactor)
     );
-  } else {
+  } else if (intakePumpsActive > 0 || next.rawWaterTurbidity > 35 || filterClogged) {
     next.filteredWaterTurbidity = Math.min(8.0, next.filteredWaterTurbidity + 0.25);
   }
 
-  // Raise high turbidity alarm on filtrasi whenever treated water >= 3.0 NTU (IPA/Terpadu only)
+  // Raise high turbidity alarm on filtrasi whenever treated water >= 3,0 NTU (IPA/Terpadu only)
   if (allowIpaAlarms && next.filteredWaterTurbidity >= 3.0) {
     if (!alarms.some((a) => a.id === 'alarm-filt-turb' && a.status !== 'clear')) {
       const existingCleared = alarms.find((a) => a.id === 'alarm-filt-turb');
       if (!existingCleared) {
+        const snap = formatNumberID(next.filteredWaterTurbidity, 2, 'NTU');
         alarms.push({
           id: 'alarm-filt-turb',
           timestamp: formatSimTime(elapsedSec),
@@ -333,7 +355,8 @@ export function tickSimulation(
           priority: 'tinggi',
           controlPointId: 'filtrasi',
           controlPointName: 'Filtrasi (Air Olahan)',
-          message: `Kekeruhan air olahan ≥ 3,0 NTU (Terukur: ${fmtDec(next.filteredWaterTurbidity)} NTU)`,
+          message: `Kekeruhan air olahan ≥ 3,0 NTU (Terukur saat kejadian: ${snap})`,
+          triggerSnapshotValue: snap,
           status: 'aktif_belum_diakui',
           clearMethod: 'auto',
         });
@@ -341,7 +364,7 @@ export function tickSimulation(
     }
   }
 
-  // Disinfection residual (Permenkes 0.2 - 0.5 mg/L)
+  // Disinfection residual (Permenkes 0,2 - 0,5 mg/L)
   // setpoint 1.5 -> 0.35 mg/L; setpoint 1.6 -> 0.40 mg/L; setpoint 0.4 -> 0.08 mg/L
   const calculatedResidual = Math.max(0.08, (next.chlorineDoseSetpoint - 1.0) * 0.5 + 0.1);
   next.freeResidualChlorine = Math.max(
@@ -396,7 +419,7 @@ export function tickSimulation(
   let nextChlorineCount = chlorineStableCount;
   let nextPressureCount = pressureStableCount;
 
-  // Turbidity auto-clear (<= 2.7 NTU for 10 consecutive seconds)
+  // Turbidity auto-clear (<= 2,7 NTU for 10 consecutive seconds)
   if (next.filteredWaterTurbidity <= 2.7) {
     nextTurbidityCount += 1;
   } else {
@@ -410,7 +433,9 @@ export function tickSimulation(
           ...a,
           status: 'clear',
           clearMethod: 'auto',
-          clearNote: 'Pulih otomatis: kekeruhan air olahan ≤ 2,7 NTU stabil 10 detik',
+          clearedAtSec: elapsedSec,
+          clearedTimestamp: formatSimTime(elapsedSec),
+          clearNote: `Pulih otomatis: kekeruhan air olahan ≤ 2,7 NTU stabil 10 detik (saat clear: ${formatNumberID(next.filteredWaterTurbidity, 2, 'NTU')})`,
         };
       }
       return a;
@@ -429,14 +454,16 @@ export function tickSimulation(
           ...a,
           status: 'clear',
           clearMethod: 'auto',
-          clearNote: 'Pulih otomatis: kekeruhan air baku kembali normal (≤ 50 NTU)',
+          clearedAtSec: elapsedSec,
+          clearedTimestamp: formatSimTime(elapsedSec),
+          clearNote: `Pulih otomatis: kekeruhan air baku kembali normal (saat clear: ${formatNumberID(next.rawWaterTurbidity, 1, 'NTU')})`,
         };
       }
       return a;
     });
   }
 
-  // Chlorine auto-clear (0.20 - 0.50 mg/L for 10 consecutive seconds)
+  // Chlorine auto-clear (0,20 - 0,50 mg/L for 10 consecutive seconds)
   if (next.freeResidualChlorine >= 0.2 && next.freeResidualChlorine <= 0.5) {
     nextChlorineCount += 1;
   } else {
@@ -450,14 +477,16 @@ export function tickSimulation(
           ...a,
           status: 'clear',
           clearMethod: 'auto',
-          clearNote: 'Pulih otomatis: sisa klor kembali dalam rentang 0,20–0,50 mg/L selama 10 detik',
+          clearedAtSec: elapsedSec,
+          clearedTimestamp: formatSimTime(elapsedSec),
+          clearNote: `Pulih otomatis: sisa klor kembali dalam rentang 0,20–0,50 mg/L selama 10 detik (saat clear: ${formatNumberID(next.freeResidualChlorine, 2, 'mg/L')})`,
         };
       }
       return a;
     });
   }
 
-  // Zone pressure / leak auto-clear (pressure in service range >= 2.0 bar for 10 consecutive seconds)
+  // Zone pressure / leak auto-clear (pressure in service range >= 2,00 bar for 10 consecutive seconds)
   if (next.zone1Pressure >= 2.0 && (!next.pipeLeakActive || !next.valveIsolasiBocorOpen)) {
     nextPressureCount += 1;
   } else {
@@ -471,7 +500,9 @@ export function tickSimulation(
           ...a,
           status: 'clear',
           clearMethod: 'auto',
-          clearNote: 'Pulih otomatis: tekanan layanan jaringan kembali normal (2,00–2,80 bar) selama 10 detik',
+          clearedAtSec: elapsedSec,
+          clearedTimestamp: formatSimTime(elapsedSec),
+          clearNote: `Pulih otomatis: tekanan layanan jaringan kembali normal (saat clear: ${formatNumberID(next.zone1Pressure, 2, 'bar')})`,
         };
       }
       return a;
@@ -491,51 +522,8 @@ export function tickSimulation(
     return a;
   });
 
-  // 4. Sync active alarm messages with latest process values
-  alarms = alarms.map((a) => {
-    if (a.status === 'clear') return a;
-    if (a.id === 'alarm-intake-turb') {
-      return {
-        ...a,
-        message: `Kekeruhan air baku tinggi (${fmtDec(next.rawWaterTurbidity, 1)} NTU, ambang normal ≤ 50 NTU)`,
-      };
-    }
-    if (a.id === 'alarm-filt-turb') {
-      return {
-        ...a,
-        message: `Kekeruhan air olahan ≥ 3,0 NTU (Terukur: ${fmtDec(next.filteredWaterTurbidity)} NTU)`,
-      };
-    }
-    if (a.id === 'alarm-intake-trip') {
-      return {
-        ...a,
-        message: `Pompa Intake P1 Trip Overload! Aliran saat ini: ${next.rawWaterFlow.toFixed(0)} L/s (${
-          next.intakePump2Running ? 'P2 Standby Aktif' : 'Belum ada pompa aktif'
-        })`,
-      };
-    }
-    if (a.id === 'alarm-cl-low') {
-      return {
-        ...a,
-        message: `Sisa klor bebas < 0,20 mg/L (Terukur: ${fmtDec(next.freeResidualChlorine)} mg/L · Dosis: ${fmtDec(
-          next.chlorineDoseSetpoint
-        )} mg/L)`,
-      };
-    }
-    if (a.id === 'alarm-leak') {
-      return {
-        ...a,
-        message: `Pipa Distribusi Zona 1 Bocor! Debit: ${next.zone1Flow.toFixed(0)} L/s · Tekanan: ${fmtDec(next.zone1Pressure)} bar`,
-      };
-    }
-    if (a.id === 'alarm-pdrop') {
-      return {
-        ...a,
-        message: `Tekanan zona di bawah batas layanan (< 2,00 bar · Terukur: ${fmtDec(next.zone1Pressure)} bar)`,
-      };
-    }
-    return a;
-  });
+  // Catatan: message & triggerSnapshotValue dipertahankan sebagai snapshot tepat saat kejadian alarm
+  // (PRD §10 Pencatatan: log tidak menimpa nilai historis kejadian dengan nilai proses terkini).
 
   const isParameterStable =
     (!allowIpaAlarms ||
@@ -567,11 +555,20 @@ export function evaluateMissionScore(
   trendHistory: Array<any>,
   timedOut = false
 ): MissionResult {
+  // Pisahkan percobaan Clear prematur ("Penyebab belum ditangani") dari tindakan kontrol/SOP lain
+  // dan dari Tindakan Tidak Aman (-15 Poin).
+  const prematureClearErrors = actionLogs.filter(
+    (a) => a.isCorrect === false && a.action.includes('Percobaan Clear Alarm')
+  ).length;
+  const operationalActions = actionLogs.filter(
+    (a) => !a.action.includes('Percobaan Clear Alarm')
+  );
+
   // 1. Ketepatan tindakan (40%)
-  const correctActions = actionLogs.filter((a) => a.isCorrect !== false).length;
-  const totalActions = Math.max(1, actionLogs.length);
+  const correctActions = operationalActions.filter((a) => a.isCorrect !== false).length;
+  const totalActions = Math.max(1, operationalActions.length);
   const scoreTindakan =
-    actionLogs.length === 0 && alarmLogs.length > 0
+    operationalActions.length === 0 && alarmLogs.length > 0
       ? 20
       : Math.min(40, Math.round((correctActions / totalActions) * 40));
 
@@ -590,15 +587,21 @@ export function evaluateMissionScore(
     stabilityHistoryCount.total > 0 ? stabilityHistoryCount.stable / stabilityHistoryCount.total : 0.85;
   const scoreStabilitas = Math.min(20, Math.round(stabilityRatio * 20));
 
-  // 4. Penanganan alarm (15%)
+  // 4. Penanganan alarm (15%) — termasuk pengurangan poin akibat Clear sebelum penyebab ditangani
   const allAlarms = alarmLogs;
   const handledAlarms = allAlarms.filter((a) => a.status === 'clear' || a.status === 'pulih_belum_clear').length;
   const totalAlarms = Math.max(1, allAlarms.length);
-  const scoreAlarm = allAlarms.length === 0 ? 15 : Math.min(15, Math.round((handledAlarms / totalAlarms) * 15));
+  const baseAlarmScore = allAlarms.length === 0 ? 15 : Math.min(15, Math.round((handledAlarms / totalAlarms) * 15));
+  const scoreAlarm = Math.max(0, baseAlarmScore - prematureClearErrors * 4);
 
-  // Deductions: -5 per hint used, -15 per unsafe action
+  // Deductions: -5 per hint used, -15 per unsafe action (strictly NOT premature Clear)
   const unsafeDeduction =
-    actionLogs.filter((a) => a.isCorrect === false && a.action.includes('Tidak Aman')).length * 15;
+    actionLogs.filter(
+      (a) =>
+        a.isCorrect === false &&
+        !a.action.includes('Percobaan Clear Alarm') &&
+        (a.action.includes('Tidak Aman') || Boolean(a.feedback?.includes('Tindakan Tidak Aman')))
+    ).length * 15;
   const hintDeduction = hintsUsedCount * 5;
   const scoreDeductions = unsafeDeduction + hintDeduction;
 
@@ -615,6 +618,32 @@ export function evaluateMissionScore(
 
   const stars = computeStarsFromScore(totalScore, passScore);
   const xpEarned = computeMissionXP(mission, totalScore, isPassed);
+
+  // Enrich alarmLogs with actionSummary from corrective actions if missing
+  const enrichedAlarmLogs: AlarmItem[] = alarmLogs.map((a) => {
+    if (a.actionSummary) return a;
+    const endSec = a.clearedAtSec ?? durationSec;
+    const related = operationalActions.filter(
+      (l) =>
+        l.isCorrect !== false &&
+        l.timestampSec >= a.timestampSec &&
+        l.timestampSec <= endSec &&
+        !l.action.startsWith('Acknowledge') &&
+        !l.action.startsWith('Manual Clear')
+    );
+    const summary =
+      related.length > 0
+        ? related.map((r) => `${r.action}${r.value !== undefined && r.value !== 'RESET_OK' ? ` (${r.value})` : ''}`).join('; ')
+        : a.status === 'clear'
+        ? a.clearMethod === 'auto'
+          ? 'Parameter proses pulih ke rentang aman'
+          : 'Penanganan selesai'
+        : 'Belum ada tindakan koreksi';
+    return {
+      ...a,
+      actionSummary: summary,
+    };
+  });
 
   return {
     id: `result-${Date.now()}`,
@@ -635,7 +664,7 @@ export function evaluateMissionScore(
     hintsUsedCount,
     isPassed,
     actionLogs,
-    alarmLogs,
+    alarmLogs: enrichedAlarmLogs,
     trendHistory,
   };
 }

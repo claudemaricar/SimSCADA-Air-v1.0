@@ -506,7 +506,7 @@ export const L4a_PrePostTest: React.FC<PrePostTestProps> = ({
                   </div>
                   <p className="text-slate-300 leading-relaxed">
                     Anda telah menyelesaikan Pre-Test Diagnostik dengan skor{' '}
-                    <strong className="text-white">{preTest.score} / 100</strong>. Nilai awal (T1) hanya dikerjakan satu kali dan terkunci; reset hanya dapat dilakukan melalui Reset Data Demo atau oleh Admin Lembaga.
+                    <strong className="text-white">{preTest.score} / 100</strong>. Pre-test hanya dapat dikerjakan sekali.
                   </p>
                   {onStartFirstMission && passedCount === 0 && (
                     <div className="flex flex-wrap gap-2">

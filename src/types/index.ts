@@ -161,6 +161,12 @@ export interface AlarmItem {
   controlPointId: string;
   controlPointName: string;
   message: string;
+  triggerSnapshotValue?: string;
+  ackAtSec?: number;
+  ackTimestamp?: string;
+  actionSummary?: string;
+  clearedAtSec?: number;
+  clearedTimestamp?: string;
   status: AlarmStatus;
   isLatched?: boolean; // For pump trip: needs manual reset first
   latchedResetDone?: boolean;
@@ -250,6 +256,32 @@ export interface PrePostTestResult {
   type: 'pre' | 'post';
   score: number;
   completedAt: string;
+}
+
+export interface PreTestHistoryRecord {
+  userId: string;
+  tenantId: string;
+  score: number;
+  completedAt: string;
+  archivedAt: string;
+  reason: string;
+  resetByUsername: string;
+}
+
+export interface AuditLogItem {
+  id: string;
+  tenantId: string;
+  action: 'RESET_PRE_TEST';
+  actorUserId: string;
+  actorUsername: string;
+  actorName: string;
+  actorRole: UserRole;
+  targetUserId: string;
+  targetUsername: string;
+  targetName: string;
+  previousScore: number;
+  reason: string;
+  timestamp: string;
 }
 
 export interface ScadaState {

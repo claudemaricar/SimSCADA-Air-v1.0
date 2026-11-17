@@ -5,12 +5,14 @@
 
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import {
+  AuditLogItem,
   Certificate,
   LearningTrack,
   Mission,
   MissionResult,
   OperatorLevelName,
   PrePostTestResult,
+  PreTestHistoryRecord,
   Tenant,
   TrainingGroup,
   User,
@@ -68,6 +70,8 @@ interface AppContextType {
   userMissionResults: Record<string, MissionResult[]>;
   userBadges: Record<string, string[]>;
   userPrePostTests: PrePostTestResult[];
+  preTestHistory: Record<string, PreTestHistoryRecord[]>;
+  auditLogs: AuditLogItem[];
   unlockedMissions: Record<string, string[]>; // userId -> missionCodes[]
   activeTrack: LearningTrack;
   openedNarratives: Record<string, string[]>; // userId -> controlPointIds[]
@@ -95,7 +99,7 @@ interface AppContextType {
   awardBadge: (userId: string, badgeId: string) => void;
   markNarrativeOpened: (controlPointId: string) => void;
   savePrePostTest: (test: PrePostTestResult) => void;
-  resetPreTestForUser: (userId: string) => void;
+  resetPreTestForUser: (userId: string, reason: string) => { success: boolean; message: string };
   unlockMissionForUser: (userId: string, missionCode: string) => void;
   approveCertificate: (certId: string) => void;
   revokeCertificate: (certId: string, reason: string) => void;
@@ -122,7 +126,7 @@ interface AppContextType {
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
 
-const STORAGE_KEY = 'simscada_air_state_v1_7';
+const STORAGE_KEY = 'simscada_air_state_v1_8';
 
 export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [tenants, setTenants] = useState<Tenant[]>(INITIAL_TENANTS);
@@ -132,6 +136,8 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   const [userMissionResults, setUserMissionResults] = useState<Record<string, MissionResult[]>>({});
   const [userBadges, setUserBadges] = useState<Record<string, string[]>>({});
   const [userPrePostTests, setUserPrePostTests] = useState<PrePostTestResult[]>(INITIAL_TEST_RESULTS);
+  const [preTestHistory, setPreTestHistory] = useState<Record<string, PreTestHistoryRecord[]>>({});
+  const [auditLogs, setAuditLogs] = useState<AuditLogItem[]>([]);
   const [unlockedMissions, setUnlockedMissions] = useState<Record<string, string[]>>({});
   const [openedNarratives, setOpenedNarratives] = useState<Record<string, string[]>>({});
   const [showTechnicalRefs, setShowTechnicalRefs] = useState<boolean>(false);
@@ -223,6 +229,8 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         if (parsed.userMissionResults) setUserMissionResults(parsed.userMissionResults);
         if (parsed.userBadges) setUserBadges(parsed.userBadges);
         if (parsed.userPrePostTests) setUserPrePostTests(parsed.userPrePostTests);
+        if (parsed.preTestHistory) setPreTestHistory(parsed.preTestHistory);
+        if (parsed.auditLogs) setAuditLogs(parsed.auditLogs);
         if (parsed.unlockedMissions) setUnlockedMissions(parsed.unlockedMissions);
         if (parsed.openedNarratives) setOpenedNarratives(parsed.openedNarratives);
         if (parsed.currentUserId) setCurrentUserId(parsed.currentUserId);
@@ -244,7 +252,9 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     nextTests = userPrePostTests,
     nextUnlocked = unlockedMissions,
     nextNarratives = openedNarratives,
-    nextUserId = currentUserId
+    nextUserId = currentUserId,
+    nextPreHistory = preTestHistory,
+    nextAuditLogs = auditLogs
   ) => {
     try {
       localStorage.setItem(
@@ -257,6 +267,8 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
           userMissionResults: nextResults,
           userBadges: nextBadges,
           userPrePostTests: nextTests,
+          preTestHistory: nextPreHistory,
+          auditLogs: nextAuditLogs,
           unlockedMissions: nextUnlocked,
           openedNarratives: nextNarratives,
           currentUserId: nextUserId,
@@ -556,11 +568,81 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     );
   };
 
-  const resetPreTestForUser = (userId: string) => {
+  const resetPreTestForUser = (userId: string, reason: string): { success: boolean; message: string } => {
+    if (!currentUser || currentUser.role !== 'admin_lembaga') {
+      return {
+        success: false,
+        message: 'Penolakan akses: hanya peran Admin Lembaga yang dapat mereset Pre-Test peserta.',
+      };
+    }
+
+    const trimmedReason = reason.trim();
+    if (!trimmedReason) {
+      return {
+        success: false,
+        message: 'Alasan reset Pre-Test wajib diisi untuk pencatatan jejak audit.',
+      };
+    }
+
+    const targetUser = users.find((u) => u.id === userId);
+    if (!targetUser || targetUser.tenantId !== currentUser.tenantId) {
+      return {
+        success: false,
+        message: 'Peserta tidak ditemukan di lembaga Anda.',
+      };
+    }
+
+    const existingPre = userPrePostTests.find(
+      (t) => t.userId === userId && t.type === 'pre'
+    );
+    if (!existingPre) {
+      return {
+        success: false,
+        message: 'Peserta ini belum memiliki hasil Pre-Test aktif untuk di-reset.',
+      };
+    }
+
+    const nowIso = new Date().toISOString();
+    const archivedRecord: PreTestHistoryRecord = {
+      userId: existingPre.userId,
+      tenantId: existingPre.tenantId,
+      score: existingPre.score,
+      completedAt: existingPre.completedAt,
+      archivedAt: nowIso,
+      reason: trimmedReason,
+      resetByUsername: currentUser.username,
+    };
+
+    const nextPreHistory: Record<string, PreTestHistoryRecord[]> = {
+      ...preTestHistory,
+      [userId]: [...(preTestHistory[userId] || []), archivedRecord],
+    };
+
+    const newAuditEntry: AuditLogItem = {
+      id: `audit-${Date.now()}`,
+      tenantId: currentUser.tenantId,
+      action: 'RESET_PRE_TEST',
+      actorUserId: currentUser.id,
+      actorUsername: currentUser.username,
+      actorName: currentUser.fullName,
+      actorRole: currentUser.role,
+      targetUserId: targetUser.id,
+      targetUsername: targetUser.username,
+      targetName: targetUser.fullName,
+      previousScore: existingPre.score,
+      reason: trimmedReason,
+      timestamp: nowIso,
+    };
+    const nextAuditLogs = [newAuditEntry, ...auditLogs];
+
     const nextTests = userPrePostTests.filter(
       (t) => !(t.userId === userId && t.type === 'pre')
     );
+
+    setPreTestHistory(nextPreHistory);
+    setAuditLogs(nextAuditLogs);
     setUserPrePostTests(nextTests);
+
     saveStateToStorage(
       tenants,
       users,
@@ -570,8 +652,16 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       userBadges,
       nextTests,
       unlockedMissions,
-      openedNarratives
+      openedNarratives,
+      currentUserId,
+      nextPreHistory,
+      nextAuditLogs
     );
+
+    return {
+      success: true,
+      message: `Pre-Test untuk ${targetUser.username} (${targetUser.fullName}) berhasil di-reset oleh ${currentUser.username}. Skor lama (${existingPre.score}) tersimpan di riwayat & jejak audit.`,
+    };
   };
 
   const unlockMissionForUser = (userId: string, missionCode: string) => {
@@ -848,6 +938,8 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     setGroups(INITIAL_GROUPS);
     setCertificates(INITIAL_CERTIFICATES);
     setUserPrePostTests(INITIAL_TEST_RESULTS);
+    setPreTestHistory({});
+    setAuditLogs([]);
     initSeedHistory();
     setCurrentUserId('user-peserta-ipa');
   };
@@ -1000,6 +1092,8 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         userMissionResults,
         userBadges,
         userPrePostTests,
+        preTestHistory,
+        auditLogs,
         unlockedMissions,
         activeTrack: currentUser?.track || activeTrackState,
         openedNarratives,

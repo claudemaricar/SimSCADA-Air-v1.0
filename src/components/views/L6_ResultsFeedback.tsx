@@ -19,6 +19,7 @@ import { formatSimTime } from '../../engine/simulationEngine';
 import {
   computeMissionXP,
   computeStarsFromScore,
+  formatNumberID,
   getMissionDifficultyMultiplier,
 } from '../../utils/gamification';
 
@@ -165,7 +166,7 @@ export const L6_ResultsFeedback: React.FC<ResultsFeedbackProps> = ({
 
               <div className="p-3 rounded-xl bg-purple-950/30 border border-purple-500/40 text-center shrink-0">
                 <span className="text-[10px] text-purple-300 font-bold block uppercase tracking-wider">
-                  XP DIPEROLEH ({multiplier.toFixed(1).replace('.', ',')}x):
+                  XP DIPEROLEH ({formatNumberID(multiplier, 1)}x):
                 </span>
                 <span className="text-xl font-black text-amber-400 font-mono">
                   +{displayXP} XP
@@ -222,6 +223,87 @@ export const L6_ResultsFeedback: React.FC<ResultsFeedbackProps> = ({
                       : '0 alarm aktif saat selesai'}
                   </div>
                 </div>
+              </div>
+            </div>
+
+            {/* Log Kejadian Alarm (Snapshot Nilai Saat Kejadian) */}
+            <div className="space-y-2">
+              <div className="text-xs font-bold text-slate-300 uppercase tracking-wider">
+                Log Kejadian Alarm &amp; Snapshot Nilai Saat Kejadian{showTechnicalRefs ? ' (PRD §10)' : ''}:
+              </div>
+              <div className="overflow-x-auto rounded-xl border border-[#1e293b] bg-[#0b1120]">
+                <table className="w-full text-left text-[11px] text-slate-300">
+                  <thead className="bg-[#0f172a] text-slate-400 text-[10px] uppercase tracking-wider border-b border-[#1e293b]">
+                    <tr>
+                      <th className="py-2 px-3">Waktu Kejadian</th>
+                      <th className="py-2 px-3">Titik Kontrol &amp; Prioritas</th>
+                      <th className="py-2 px-3">Pesan &amp; Nilai Saat Kejadian</th>
+                      <th className="py-2 px-3">Waktu ACK</th>
+                      <th className="py-2 px-3">Tindakan</th>
+                      <th className="py-2 px-3">Waktu Clear</th>
+                      <th className="py-2 px-3">Cara Clear</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-[#1e293b]">
+                    {result.alarmLogs.length === 0 ? (
+                      <tr>
+                        <td colSpan={7} className="py-4 px-3 text-center text-slate-500">
+                          Tidak ada kejadian alarm pada sesi ini.
+                        </td>
+                      </tr>
+                    ) : (
+                      result.alarmLogs.map((a) => (
+                        <tr key={a.id} className="hover:bg-[#1e293b]/40">
+                          <td className="py-2 px-3 font-mono text-slate-400 whitespace-nowrap">
+                            {a.timestamp}
+                          </td>
+                          <td className="py-2 px-3">
+                            <div className="font-semibold text-white">{a.controlPointName}</div>
+                            <span
+                              className={`text-[9px] font-bold uppercase ${
+                                a.priority === 'kritis'
+                                  ? 'text-rose-400'
+                                  : a.priority === 'tinggi'
+                                  ? 'text-amber-400'
+                                  : 'text-sky-400'
+                              }`}
+                            >
+                              {a.priority}
+                            </span>
+                          </td>
+                          <td className="py-2 px-3">
+                            <div className="text-slate-200">{a.message}</div>
+                            {a.triggerSnapshotValue && (
+                              <div className="text-[10px] font-mono text-sky-400">
+                                Snapshot: {a.triggerSnapshotValue}
+                              </div>
+                            )}
+                          </td>
+                          <td className="py-2 px-3 font-mono text-sky-300 whitespace-nowrap">
+                            {a.ackTimestamp || 'Belum ACK'}
+                          </td>
+                          <td className="py-2 px-3 text-slate-300">
+                            {a.actionSummary || 'Belum ada tindakan koreksi tercatat'}
+                          </td>
+                          <td className="py-2 px-3 font-mono text-emerald-400 whitespace-nowrap">
+                            {a.clearedTimestamp || (a.status === 'clear' ? 'Selesai' : '–')}
+                          </td>
+                          <td className="py-2 px-3 whitespace-nowrap">
+                            {a.status === 'clear' ? (
+                              <span className="px-2 py-0.5 rounded-md bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 text-[10px] font-semibold">
+                                {a.clearMethod === 'manual' ? 'Manual' : 'Otomatis (10 dtk)'}
+                              </span>
+                            ) : (
+                              <span className="px-2 py-0.5 rounded-md bg-rose-500/20 text-rose-300 border border-rose-500/30 text-[10px] font-semibold">
+                                Belum Clear
+                              </span>
+                            )}
+                          </td>
+                        </tr>
+                      ))
+                    )}
+                  </tbody>
+                </table>
               </div>
             </div>
 
@@ -365,7 +447,7 @@ export const L6_ResultsFeedback: React.FC<ResultsFeedbackProps> = ({
                 • Status Misi: {isPassed ? `Lulus ${displayStars}★` : 'Belum Lulus'} (Skor {displayScore})
               </div>
               <div>
-                • Pengali XP: {multiplier.toFixed(1).replace('.', ',')}x = +{displayXP} XP Misi
+                • Pengali XP: {formatNumberID(multiplier, 1)}x = +{displayXP} XP Misi
               </div>
               <div>
                 • Level Saat Ini: {operatorLevel.level} ({operatorLevel.currentXP.toLocaleString('id-ID')} XP)

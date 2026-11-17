@@ -5,6 +5,7 @@
 
 import React, { useState } from 'react';
 import { LearningTrack, ScadaState } from '../../types';
+import { formatNumberID, formatRangeID } from '../../utils/gamification';
 import {
   AlertCircle,
   Droplets,
@@ -82,7 +83,7 @@ export const ControlPanel: React.FC<ControlPanelProps> = ({
                   SETPOINT DOSIS KOAGULAN (PAC):
                 </span>
                 <span className="text-xs font-black text-sky-400 font-mono">
-                  {scada.coagulantDoseSetpoint.toFixed(1)} mg/L
+                  {formatNumberID(scada.coagulantDoseSetpoint, 1, 'mg/L')}
                 </span>
               </div>
               <input
@@ -115,7 +116,7 @@ export const ControlPanel: React.FC<ControlPanelProps> = ({
                   DOSIS PENYESUAI pH (KAPUR):
                 </span>
                 <span className="text-xs font-black text-emerald-400 font-mono">
-                  {kapurDose.toFixed(1).replace('.', ',')} mg/L
+                  {formatNumberID(kapurDose, 1, 'mg/L')}
                 </span>
               </div>
               <input
@@ -127,17 +128,17 @@ export const ControlPanel: React.FC<ControlPanelProps> = ({
                 onChange={(e) => {
                   const val = Number(e.target.value);
                   setKapurDose(val);
-                  const adjustedPh = Number((6.6 + (val / 20) * 1.4).toFixed(2));
+                  const adjustedPh = Math.round((6.6 + (val / 20) * 1.4) * 100) / 100;
                   onUpdateScada(
                     { waterPh: adjustedPh },
                     'Koreksi Dosis Penyesuai pH Kapur',
-                    `${val} mg/L`
+                    formatNumberID(val, 1, 'mg/L')
                   );
                 }}
                 className="w-full accent-emerald-500 cursor-pointer h-2 bg-[#1e293b] rounded-lg"
               />
               <div className="flex justify-between text-[9px] text-slate-500 font-mono">
-                <span>pH Terukur: {scada.waterPh.toFixed(2)} (Aman: 6,5–8,5)</span>
+                <span>pH Terukur: {formatNumberID(scada.waterPh, 2)} (Aman: 6,5–8,5)</span>
               </div>
             </div>
 
@@ -191,7 +192,7 @@ export const ControlPanel: React.FC<ControlPanelProps> = ({
               </span>
               <div className="flex items-center justify-between text-xs font-mono">
                 <span className={isChlorineSafe ? 'text-sky-300 font-bold' : 'text-rose-400 font-bold'}>
-                  {scada.chlorineDoseSetpoint.toFixed(2).replace('.', ',')} mg/L (Sisa: {scada.freeResidualChlorine.toFixed(2).replace('.', ',')} mg/L)
+                  {formatNumberID(scada.chlorineDoseSetpoint, 2, 'mg/L')} (Sisa: {formatNumberID(scada.freeResidualChlorine, 2, 'mg/L')})
                 </span>
                 <span className={`text-[10px] font-bold ${isChlorineSafe ? 'text-emerald-400' : 'text-rose-400'}`}>
                   {isChlorineSafe ? 'Aman ✓' : 'Kritis!'}
@@ -295,7 +296,7 @@ export const ControlPanel: React.FC<ControlPanelProps> = ({
               <div className="space-y-1 pt-1">
                 <div className="flex items-center justify-between text-xs">
                   <span className="text-slate-400">Debit Intake:</span>
-                  <span className="text-sky-400 font-mono font-bold">{scada.rawWaterFlow.toFixed(0)} L/s</span>
+                  <span className="text-sky-400 font-mono font-bold">{formatNumberID(scada.rawWaterFlow, 0, 'L/s')}</span>
                 </div>
                 <input
                   type="range"
@@ -306,12 +307,12 @@ export const ControlPanel: React.FC<ControlPanelProps> = ({
                   disabled={!scada.intakePump1Running && !scada.intakePump2Running}
                   onChange={(e) => {
                     const val = Number(e.target.value);
-                    onUpdateScada({ rawWaterFlow: val }, 'Ubah Debit Intake', `${val} L/s`);
+                    onUpdateScada({ rawWaterFlow: val }, 'Ubah Debit Intake', formatNumberID(val, 0, 'L/s'));
                   }}
                   className="w-full accent-sky-500 cursor-pointer h-2 bg-[#1e293b] rounded-lg disabled:opacity-40"
                 />
                 <div className="flex justify-between text-[9px] text-slate-500 font-mono">
-                  <span>Kekeruhan Air Baku: {scada.rawWaterTurbidity.toFixed(1)} NTU</span>
+                  <span>Kekeruhan Air Baku: {formatNumberID(scada.rawWaterTurbidity, 1, 'NTU')}</span>
                 </div>
               </div>
             </div>
@@ -339,7 +340,7 @@ export const ControlPanel: React.FC<ControlPanelProps> = ({
             <div className="p-3 bg-[#0b1120] rounded-xl border border-[#1e293b] space-y-2.5">
               <div className="flex items-center justify-between text-xs">
                 <span className="text-slate-400">Kecepatan Pengaduk Lambat:</span>
-                <span className="text-sky-400 font-mono font-bold">{scada.flocculatorRpm.toFixed(0)} RPM</span>
+                <span className="text-sky-400 font-mono font-bold">{formatNumberID(scada.flocculatorRpm, 0, 'RPM')}</span>
               </div>
               <input
                 type="range"
@@ -355,7 +356,7 @@ export const ControlPanel: React.FC<ControlPanelProps> = ({
               />
               <div className="flex items-center justify-between text-xs">
                 <span className="text-slate-400">Indeks Pembentukan Flok:</span>
-                <span className="text-emerald-400 font-mono font-bold">{scada.flocQualityScore.toFixed(0)}%</span>
+                <span className="text-emerald-400 font-mono font-bold">{formatNumberID(scada.flocQualityScore, 0)}%</span>
               </div>
               <button
                 type="button"
@@ -397,11 +398,11 @@ export const ControlPanel: React.FC<ControlPanelProps> = ({
             <div className="p-3 bg-[#0b1120] rounded-xl border border-[#1e293b] space-y-2.5">
               <div className="flex items-center justify-between text-xs">
                 <span className="text-slate-400">Kekeruhan Keluar Bak:</span>
-                <span className="text-sky-400 font-mono font-bold">{scada.settledWaterTurbidity.toFixed(1)} NTU</span>
+                <span className="text-sky-400 font-mono font-bold">{formatNumberID(scada.settledWaterTurbidity, 1, 'NTU')}</span>
               </div>
               <div className="flex items-center justify-between text-xs">
                 <span className="text-slate-400">Selimut Lumpur:</span>
-                <span className="text-amber-400 font-mono font-bold">{scada.sludgeLevelPercent.toFixed(0)}%</span>
+                <span className="text-amber-400 font-mono font-bold">{formatNumberID(scada.sludgeLevelPercent, 0)}%</span>
               </div>
               <button
                 type="button"
@@ -449,13 +450,13 @@ export const ControlPanel: React.FC<ControlPanelProps> = ({
               <div className="flex items-center justify-between text-xs">
                 <span className="text-slate-400">Headloss Filter 1:</span>
                 <span className={`font-mono font-bold ${scada.filter1Headloss > 2.0 ? 'text-rose-400' : 'text-amber-400'}`}>
-                  {scada.filter1Headloss.toFixed(2)} m
+                  {formatNumberID(scada.filter1Headloss, 2, 'm')}
                 </span>
               </div>
               <div className="flex items-center justify-between text-xs">
                 <span className="text-slate-400">Kekeruhan Olahan:</span>
                 <span className={`font-mono font-bold ${scada.filteredWaterTurbidity >= 3.0 ? 'text-rose-400' : 'text-emerald-400'}`}>
-                  {scada.filteredWaterTurbidity.toFixed(2)} NTU
+                  {formatNumberID(scada.filteredWaterTurbidity, 2, 'NTU')}
                 </span>
               </div>
 
@@ -505,12 +506,12 @@ export const ControlPanel: React.FC<ControlPanelProps> = ({
               <div className="flex items-center justify-between text-xs">
                 <span className="text-slate-400">Sisa Klor Bebas Terukur:</span>
                 <span className={`font-mono font-black ${isChlorineSafe ? 'text-emerald-400' : 'text-rose-400'}`}>
-                  {scada.freeResidualChlorine.toFixed(2).replace('.', ',')} mg/L
+                  {formatNumberID(scada.freeResidualChlorine, 2, 'mg/L')}
                 </span>
               </div>
               <div className="flex items-center justify-between text-[11px]">
                 <span className="text-slate-400">Target Baku Mutu:</span>
-                <span className="text-sky-300 font-mono font-semibold">0,20 – 0,50 mg/L</span>
+                <span className="text-sky-300 font-mono font-semibold">{formatRangeID(0.2, 0.5, 2, 'mg/L')}</span>
               </div>
 
               <button
@@ -543,7 +544,7 @@ export const ControlPanel: React.FC<ControlPanelProps> = ({
                     SETPOINT DOSIS KLORIN:
                   </span>
                   <span className="text-xs font-black text-cyan-400 font-mono">
-                    {scada.chlorineDoseSetpoint.toFixed(2).replace('.', ',')} mg/L
+                    {formatNumberID(scada.chlorineDoseSetpoint, 2, 'mg/L')}
                   </span>
                 </div>
                 <input
@@ -557,7 +558,7 @@ export const ControlPanel: React.FC<ControlPanelProps> = ({
                     onUpdateScada(
                       { chlorineDoseSetpoint: val },
                       'Atur Setpoint Dosis Klorin',
-                      `${val.toFixed(2)} mg/L`
+                      formatNumberID(val, 2, 'mg/L')
                     );
                   }}
                   className="w-full accent-cyan-400 cursor-pointer h-2 bg-[#1e293b] rounded-lg"
@@ -594,13 +595,13 @@ export const ControlPanel: React.FC<ControlPanelProps> = ({
               <div className="flex items-center justify-between text-xs">
                 <span className="text-slate-400">Level Air:</span>
                 <span className="text-sky-400 font-mono font-bold">
-                  {scada.reservoirLevelMeters.toFixed(2)} m ({scada.reservoirLevelPercent.toFixed(0)}%)
+                  {formatNumberID(scada.reservoirLevelMeters, 2, 'm')} ({formatNumberID(scada.reservoirLevelPercent, 0)}%)
                 </span>
               </div>
               <div className="flex items-center justify-between text-xs">
                 <span className="text-slate-400">Sisa Klorin:</span>
                 <span className={`font-mono font-bold ${isChlorineSafe ? 'text-emerald-400' : 'text-rose-400'}`}>
-                  {scada.freeResidualChlorine.toFixed(2).replace('.', ',')} mg/L
+                  {formatNumberID(scada.freeResidualChlorine, 2, 'mg/L')}
                 </span>
               </div>
 
@@ -608,7 +609,7 @@ export const ControlPanel: React.FC<ControlPanelProps> = ({
                 <div className="flex items-center justify-between text-xs">
                   <span className="text-slate-400">Setpoint Dosis Klorin:</span>
                   <span className="text-cyan-400 font-mono font-bold">
-                    {scada.chlorineDoseSetpoint.toFixed(2).replace('.', ',')} mg/L
+                    {formatNumberID(scada.chlorineDoseSetpoint, 2, 'mg/L')}
                   </span>
                 </div>
                 <input
@@ -622,7 +623,7 @@ export const ControlPanel: React.FC<ControlPanelProps> = ({
                     onUpdateScada(
                       { chlorineDoseSetpoint: val },
                       'Atur Setpoint Dosis Klorin (Reservoir)',
-                      `${val.toFixed(2)} mg/L`
+                      formatNumberID(val, 2, 'mg/L')
                     );
                   }}
                   className="w-full accent-cyan-400 cursor-pointer h-2 bg-[#1e293b] rounded-lg"
@@ -687,12 +688,12 @@ export const ControlPanel: React.FC<ControlPanelProps> = ({
               <div className="flex items-center justify-between text-xs">
                 <span className="text-slate-400">Tekanan Keluar (Discharge):</span>
                 <span className={`font-mono font-bold ${scada.distDischargePressure < 3.0 ? 'text-rose-400' : 'text-sky-400'}`}>
-                  {scada.distDischargePressure.toFixed(2)} bar
+                  {formatNumberID(scada.distDischargePressure, 2, 'bar')}
                 </span>
               </div>
               <div className="flex items-center justify-between text-xs">
                 <span className="text-slate-400">Total Debit Distribusi:</span>
-                <span className="text-emerald-400 font-mono font-bold">{scada.distTotalFlow.toFixed(0)} L/s</span>
+                <span className="text-emerald-400 font-mono font-bold">{formatNumberID(scada.distTotalFlow, 0, 'L/s')}</span>
               </div>
 
               <div className="grid grid-cols-2 gap-2 pt-1">
@@ -818,7 +819,7 @@ export const ControlPanel: React.FC<ControlPanelProps> = ({
                   SETPOINT PRV (TEKANAN):
                 </span>
                 <span className="text-xs font-black text-amber-400 font-mono">
-                  {scada.prvSetpointBar.toFixed(2).replace('.', ',')} bar
+                  {formatNumberID(scada.prvSetpointBar, 2, 'bar')}
                 </span>
               </div>
               <input
@@ -829,7 +830,7 @@ export const ControlPanel: React.FC<ControlPanelProps> = ({
                 value={scada.prvSetpointBar}
                 onChange={(e) => {
                   const val = Number(e.target.value);
-                  onUpdateScada({ prvSetpointBar: val }, 'Ubah Setpoint PRV', `${val.toFixed(1)} bar`);
+                  onUpdateScada({ prvSetpointBar: val }, 'Ubah Setpoint PRV', formatNumberID(val, 1, 'bar'));
                 }}
                 className="w-full accent-amber-500 cursor-pointer h-2 bg-[#1e293b] rounded-lg"
               />
@@ -897,25 +898,25 @@ export const ControlPanel: React.FC<ControlPanelProps> = ({
               <div className="flex items-center justify-between text-xs">
                 <span className="text-slate-400">Tekanan Zona 1:</span>
                 <span className={`font-mono font-bold ${scada.zone1Pressure < 2.0 ? 'text-rose-400' : 'text-emerald-400'}`}>
-                  {scada.zone1Pressure.toFixed(2).replace('.', ',')} bar
+                  {formatNumberID(scada.zone1Pressure, 2, 'bar')}
                 </span>
               </div>
               <div className="flex items-center justify-between text-xs">
                 <span className="text-slate-400">Debit Zona 1:</span>
                 <span className={`font-mono font-bold ${scada.zone1Flow > 36 ? 'text-rose-400' : 'text-sky-400'}`}>
-                  {scada.zone1Flow.toFixed(0)} L/s
+                  {formatNumberID(scada.zone1Flow, 0, 'L/s')}
                 </span>
               </div>
               <div className="flex items-center justify-between text-xs">
                 <span className="text-slate-400">Tekanan Zona 2:</span>
                 <span className={`font-mono font-bold ${scada.zone2Pressure < 2.0 ? 'text-rose-400' : 'text-emerald-400'}`}>
-                  {scada.zone2Pressure.toFixed(2).replace('.', ',')} bar
+                  {formatNumberID(scada.zone2Pressure, 2, 'bar')}
                 </span>
               </div>
               <div className="flex items-center justify-between text-xs">
                 <span className="text-slate-400">Sisa Klor Ujung Jaringan:</span>
                 <span className={`font-mono font-bold ${scada.zoneChlorineEnd < 0.2 ? 'text-amber-400' : 'text-emerald-400'}`}>
-                  {scada.zoneChlorineEnd.toFixed(2).replace('.', ',')} mg/L
+                  {formatNumberID(scada.zoneChlorineEnd, 2, 'mg/L')}
                 </span>
               </div>
               <p className="text-[10px] text-slate-400 pt-1 border-t border-[#1e293b]">
