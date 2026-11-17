@@ -1,0 +1,310 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1000" width="1600" height="1000" style="background:#0b1120; font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0f172a" />
+      <stop offset="50%" stop-color="#0b1329" />
+      <stop offset="100%" stop-color="#020617" />
+    </linearGradient>
+    <linearGradient id="cardGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#1e293b" />
+      <stop offset="100%" stop-color="#0f172a" />
+    </linearGradient>
+    <linearGradient id="cardDark" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#0f172a" />
+      <stop offset="100%" stop-color="#070c18" />
+    </linearGradient>
+    <linearGradient id="primaryGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#0284c7" />
+      <stop offset="100%" stop-color="#2563eb" />
+    </linearGradient>
+    <linearGradient id="accentGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#06b6d4" />
+      <stop offset="100%" stop-color="#3b82f6" />
+    </linearGradient>
+    <linearGradient id="amberGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#d97706" />
+      <stop offset="100%" stop-color="#b45309" />
+    </linearGradient>
+    <linearGradient id="emeraldGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#059669" />
+      <stop offset="100%" stop-color="#10b981" />
+    </linearGradient>
+    <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#f59e0b" />
+      <stop offset="100%" stop-color="#d97706" />
+    </linearGradient>
+    <filter id="dropShadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="10" stdDeviation="14" flood-color="#000000" flood-opacity="0.55"/>
+    </filter>
+    <filter id="glowCyan" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="0" stdDeviation="6" flood-color="#06b6d4" flood-opacity="0.6"/>
+    </filter>
+    <filter id="glowRed" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="0" stdDeviation="6" flood-color="#ef4444" flood-opacity="0.7"/>
+    </filter>
+    <filter id="glowAmber" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="0" stdDeviation="6" flood-color="#f59e0b" flood-opacity="0.7"/>
+    </filter>
+    <marker id="dotBlue" markerWidth="8" markerHeight="8" refX="4" refY="4">
+      <circle cx="4" cy="4" r="3.5" fill="#38bdf8" stroke="#ffffff" stroke-width="1" />
+    </marker>
+    <marker id="dotOrange" markerWidth="8" markerHeight="8" refX="4" refY="4">
+      <circle cx="4" cy="4" r="3.5" fill="#f59e0b" stroke="#ffffff" stroke-width="1" />
+    </marker>
+    <marker id="dotGreen" markerWidth="8" markerHeight="8" refX="4" refY="4">
+      <circle cx="4" cy="4" r="3.5" fill="#10b981" stroke="#ffffff" stroke-width="1" />
+    </marker>
+  </defs>
+
+  <!-- Background Base -->
+  <rect width="1600" height="1000" fill="url(#bgGrad)" />
+
+  <!-- Blueprint Pattern -->
+  <g opacity="0.04" stroke="#38bdf8" stroke-width="1">
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M 40 0 L 0 0 0 40" fill="none" />
+    </pattern>
+    <rect width="1600" height="1000" fill="url(#grid)" />
+  </g>
+
+  <!-- Top Mockup Window Bar -->
+  <rect x="0" y="0" width="1600" height="40" fill="#030712" />
+  <circle cx="24" cy="20" r="5" fill="#ef4444" />
+  <circle cx="42" cy="20" r="5" fill="#f59e0b" />
+  <circle cx="60" cy="20" r="5" fill="#10b981" />
+  <text x="88" y="25" fill="#94a3b8" font-size="13" font-weight="600">MOCKUP L9: DASBOR PENGAWASAN KELAS INSTRUKTUR (SimSCADA-Air v1.3)</text>
+  <rect x="1390" y="9" width="180" height="22" rx="11" fill="#1e293b" />
+  <text x="1480" y="24" fill="#38bdf8" font-size="11" font-weight="600" text-anchor="middle">MOCKUP v1.3 · PRD v1.0</text>
+
+  <!-- Standard Tenant Header PRD §6 -->
+  <g transform="translate(0, 40)">
+    <rect width="1600" height="66" fill="#0b1329" stroke="#1e293b" stroke-width="1" />
+    
+    <!-- Tenant Logo &amp; Name -->
+    <g transform="translate(32, 11)">
+      <rect width="44" height="44" rx="10" fill="#0284c7" />
+      <path d="M 22 10 C 22 10, 14 22, 14 28 A 8 8 0 0 0 30 28 C 30 22, 22 10, 22 10 Z" fill="#ffffff" />
+      <text x="56" y="22" fill="#f8fafc" font-size="17" font-weight="700" letter-spacing="0.3">Balai Diklat Air Minum Nusantara</text>
+      <text x="56" y="38" fill="#94a3b8" font-size="11" font-weight="500">Didukung oleh <tspan font-weight="700" fill="#38bdf8">SimSCADA-Air</tspan> · Platform Simulator SCADA Air Minum</text>
+    </g>
+
+    <!-- User &amp; Role Profile Right -->
+    <g transform="translate(1260, 13)">
+      <rect width="308" height="40" rx="8" fill="#1e293b" stroke="#334155" stroke-width="1" />
+      <circle cx="22" cy="20" r="13" fill="#0369a1" />
+      <text x="22" y="24" fill="#ffffff" font-size="11" font-weight="700" text-anchor="middle">BS</text>
+      <text x="44" y="18" fill="#f1f5f9" font-size="12" font-weight="600">Budi Santoso, S.T.</text>
+      <text x="44" y="31" fill="#38bdf8" font-size="10" font-weight="500">Instruktur Pengajar · Angkatan 1</text>
+      <circle cx="286" cy="20" r="4" fill="#10b981" />
+    </g>
+  </g>
+  <!-- Clean Non-Colliding Title Block -->
+  <g transform="translate(32, 120)">
+    <text x="0" y="24" fill="#ffffff" font-size="22" font-weight="700" letter-spacing="0.3">Dasbor Pengawasan Kelas Instruktur</text>
+    <text x="0" y="46" fill="#94a3b8" font-size="13">Matriks Kemajuan Peserta × Misi · Deteksi Otomatis Peserta Tertinggal (Lagging Alerts) (PRD §12)</text>
+  </g>
+
+  <!-- Quick Action &amp; Filter Bar (Width: 1536) -->
+  <g transform="translate(32, 195)">
+    <rect width="1536" height="52" rx="8" fill="#0f172a" stroke="#334155" />
+    
+    <text x="20" y="32" fill="#94a3b8" font-size="12">Kelompok Binaan:</text>
+    <rect x="135" y="10" width="190" height="32" rx="6" fill="#1e293b" stroke="#0284c7" />
+    <text x="150" y="31" fill="#38bdf8" font-size="12" font-weight="700">Angkatan 1 (24 Peserta)</text>
+
+    <text x="350" y="32" fill="#94a3b8" font-size="12">Jalur Belajar:</text>
+    <rect x="435" y="10" width="220" height="32" rx="6" fill="#1e293b" stroke="#334155" />
+    <text x="450" y="31" fill="#ffffff" font-size="12">Semua Jalur ▾</text>
+
+    <!-- 5 Instructor Action Buttons PRD §12 -->
+    <g transform="translate(740, 10)">
+      <rect width="150" height="32" rx="6" fill="#0284c7" />
+      <text x="75" y="21" fill="#ffffff" font-size="11" font-weight="700" text-anchor="middle">+ Tugaskan Skenario</text>
+
+      <rect x="160" width="130" height="32" rx="6" fill="#065f46" />
+      <text x="225" y="21" fill="#34d399" font-size="11" font-weight="700" text-anchor="middle">🔓 Buka Kunci</text>
+
+      <rect x="300" width="140" height="32" rx="6" fill="#1e1b4b" stroke="#6366f1" />
+      <text x="370" y="21" fill="#c7d2fe" font-size="11" font-weight="700" text-anchor="middle">✓ Setujui Piagam (1)</text>
+
+      <rect x="450" width="140" height="32" rx="6" fill="#451a03" stroke="#d97706" />
+      <text x="520" y="21" fill="#fde68a" font-size="11" font-weight="700" text-anchor="middle">▶ Putar Ulang (L11)</text>
+
+      <rect x="600" width="180" height="32" rx="6" fill="#1e293b" stroke="#334155" />
+      <text x="690" y="21" fill="#cbd5e1" font-size="11" font-weight="600" text-anchor="middle">📝 Beri Catatan Evaluasi</text>
+    </g>
+  </g>
+
+  <!-- Lagging Alert Banner PRD §12 (Definition: Failed same mission 3 times) -->
+  <g transform="translate(32, 260)">
+    <rect width="1536" height="42" rx="8" fill="#450a0a" stroke="#ef4444" stroke-width="1.5" />
+    <text x="20" y="26" fill="#fca5a5" font-size="12" font-weight="700">⚠️ PERINGATAN PESERTA TERTINGGAL (PRD §12):</text>
+    <text x="380" y="26" fill="#ffffff" font-size="12"><tspan font-weight="700" fill="#fca5a5">Eko Prasetyo</tspan> (peserta contoh) tidak lulus <tspan font-weight="700" fill="#fca5a5">IPA-07 (Pompa Trip)</tspan> 3 kali. Disarankan bimbingan atau buka kunci.</text>
+  </g>
+
+  <!-- Main Roster &amp; Mission Matrix Table PRD §12 (Width: 1536) -->
+  <g transform="translate(32, 315)">
+    <rect width="1536" height="630" rx="12" fill="url(#cardGrad)" stroke="#334155" stroke-width="1.5" />
+    
+    <!-- Table Header Columns -->
+    <rect width="1536" height="44" rx="12" fill="#0f172a" />
+    <text x="24" y="28" fill="#94a3b8" font-size="11" font-weight="700">NAMA PESERTA / AKUN</text>
+    <text x="240" y="28" fill="#94a3b8" font-size="11" font-weight="700">MISI AKTIF</text>
+    <text x="420" y="28" fill="#94a3b8" font-size="11" font-weight="700">SKOR TERAKHIR</text>
+    <text x="560" y="28" fill="#94a3b8" font-size="11" font-weight="700">BINTANG</text>
+    <text x="680" y="28" fill="#94a3b8" font-size="11" font-weight="700">AKTIVITAS</text>
+    <text x="800" y="28" fill="#94a3b8" font-size="11" font-weight="700">STATUS PESERTA</text>
+    <text x="1000" y="28" fill="#38bdf8" font-size="11" font-weight="700">MATRIKS PROGRES MISI JALUR (IPA-01 s/d IPA-09)</text>
+    <text x="1410" y="28" fill="#94a3b8" font-size="11" font-weight="700">AKSI</text>
+
+    <line x1="0" y1="44" x2="1536" y2="44" stroke="#1e293b" />
+
+    <!-- ROW 1: Dimas Wahyu Pratama (peserta.ipa / Progres Baik) -->
+    <g transform="translate(0, 52)">
+      <rect width="1536" height="74" fill="#0c2538" opacity="0.6" stroke="#0284c7" stroke-width="1" />
+      <text x="24" y="32" fill="#ffffff" font-size="13" font-weight="700">Dimas Wahyu Pratama</text>
+      <text x="24" y="52" fill="#38bdf8" font-size="11">peserta.ipa · Operator Madya</text>
+
+      <text x="240" y="32" fill="#38bdf8" font-size="12" font-weight="700">IPA-08: Dosis Klor</text>
+      <text x="240" y="52" fill="#94a3b8" font-size="10.5">Terbuka · sesi contoh IPA-06</text>
+
+      <text x="420" y="36" fill="#38bdf8" font-size="18" font-weight="800">76 <tspan font-size="11">/ 100</tspan></text>
+      <text x="560" y="36" fill="#f59e0b" font-size="16">★☆☆</text>
+      <text x="680" y="36" fill="#34d399" font-size="11.5">Hari ini</text>
+
+      <!-- Status Badge -->
+      <rect x="800" y="20" width="130" height="26" rx="6" fill="#065f46" />
+      <text x="865" y="37" fill="#a7f3d0" font-size="11" font-weight="700" text-anchor="middle">Lulus IPA-07 ✓</text>
+
+      <!-- Mini Matrix for Dimas (IPA 1-9) -->
+      <g transform="translate(1000, 24)">
+        <!-- 01: 3★, 02: 2★, 03: 2★, 04: 2★, 05: 2★, 06: 2★, 07: 1★, 08: Lock, 09: Lock -->
+        <rect width="32" height="26" rx="4" fill="#059669" /><text x="16" y="17" fill="#fff" font-size="10" text-anchor="middle">01★3</text>
+        <rect x="36" width="32" height="26" rx="4" fill="#059669" /><text x="52" y="17" fill="#fff" font-size="10" text-anchor="middle">02★2</text>
+        <rect x="72" width="32" height="26" rx="4" fill="#059669" /><text x="88" y="17" fill="#fff" font-size="10" text-anchor="middle">03★2</text>
+        <rect x="108" width="32" height="26" rx="4" fill="#059669" /><text x="124" y="17" fill="#fff" font-size="10" text-anchor="middle">04★2</text>
+        <rect x="144" width="32" height="26" rx="4" fill="#059669" /><text x="160" y="17" fill="#fff" font-size="10" text-anchor="middle">05★2</text>
+        <rect x="180" width="32" height="26" rx="4" fill="#0284c7" stroke="#38bdf8" stroke-width="1.5" /><text x="196" y="17" fill="#fff" font-size="10" text-anchor="middle">06★2</text>
+        <rect x="216" width="32" height="26" rx="4" fill="#d97706" /><text x="232" y="17" fill="#fff" font-size="10" text-anchor="middle">07★1</text>
+        <rect x="252" width="32" height="26" rx="4" fill="#0c4a6e" /><text x="268" y="17" fill="#38bdf8" font-size="10" text-anchor="middle">08⏳</text>
+        <rect x="288" width="32" height="26" rx="4" fill="#1e293b" /><text x="304" y="17" fill="#64748b" font-size="10" text-anchor="middle">09🔒</text>
+      </g>
+
+      <!-- Action Button -->
+      <rect x="1400" y="20" width="105" height="28" rx="6" fill="#0284c7" />
+      <text x="1452" y="38" fill="#ffffff" font-size="11" font-weight="700" text-anchor="middle">Replay (L11)</text>
+    </g>
+
+    <!-- ROW 2: Peserta Lulus (Piagam Terbit) -->
+    <g transform="translate(0, 134)">
+      <rect width="1536" height="74" fill="#1e1b4b" opacity="0.4" stroke="#6366f1" stroke-width="1" />
+      <text x="24" y="32" fill="#ffffff" font-size="13" font-weight="700">Andi Kurniawan</text>
+      <text x="24" y="52" fill="#a5b4fc" font-size="11">peserta.lulus · Operator Ahli</text>
+
+      <text x="240" y="32" fill="#a5b4fc" font-size="12" font-weight="700">TRP-02: Kelulusan</text>
+      <text x="240" y="52" fill="#34d399" font-size="10.5">Semua 17 Misi Lulus</text>
+
+      <text x="420" y="36" fill="#34d399" font-size="18" font-weight="800">94 <tspan font-size="11">/ 100</tspan></text>
+      <text x="560" y="36" fill="#f59e0b" font-size="16">★★☆</text>
+      <text x="680" y="36" fill="#cbd5e1" font-size="11.5">28 Okt 2026</text>
+
+      <!-- Status Badge -->
+      <rect x="800" y="20" width="160" height="26" rx="6" fill="#059669" />
+      <text x="880" y="37" fill="#ffffff" font-size="10.5" font-weight="700" text-anchor="middle">Piagam Terbit</text>
+
+      <!-- Matrix: All green -->
+      <g transform="translate(1000, 24)">
+        <rect width="320" height="26" rx="4" fill="#059669" />
+        <text x="160" y="17" fill="#ffffff" font-size="10.5" font-weight="700" text-anchor="middle">✓ SEMUA 17 MISI LULUS (48 BINTANG)</text>
+      </g>
+
+      <rect x="1400" y="20" width="105" height="28" rx="6" fill="#1e293b" stroke="#334155" />
+      <text x="1452" y="38" fill="#cbd5e1" font-size="11" font-weight="700" text-anchor="middle">Lihat Piagam</text>
+    </g>
+
+    <!-- ROW 3: Peserta Tertinggal (Lagging Case PRD §12) -->
+    <g transform="translate(0, 216)">
+      <rect width="1536" height="74" fill="#450a0a" opacity="0.3" stroke="#ef4444" stroke-width="1" />
+      <text x="24" y="32" fill="#ffffff" font-size="13" font-weight="700">Eko Prasetyo</text>
+      <text x="24" y="52" fill="#fca5a5" font-size="11">peserta contoh · Operator Muda</text>
+
+      <text x="240" y="32" fill="#ef4444" font-size="12" font-weight="700">IPA-07: Pompa Trip</text>
+      <text x="240" y="52" fill="#fca5a5" font-size="10.5">Gagal 3x Percobaan berturut</text>
+
+      <text x="420" y="36" fill="#ef4444" font-size="18" font-weight="800">58 <tspan font-size="11">/ 100</tspan></text>
+      <text x="560" y="36" fill="#64748b" font-size="16">☆☆☆</text>
+      <text x="680" y="36" fill="#cbd5e1" font-size="11.5">3 hari lalu</text>
+
+      <!-- Lagging Badge -->
+      <rect x="800" y="20" width="145" height="26" rx="6" fill="#ef4444" />
+      <text x="872" y="37" fill="#ffffff" font-size="10.5" font-weight="800" text-anchor="middle">TERTINGGAL (3x GAGAL)</text>
+
+      <!-- Matrix with red at IPA-07 -->
+      <g transform="translate(1000, 24)">
+        <rect width="32" height="26" rx="4" fill="#059669" /><text x="16" y="17" fill="#fff" font-size="10" text-anchor="middle">01★</text>
+        <rect x="36" width="32" height="26" rx="4" fill="#059669" /><text x="52" y="17" fill="#fff" font-size="10" text-anchor="middle">02★</text>
+        <rect x="72" width="32" height="26" rx="4" fill="#059669" /><text x="88" y="17" fill="#fff" font-size="10" text-anchor="middle">03★</text>
+        <rect x="108" width="32" height="26" rx="4" fill="#059669" /><text x="124" y="17" fill="#fff" font-size="10" text-anchor="middle">04★</text>
+        <rect x="144" width="32" height="26" rx="4" fill="#059669" /><text x="160" y="17" fill="#fff" font-size="10" text-anchor="middle">05★</text>
+        <rect x="180" width="32" height="26" rx="4" fill="#059669" /><text x="196" y="17" fill="#fff" font-size="10" text-anchor="middle">06★</text>
+        <rect x="216" width="32" height="26" rx="4" fill="#ef4444" stroke="#ffffff" stroke-width="1.5" /><text x="232" y="17" fill="#fff" font-size="10" font-weight="800" text-anchor="middle">07✗</text>
+        <rect x="252" width="32" height="26" rx="4" fill="#1e293b" /><text x="268" y="17" fill="#64748b" font-size="10" text-anchor="middle">08🔒</text>
+        <rect x="288" width="32" height="26" rx="4" fill="#1e293b" /><text x="304" y="17" fill="#64748b" font-size="10" text-anchor="middle">09🔒</text>
+      </g>
+
+      <rect x="1400" y="20" width="105" height="28" rx="6" fill="#ef4444" />
+      <text x="1452" y="38" fill="#ffffff" font-size="11" font-weight="700" text-anchor="middle">Buka Kunci</text>
+    </g>
+
+    <!-- ROW 4: Peserta Distribusi -->
+    <g transform="translate(0, 298)">
+      <rect width="1536" height="74" fill="#0f172a" />
+      <text x="24" y="32" fill="#ffffff" font-size="13" font-weight="700">Siti Rahmawati</text>
+      <text x="24" y="52" fill="#94a3b8" font-size="11">peserta.distribusi · Operator Muda</text>
+
+      <text x="240" y="32" fill="#cbd5e1" font-size="12">DST-06: Tekanan Drop</text>
+      <text x="240" y="52" fill="#94a3b8" font-size="10.5">Jalur Distribusi</text>
+
+      <text x="420" y="36" fill="#38bdf8" font-size="18" font-weight="800">82 <tspan font-size="11">/ 100</tspan></text>
+      <text x="560" y="36" fill="#f59e0b" font-size="16">★☆☆</text>
+      <text x="680" y="36" fill="#cbd5e1" font-size="11.5">2 hari lalu</text>
+
+      <rect x="800" y="20" width="130" height="26" rx="6" fill="#065f46" />
+      <text x="865" y="37" fill="#a7f3d0" font-size="11" font-weight="700" text-anchor="middle">Aktif Berjalan</text>
+
+      <g transform="translate(1000, 24)">
+        <rect width="220" height="26" rx="4" fill="#0f172a" stroke="#1e293b" />
+        <text x="110" y="17" fill="#38bdf8" font-size="10.5" text-anchor="middle">DST-01 s/d 05 Lulus (11★) · Sisa 2 Misi</text>
+      </g>
+
+      <rect x="1400" y="20" width="105" height="28" rx="6" fill="#1e293b" stroke="#334155" />
+      <text x="1452" y="38" fill="#cbd5e1" font-size="11" font-weight="600" text-anchor="middle">Detail Roster</text>
+    </g>
+
+    <!-- ROW 5: Menunggu Persetujuan Piagam (peserta contoh) -->
+    <g transform="translate(0, 380)">
+      <rect width="1536" height="74" fill="#451a03" opacity="0.35" stroke="#d97706" stroke-width="1" />
+      <text x="24" y="32" fill="#ffffff" font-size="13" font-weight="700">Rian Hidayat</text>
+      <text x="24" y="52" fill="#fcd34d" font-size="11">peserta contoh · Operator Madya</text>
+
+      <text x="240" y="32" fill="#fbbf24" font-size="12" font-weight="700">IPA-09: Misi Kelulusan</text>
+      <text x="240" y="52" fill="#fcd34d" font-size="10.5">9/9 Misi Lulus · Post-test 82</text>
+
+      <text x="420" y="36" fill="#fbbf24" font-size="18" font-weight="800">82 <tspan font-size="11">/ 100</tspan></text>
+      <text x="560" y="36" fill="#f59e0b" font-size="16">★☆☆</text>
+      <text x="680" y="36" fill="#cbd5e1" font-size="11.5">Hari ini</text>
+
+      <rect x="800" y="20" width="160" height="26" rx="6" fill="#d97706" />
+      <text x="880" y="37" fill="#ffffff" font-size="10.5" font-weight="700" text-anchor="middle">Menunggu Persetujuan</text>
+
+      <g transform="translate(1000, 24)">
+        <rect width="320" height="26" rx="4" fill="#0f172a" stroke="#d97706" />
+        <text x="160" y="17" fill="#fcd34d" font-size="10.5" text-anchor="middle">Semua syarat terpenuhi · SSA/NUS/2026/0002 dicadangkan</text>
+      </g>
+
+      <rect x="1400" y="20" width="105" height="28" rx="6" fill="#059669" />
+      <text x="1452" y="38" fill="#ffffff" font-size="11" font-weight="700" text-anchor="middle">SETUJUI PIAGAM</text>
+    </g>
+  </g>
+
+</svg>

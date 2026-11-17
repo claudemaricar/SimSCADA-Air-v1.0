@@ -1,0 +1,232 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1000" width="1600" height="1000" style="background:#0b1120; font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0f172a" />
+      <stop offset="50%" stop-color="#0b1329" />
+      <stop offset="100%" stop-color="#020617" />
+    </linearGradient>
+    <linearGradient id="cardGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#1e293b" />
+      <stop offset="100%" stop-color="#0f172a" />
+    </linearGradient>
+    <linearGradient id="cardDark" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#0f172a" />
+      <stop offset="100%" stop-color="#070c18" />
+    </linearGradient>
+    <linearGradient id="primaryGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#0284c7" />
+      <stop offset="100%" stop-color="#2563eb" />
+    </linearGradient>
+    <linearGradient id="accentGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#06b6d4" />
+      <stop offset="100%" stop-color="#3b82f6" />
+    </linearGradient>
+    <linearGradient id="amberGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#d97706" />
+      <stop offset="100%" stop-color="#b45309" />
+    </linearGradient>
+    <linearGradient id="emeraldGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#059669" />
+      <stop offset="100%" stop-color="#10b981" />
+    </linearGradient>
+    <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#f59e0b" />
+      <stop offset="100%" stop-color="#d97706" />
+    </linearGradient>
+    <filter id="dropShadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="10" stdDeviation="14" flood-color="#000000" flood-opacity="0.55"/>
+    </filter>
+    <filter id="glowCyan" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="0" stdDeviation="6" flood-color="#06b6d4" flood-opacity="0.6"/>
+    </filter>
+    <filter id="glowRed" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="0" stdDeviation="6" flood-color="#ef4444" flood-opacity="0.7"/>
+    </filter>
+    <filter id="glowAmber" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="0" stdDeviation="6" flood-color="#f59e0b" flood-opacity="0.7"/>
+    </filter>
+    <marker id="dotBlue" markerWidth="8" markerHeight="8" refX="4" refY="4">
+      <circle cx="4" cy="4" r="3.5" fill="#38bdf8" stroke="#ffffff" stroke-width="1" />
+    </marker>
+    <marker id="dotOrange" markerWidth="8" markerHeight="8" refX="4" refY="4">
+      <circle cx="4" cy="4" r="3.5" fill="#f59e0b" stroke="#ffffff" stroke-width="1" />
+    </marker>
+    <marker id="dotGreen" markerWidth="8" markerHeight="8" refX="4" refY="4">
+      <circle cx="4" cy="4" r="3.5" fill="#10b981" stroke="#ffffff" stroke-width="1" />
+    </marker>
+  </defs>
+
+  <!-- Background Base -->
+  <rect width="1600" height="1000" fill="url(#bgGrad)" />
+
+  <!-- Blueprint Pattern -->
+  <g opacity="0.04" stroke="#38bdf8" stroke-width="1">
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M 40 0 L 0 0 0 40" fill="none" />
+    </pattern>
+    <rect width="1600" height="1000" fill="url(#grid)" />
+  </g>
+
+  <!-- Top Mockup Window Bar -->
+  <rect x="0" y="0" width="1600" height="40" fill="#030712" />
+  <circle cx="24" cy="20" r="5" fill="#ef4444" />
+  <circle cx="42" cy="20" r="5" fill="#f59e0b" />
+  <circle cx="60" cy="20" r="5" fill="#10b981" />
+  <text x="88" y="25" fill="#94a3b8" font-size="13" font-weight="600">MOCKUP L4: MODUL MATERI &amp;amp; KUIS PRA-MISI (SimSCADA-Air v1.0)</text>
+  <rect x="1390" y="9" width="180" height="22" rx="11" fill="#1e293b" />
+  <text x="1480" y="24" fill="#38bdf8" font-size="11" font-weight="600" text-anchor="middle">PRD v1.0 SESUAI</text>
+
+  <!-- Standard Tenant Header PRD §6 -->
+  <g transform="translate(0, 40)">
+    <rect width="1600" height="66" fill="#0b1329" stroke="#1e293b" stroke-width="1" />
+    
+    <!-- Tenant Logo &amp; Name -->
+    <g transform="translate(32, 11)">
+      <rect width="44" height="44" rx="10" fill="#0284c7" />
+      <path d="M 22 10 C 22 10, 14 22, 14 28 A 8 8 0 0 0 30 28 C 30 22, 22 10, 22 10 Z" fill="#ffffff" />
+      <text x="56" y="22" fill="#f8fafc" font-size="17" font-weight="700" letter-spacing="0.3">Balai Diklat Air Minum Nusantara</text>
+      <text x="56" y="38" fill="#94a3b8" font-size="11" font-weight="500">Didukung oleh <tspan font-weight="700" fill="#38bdf8">SimSCADA-Air</tspan> · Platform Simulator SCADA Air Minum</text>
+    </g>
+
+    <!-- User &amp; Role Profile Right -->
+    <g transform="translate(1260, 13)">
+      <rect width="308" height="40" rx="8" fill="#1e293b" stroke="#334155" stroke-width="1" />
+      <circle cx="22" cy="20" r="13" fill="#0369a1" />
+      <text x="22" y="24" fill="#ffffff" font-size="11" font-weight="700" text-anchor="middle">DW</text>
+      <text x="44" y="18" fill="#f1f5f9" font-size="12" font-weight="600">Dimas Wahyu Pratama</text>
+      <text x="44" y="31" fill="#38bdf8" font-size="10" font-weight="500">Operator Muda · Angkatan 1</text>
+      <circle cx="286" cy="20" r="4" fill="#10b981" />
+    </g>
+  </g>
+  <!-- Clean Non-Colliding Title Block -->
+  <g transform="translate(32, 120)">
+    <text x="0" y="24" fill="#ffffff" font-size="22" font-weight="700" letter-spacing="0.3">Modul Materi &amp; Kuis Pra-Misi</text>
+    <text x="0" y="46" fill="#94a3b8" font-size="13">Misi IPA-06: Gangguan Lonjakan Kekeruhan Air Baku (Tingkat 3 · Sulit · 2,0x XP) · PRD §7</text>
+  </g>
+
+  <!-- Left Column: SOP Study Material &amp; Action Procedures (Width: 880) -->
+  <g transform="translate(32, 190)">
+    <rect width="880" height="770" rx="14" fill="url(#cardGrad)" stroke="#334155" stroke-width="1.5" />
+    
+    <g transform="translate(32, 28)">
+      <text x="0" y="20" fill="#ffffff" font-size="18" font-weight="700">Materi Teori &amp; SOP: Penanganan Lonjakan Kekeruhan Air Baku</text>
+      <text x="0" y="40" fill="#94a3b8" font-size="12">Standar Pengolahan Fisik-Kimia Air Minum (Permenkes No. 2/2023 &amp; SNI 6774:2008)</text>
+
+      <line x1="0" y1="58" x2="816" y2="58" stroke="#334155" stroke-width="1" />
+
+      <!-- Mission Summary Box -->
+      <g transform="translate(0, 72)">
+        <rect width="816" height="88" rx="10" fill="#0c4a6e" opacity="0.3" stroke="#0284c7" stroke-width="1.5" />
+        <g transform="translate(20, 18)">
+          <text x="0" y="16" fill="#7dd3fc" font-size="12" font-weight="700">RINGKASAN SKENARIO MISI IPA-06 (PRD §7):</text>
+          <text x="0" y="38" fill="#ffffff" font-size="12">Kekeruhan air baku sungai melonjak drastis dari <tspan font-weight="700" fill="#f59e0b">20 NTU menjadi 185 NTU</tspan> akibat hujan deras di hulu.</text>
+          <text x="0" y="56" fill="#ffffff" font-size="12">Tugas Anda: Akui alarm, sesuaikan dosis koagulan PAC dan penyesuai pH kapur, jaga kekeruhan air olahan &lt;3 NTU.</text>
+        </g>
+      </g>
+
+      <!-- Interactive 3 Key Operating Limits Cards (FIXED: Wrap each in <g transform="translate(...)">) -->
+      <g transform="translate(0, 175)">
+        <text x="0" y="16" fill="#f8fafc" font-size="13" font-weight="700">POIN SOP &amp; AMBANG BATAS OPERASIONAL KRITIS (PERMENKES NO. 2/2023):</text>
+        
+        <g transform="translate(0, 28)">
+          <!-- Card 1: Batas Kekeruhan Air Olahan -->
+          <g transform="translate(0, 0)">
+            <rect width="260" height="74" rx="8" fill="#0f172a" stroke="#1e293b" />
+            <text x="14" y="24" fill="#94a3b8" font-size="11">Batas Kekeruhan Air Olahan</text>
+            <text x="14" y="48" fill="#38bdf8" font-size="18" font-weight="700">&lt; 3,0 NTU</text>
+            <text x="14" y="64" fill="#ef4444" font-size="9.5">≥3 NTU: Alarm Kritis Tinggi</text>
+          </g>
+
+          <!-- Card 2: Rentang Aman pH Koagulasi -->
+          <g transform="translate(276, 0)">
+            <rect width="260" height="74" rx="8" fill="#0f172a" stroke="#1e293b" />
+            <text x="14" y="24" fill="#94a3b8" font-size="11">Rentang Aman pH Koagulasi</text>
+            <text x="14" y="48" fill="#10b981" font-size="18" font-weight="700">6,5 – 8,5</text>
+            <text x="14" y="64" fill="#94a3b8" font-size="9.5">Koreksi dengan penyesuai pH</text>
+          </g>
+
+          <!-- Card 3: Target Waktu Skenario IPA-06 PRD §8 -->
+          <g transform="translate(552, 0)">
+            <rect width="264" height="74" rx="8" fill="#0f172a" stroke="#1e293b" />
+            <text x="14" y="24" fill="#94a3b8" font-size="11">Target Waktu Skenario IPA-06</text>
+            <text x="14" y="48" fill="#f59e0b" font-size="18" font-weight="700">60 Detik</text>
+            <text x="14" y="64" fill="#34d399" font-size="9.5">Respons &lt;30s: Lencana Respons Kilat</text>
+          </g>
+        </g>
+
+        <!-- Step-by-Step SOP -->
+        <g transform="translate(0, 120)">
+          <rect width="816" height="290" rx="10" fill="#0f172a" stroke="#1e293b" />
+          <text x="20" y="28" fill="#38bdf8" font-size="12" font-weight="700">LANGKAH STANDAR OPERASIONAL PROSEDUR (SOP PENANGANAN LONJAKAN KEKERUHAN):</text>
+          
+          <text x="20" y="60" fill="#cbd5e1" font-size="12">1. <tspan font-weight="700" fill="#ffffff">Akui Alarm (ACK):</tspan> Segera tekan tombol Akui begitu alarm "Kekeruhan Air Baku Tinggi" muncul di HMI.</text>
+          <text x="20" y="85" fill="#cbd5e1" font-size="12">2. <tspan font-weight="700" fill="#ffffff">Buka Panel Koagulasi:</tspan> Klik titik kontrol Flash Mixer Koagulasi di diagram mimic HMI.</text>
+          <text x="20" y="110" fill="#cbd5e1" font-size="12">3. <tspan font-weight="700" fill="#ffffff">Naikkan Dosis Koagulan:</tspan> Sesuaikan setpoint dosis PAC dari 20 mg/L ke 48 mg/L sesuai kurva jar-test.</text>
+          <text x="20" y="135" fill="#cbd5e1" font-size="12">4. <tspan font-weight="700" fill="#ffffff">Koreksi pH Air:</tspan> Pastikan dosis penyesuai pH aktif agar pH bertahan stabil di angka 7,20.</text>
+          <text x="20" y="160" fill="#cbd5e1" font-size="12">5. <tspan font-weight="700" fill="#ffffff">Turunkan Debit Intake (Opsional):</tspan> Jika flok lambat mengendap, kurangi debit dari 100 L/s ke 75 L/s.</text>
+          <text x="20" y="185" fill="#cbd5e1" font-size="12">6. <tspan font-weight="700" fill="#ffffff">Pantau Bak Sedimentasi &amp; Filtrasi:</tspan> Awasi kekeruhan keluar sedimentasi dan kenaikan headloss filter.</text>
+          <text x="20" y="210" fill="#cbd5e1" font-size="12">7. <tspan font-weight="700" fill="#ffffff">Verifikasi Pemulihan:</tspan> Alarm akan auto-clear saat kekeruhan air olahan &lt;2,7 NTU stabil 10 detik.</text>
+
+          <rect x="20" y="235" width="776" height="40" rx="6" fill="#1e293b" />
+          <text x="36" y="259" fill="#f59e0b" font-size="11.5" font-weight="600">⚠️ Catatan: Membuka narasi titik kontrol ("i") kapan saja TIDAK mengurangi skor (PRD §9).</text>
+        </g>
+      </g>
+    </g>
+  </g>
+
+  <!-- Right Column: Pre-Mission 5-Question Quiz PRD §7 (Width: 640) -->
+  <g transform="translate(928, 190)">
+    <rect width="640" height="770" rx="14" fill="url(#cardGrad)" stroke="#334155" stroke-width="1.5" />
+    
+    <g transform="translate(28, 28)">
+      <text x="0" y="20" fill="#ffffff" font-size="18" font-weight="700">Kuis Pra-Misi (5 Soal Kunci)</text>
+      <text x="0" y="40" fill="#94a3b8" font-size="12">Syarat Gerbang: Nilai Kuis ≥ 60 membuka Simulator · Nilai kuis memberi bonus XP</text>
+
+      <line x1="0" y1="58" x2="584" y2="58" stroke="#334155" stroke-width="1" />
+
+      <!-- Quiz Status Box -->
+      <g transform="translate(0, 72)">
+        <rect width="584" height="60" rx="8" fill="#064e3b" opacity="0.6" stroke="#059669" stroke-width="1.5" />
+        <text x="18" y="26" fill="#a7f3d0" font-size="12" font-weight="700">STATUS KUIS: LULUS GERBANG (NILAI: 80 / 100)</text>
+        <text x="18" y="46" fill="#ffffff" font-size="11.5">✓ 4 dari 5 Soal Benar · +80 XP telah ditambahkan ke profil Anda.</text>
+        <text x="560" y="38" fill="#34d399" font-size="20" text-anchor="end">✓</text>
+      </g>
+
+      <!-- Question 1 (Sample) -->
+      <g transform="translate(0, 150)">
+        <text x="0" y="16" fill="#38bdf8" font-size="12" font-weight="700">SOAL 1 DARI 5 · BATAS MUTU KEKERUHAN</text>
+        <text x="0" y="36" fill="#e2e8f0" font-size="12.5" font-weight="600">Berapa batas maksimal kekeruhan air olahan menurut Permenkes 2/2023?</text>
+        
+        <rect x="0" y="48" width="584" height="32" rx="6" fill="#1e293b" stroke="#334155" />
+        <text x="16" y="69" fill="#94a3b8" font-size="11">A. 5,0 NTU</text>
+
+        <rect x="0" y="86" width="584" height="32" rx="6" fill="#064e3b" stroke="#059669" stroke-width="1.5" />
+        <text x="16" y="107" fill="#34d399" font-size="11" font-weight="700">B. 3,0 NTU (Jawaban Benar Anda ✓)</text>
+
+        <rect x="0" y="124" width="584" height="32" rx="6" fill="#1e293b" stroke="#334155" />
+        <text x="16" y="145" fill="#94a3b8" font-size="11">C. 1,0 NTU</text>
+      </g>
+
+      <!-- Question 2 (Sample) -->
+      <g transform="translate(0, 325)">
+        <text x="0" y="16" fill="#38bdf8" font-size="12" font-weight="700">SOAL 2 DARI 5 · PENANGANAN ALARM ABNORMAL</text>
+        <text x="0" y="36" fill="#e2e8f0" font-size="12.5" font-weight="600">Apa yang terjadi jika tombol "Clear Alarm" ditekan saat kekeruhan masih 3,5 NTU?</text>
+        
+        <rect x="0" y="48" width="584" height="32" rx="6" fill="#064e3b" stroke="#059669" stroke-width="1.5" />
+        <text x="16" y="69" fill="#34d399" font-size="11" font-weight="700">A. Ditolak: "Penyebab belum ditangani" &amp; catat penalti (Jawaban Benar ✓)</text>
+
+        <rect x="0" y="86" width="584" height="32" rx="6" fill="#1e293b" stroke="#334155" />
+        <text x="16" y="107" fill="#94a3b8" font-size="11">B. Alarm langsung hilang seketika</text>
+      </g>
+
+      <!-- Launch Simulator Action Button -->
+      <g transform="translate(0, 560)">
+        <rect width="584" height="54" rx="10" fill="url(#primaryGrad)" />
+        <text x="292" y="34" fill="#ffffff" font-size="15" font-weight="700" text-anchor="middle" letter-spacing="0.5">MULAI SIMULATOR SCADA (IPA-06) →</text>
+        
+        <text x="292" y="80" fill="#94a3b8" font-size="11" text-anchor="middle">Gerbang kuis telah terpenuhi. Sesi simulator akan dibuka dengan timer 10 menit.</text>
+      </g>
+    </g>
+  </g>
+
+</svg>

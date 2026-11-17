@@ -1,0 +1,374 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" width="1920" height="1080">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0b1120" />
+      <stop offset="50%" stop-color="#0f172a" />
+      <stop offset="100%" stop-color="#080e1a" />
+    </linearGradient>
+    <linearGradient id="cardGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#1e293b" />
+      <stop offset="100%" stop-color="#0f172a" />
+    </linearGradient>
+    <linearGradient id="accentGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#0284c7" />
+      <stop offset="100%" stop-color="#06b6d4" />
+    </linearGradient>
+    <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#f59e0b" />
+      <stop offset="100%" stop-color="#fbbf24" />
+    </linearGradient>
+    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="6" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+  </defs>
+  <rect width="1920" height="1080" fill="url(#bgGrad)" />
+  <!-- Standard Tenant Header PRD §6 -->
+  <g transform="translate(32, 24)">
+    <rect width="1856" height="64" rx="10" fill="#0f172a" stroke="#1e293b" stroke-width="1.5" />
+    <circle cx="44" cy="32" r="20" fill="#0284c7" />
+    <path d="M44 18 C44 18 34 29 34 35 C34 40.5 38.5 45 44 45 C49.5 45 54 40.5 54 35 C54 29 44 18 44 18 Z" fill="#ffffff" />
+    <text x="76" y="28" fill="#ffffff" font-size="16" font-weight="700">Balai Diklat Air Minum Nusantara</text>
+    <text x="76" y="46" fill="#38bdf8" font-size="11" font-weight="500">Platform Simulasi SCADA SPAM · <tspan fill="#64748b">Didukung oleh SimSCADA-Air</tspan></text>
+    
+    <g transform="translate(1420, 14)">
+      <rect width="404" height="36" rx="18" fill="#1e293b" stroke="#334155" />
+      <circle cx="20" cy="18" r="14" fill="#0369a1" />
+      <text x="20" y="22" fill="#ffffff" font-size="11" font-weight="700" text-anchor="middle">DW</text>
+      <text x="44" y="17" fill="#f8fafc" font-size="12" font-weight="600">Dimas Wahyu Pratama</text>
+      <text x="44" y="30" fill="#94a3b8" font-size="10">Operator Muda · Angkatan 2</text>
+      <rect x="310" y="8" width="82" height="20" rx="10" fill="#b91c1c" />
+      <text x="351" y="22" fill="#ffffff" font-size="10" font-weight="700" text-anchor="middle">KELUAR</text>
+    </g>
+  </g>  <!-- Page Title Block -->
+  <g transform="translate(32, 112)">
+    <text x="0" y="22" fill="#ffffff" font-size="20" font-weight="700">Galeri Lencana &amp; Papan Peringkat Kompetensi</text>
+    <text x="0" y="42" fill="#94a3b8" font-size="12.5">8 Lencana Resmi PRD §8 · Papan Peringkat Terisolasi Antar-Lembaga (FR-21) · Dimas Wahyu Pratama (peserta.ipa)</text>
+  </g>
+  <!-- Main Grid: Left = 8 Badges PRD §8 (Width 960), Right = Leaderboard (Width 864) -->
+  <g transform="translate(32, 180)">
+    <!-- LEFT CARD: 8 BADGES -->
+    <rect width="960" height="860" rx="14" fill="url(#cardGrad)" stroke="#334155" stroke-width="1.5" />
+    <g transform="translate(32, 24)">
+      <text x="0" y="20" fill="#ffffff" font-size="16" font-weight="700">8 Lencana Prestasi Operator (PRD SimSCADA-Air v1.0 §8)</text>
+      <text x="0" y="40" fill="#94a3b8" font-size="12">Pencapaian berbasis kriteria obyektif simulasi SCADA · 3 Terbuka, 5 Sedang Berjalan/Terkunci</text>
+      <line x1="0" y1="56" x2="896" y2="56" stroke="#334155" stroke-width="1" />
+
+      <!-- GRID 2 columns x 4 rows -->
+      <!-- ROW 1 -->
+      <!-- 1. Penjelajah Titik Kontrol (UNLOCKED) -->
+      <g transform="translate(0, 75)">
+        <rect width="435" height="155" rx="10" fill="#0f172a" stroke="#059669" stroke-width="2" />
+        <circle cx="50" cy="55" r="30" fill="#065f46" stroke="#34d399" stroke-width="2" />
+        <text x="50" y="63" fill="#ffffff" font-size="22" text-anchor="middle">🔍</text>
+        <rect x="320" y="14" width="95" height="22" rx="4" fill="#059669" />
+        <text x="367" y="29" fill="#ffffff" font-size="10" font-weight="700" text-anchor="middle">TERBUKA ✓</text>
+        <text x="96" y="32" fill="#f8fafc" font-size="13" font-weight="700">Penjelajah Titik Kontrol</text>
+        <text x="96" y="52" fill="#38bdf8" font-size="11" font-weight="600">Syarat Resmi PRD §8:</text>
+        <text x="96" y="70" fill="#cbd5e1" font-size="10.5">Buka narasi &amp; pelajari seluruh titik kontrol</text>
+        <text x="96" y="86" fill="#cbd5e1" font-size="10.5">unit IPA dan Distribusi secara mandiri.</text>
+        <rect x="96" y="102" width="319" height="6" rx="3" fill="#1e293b" />
+        <rect x="96" y="102" width="319" height="6" rx="3" fill="#10b981" />
+        <text x="96" y="125" fill="#34d399" font-size="10" font-weight="600">Selesai 100% · Terbuka pada 10 Mar 2026</text>
+      </g>
+
+      <!-- 2. Respons Kilat (UNLOCKED) -->
+      <g transform="translate(460, 75)">
+        <rect width="435" height="155" rx="10" fill="#0f172a" stroke="#059669" stroke-width="2" />
+        <circle cx="50" cy="55" r="30" fill="#065f46" stroke="#34d399" stroke-width="2" />
+        <text x="50" y="63" fill="#ffffff" font-size="22" text-anchor="middle">⚡</text>
+        <rect x="320" y="14" width="95" height="22" rx="4" fill="#059669" />
+        <text x="367" y="29" fill="#ffffff" font-size="10" font-weight="700" text-anchor="middle">TERBUKA ✓</text>
+        <text x="96" y="32" fill="#f8fafc" font-size="13" font-weight="700">Respons Kilat</text>
+        <text x="96" y="52" fill="#38bdf8" font-size="11" font-weight="600">Syarat Resmi PRD §8:</text>
+        <text x="96" y="70" fill="#cbd5e1" font-size="10.5">Merespons alarm pertama &lt;50% dari target.</text>
+        <text x="96" y="86" fill="#cbd5e1" font-size="10.5">IPA-06: Target 60 dtk · Respons 25 dtk (&lt;30s).</text>
+        <rect x="96" y="102" width="319" height="6" rx="3" fill="#1e293b" />
+        <rect x="96" y="102" width="319" height="6" rx="3" fill="#10b981" />
+        <text x="96" y="125" fill="#34d399" font-size="10" font-weight="600">25s dari target 60s (41,7%) · Diraih di IPA-06</text>
+      </g>
+
+      <!-- ROW 2 -->
+      <!-- 3. Tanpa Alarm Terlewat (UNLOCKED) -->
+      <g transform="translate(0, 245)">
+        <rect width="435" height="155" rx="10" fill="#0f172a" stroke="#059669" stroke-width="2" />
+        <circle cx="50" cy="55" r="30" fill="#065f46" stroke="#34d399" stroke-width="2" />
+        <text x="50" y="63" fill="#ffffff" font-size="22" text-anchor="middle">🛡️</text>
+        <rect x="320" y="14" width="95" height="22" rx="4" fill="#059669" />
+        <text x="367" y="29" fill="#ffffff" font-size="10" font-weight="700" text-anchor="middle">TERBUKA ✓</text>
+        <text x="96" y="32" fill="#f8fafc" font-size="13" font-weight="700">Tanpa Alarm Terlewat</text>
+        <text x="96" y="52" fill="#38bdf8" font-size="11" font-weight="600">Syarat Resmi PRD §8:</text>
+        <text x="96" y="70" fill="#cbd5e1" font-size="10.5">Menyelesaikan sesi tanpa ada alarm</text>
+        <text x="96" y="86" fill="#cbd5e1" font-size="10.5">yang terlewat atau tidak diakui (ACK).</text>
+        <rect x="96" y="102" width="319" height="6" rx="3" fill="#1e293b" />
+        <rect x="96" y="102" width="319" height="6" rx="3" fill="#10b981" />
+        <text x="96" y="125" fill="#34d399" font-size="10" font-weight="600">0 Alarm Terlewat · Terbuka pada IPA-06</text>
+      </g>
+
+      <!-- 4. Penjaga Mutu Air (IN PROGRESS 80%) -->
+      <g transform="translate(460, 245)">
+        <rect width="435" height="155" rx="10" fill="#0f172a" stroke="#d97706" stroke-width="1.5" />
+        <circle cx="50" cy="55" r="30" fill="#78350f" stroke="#fbbf24" stroke-width="1.5" />
+        <text x="50" y="63" fill="#ffffff" font-size="22" text-anchor="middle">💧</text>
+        <rect x="320" y="14" width="95" height="22" rx="4" fill="#d97706" />
+        <text x="367" y="29" fill="#ffffff" font-size="10" font-weight="700" text-anchor="middle">80% PROGRES</text>
+        <text x="96" y="32" fill="#f8fafc" font-size="13" font-weight="700">Penjaga Mutu Air</text>
+        <text x="96" y="52" fill="#38bdf8" font-size="11" font-weight="600">Syarat Resmi PRD §8:</text>
+        <text x="96" y="70" fill="#cbd5e1" font-size="10.5">Pertahankan kekeruhan air olahan &lt;1,5 NTU</text>
+        <text x="96" y="86" fill="#cbd5e1" font-size="10.5">sepanjang sesi evaluasi misi.</text>
+        <rect x="96" y="102" width="319" height="6" rx="3" fill="#1e293b" />
+        <rect x="96" y="102" width="255" height="6" rx="3" fill="#f59e0b" />
+        <text x="96" y="125" fill="#fbbf24" font-size="10" font-weight="600">6 dari 7 misi IPA mempertahankan mutu &lt;1,5 NTU</text>
+      </g>
+
+      <!-- ROW 3 -->
+      <!-- 5. Penjaga Tekanan (LOCKED - TRACK DISTRIBUSI) -->
+      <g transform="translate(0, 415)">
+        <rect width="435" height="155" rx="10" fill="#0b1120" stroke="#334155" stroke-dasharray="4,4" />
+        <circle cx="50" cy="55" r="30" fill="#1e293b" stroke="#475569" stroke-width="1" />
+        <text x="50" y="63" fill="#64748b" font-size="22" text-anchor="middle">🔒</text>
+        <rect x="320" y="14" width="95" height="22" rx="4" fill="#334155" />
+        <text x="367" y="29" fill="#94a3b8" font-size="10" font-weight="700" text-anchor="middle">TERKUNCI</text>
+        <text x="96" y="32" fill="#94a3b8" font-size="13" font-weight="700">Penjaga Tekanan</text>
+        <text x="96" y="52" fill="#64748b" font-size="11" font-weight="600">Syarat Resmi PRD §8:</text>
+        <text x="96" y="70" fill="#64748b" font-size="10.5">Menjaga fluktuasi tekanan zona distribusi</text>
+        <text x="96" y="86" fill="#64748b" font-size="10.5">dalam toleransi ketat ±0,2 bar.</text>
+        <rect x="96" y="102" width="319" height="6" rx="3" fill="#1e293b" />
+        <text x="96" y="125" fill="#64748b" font-size="10">Kunci: Buka Jalur Distribusi (DST-01 s/d DST-07)</text>
+      </g>
+
+      <!-- 6. Tiga Bintang IPA / Distribusi (IN PROGRESS) -->
+      <g transform="translate(460, 415)">
+        <rect width="435" height="155" rx="10" fill="#0f172a" stroke="#334155" />
+        <circle cx="50" cy="55" r="30" fill="#1e293b" stroke="#475569" stroke-width="1" />
+        <text x="50" y="63" fill="#fbbf24" font-size="22" text-anchor="middle">⭐</text>
+        <rect x="320" y="14" width="95" height="22" rx="4" fill="#334155" />
+        <text x="367" y="29" fill="#94a3b8" font-size="10" font-weight="700" text-anchor="middle">PROGRES 1/9</text>
+        <text x="96" y="32" fill="#f8fafc" font-size="13" font-weight="700">Tiga Bintang IPA</text>
+        <text x="96" y="52" fill="#38bdf8" font-size="11" font-weight="600">Syarat Resmi PRD §8:</text>
+        <text x="96" y="70" fill="#cbd5e1" font-size="10.5">Raih bintang 3 (skor ≥95) pada seluruh</text>
+        <text x="96" y="86" fill="#cbd5e1" font-size="10.5">9 misi Jalur Pengolahan Air Minum (IPA).</text>
+        <rect x="96" y="102" width="319" height="6" rx="3" fill="#1e293b" />
+        <rect x="96" y="102" width="35" height="6" rx="3" fill="#f59e0b" />
+        <text x="96" y="125" fill="#94a3b8" font-size="10">1 misi 3★ (IPA-01) · 5 misi 2★ · 1 misi 1★</text>
+      </g>
+
+      <!-- ROW 4 -->
+      <!-- 7. Hulu ke Hilir (LOCKED) -->
+      <g transform="translate(0, 585)">
+        <rect width="435" height="155" rx="10" fill="#0b1120" stroke="#334155" stroke-dasharray="4,4" />
+        <circle cx="50" cy="55" r="30" fill="#1e293b" stroke="#475569" stroke-width="1" />
+        <text x="50" y="63" fill="#64748b" font-size="22" text-anchor="middle">🌊</text>
+        <rect x="320" y="14" width="95" height="22" rx="4" fill="#334155" />
+        <text x="367" y="29" fill="#94a3b8" font-size="10" font-weight="700" text-anchor="middle">TERKUNCI</text>
+        <text x="96" y="32" fill="#94a3b8" font-size="13" font-weight="700">Hulu ke Hilir</text>
+        <text x="96" y="52" fill="#64748b" font-size="11" font-weight="600">Syarat Resmi PRD §8:</text>
+        <text x="96" y="70" fill="#64748b" font-size="10.5">Lulus seluruh 17 misi Jalur Terpadu</text>
+        <text x="96" y="86" fill="#64748b" font-size="10.5">dari IPA-01 hingga TRP-02.</text>
+        <rect x="96" y="102" width="319" height="6" rx="3" fill="#1e293b" />
+        <text x="96" y="125" fill="#64748b" font-size="10">Kunci: Buka &amp; Selesaikan Jalur Terpadu 17 Misi</text>
+      </g>
+
+      <!-- 8. Lulus Tanpa Petunjuk (LOCKED) -->
+      <g transform="translate(460, 585)">
+        <rect width="435" height="155" rx="10" fill="#0b1120" stroke="#334155" stroke-dasharray="4,4" />
+        <circle cx="50" cy="55" r="30" fill="#1e293b" stroke="#475569" stroke-width="1" />
+        <text x="50" y="63" fill="#64748b" font-size="22" text-anchor="middle">🎯</text>
+        <rect x="320" y="14" width="95" height="22" rx="4" fill="#334155" />
+        <text x="367" y="29" fill="#94a3b8" font-size="10" font-weight="700" text-anchor="middle">TERKUNCI</text>
+        <text x="96" y="32" fill="#94a3b8" font-size="13" font-weight="700">Lulus Tanpa Petunjuk</text>
+        <text x="96" y="52" fill="#64748b" font-size="11" font-weight="600">Syarat Resmi PRD §8:</text>
+        <text x="96" y="70" fill="#64748b" font-size="10.5">Lulus Misi Kelulusan tanpa menggunakan</text>
+        <text x="96" y="86" fill="#64748b" font-size="10.5">bantuan tombol petunjuk (−5 poin).</text>
+        <rect x="96" y="102" width="319" height="6" rx="3" fill="#1e293b" />
+        <text x="96" y="125" fill="#64748b" font-size="10">Tersedia pada Misi Kelulusan Ujian (IPA-09 / TRP-02)</text>
+      </g>
+
+      <!-- Bottom Note -->
+      <g transform="translate(0, 760)">
+        <rect width="896" height="50" rx="8" fill="#1e293b" stroke="#334155" />
+        <text x="20" y="30" fill="#38bdf8" font-size="12" font-weight="600">💡 Info Sistem Gamifikasi:</text>
+        <text x="180" y="30" fill="#94a3b8" font-size="12">Lencana diverifikasi otomatis oleh mesin evaluasi saat kriteria PRD §8 terpenuhi. Tidak ada intervensi manual.</text>
+      </g>
+    </g>
+
+    <!-- RIGHT CARD: LEADERBOARD (Width 864) -->
+    <g transform="translate(992, 0)">
+      <rect width="864" height="860" rx="14" fill="url(#cardGrad)" stroke="#334155" stroke-width="1.5" />
+      <g transform="translate(28, 24)">
+        <text x="0" y="20" fill="#ffffff" font-size="16" font-weight="700">Papan Peringkat Kompetensi Operator</text>
+        <text x="0" y="40" fill="#94a3b8" font-size="12">Terisolasi Balai Diklat Air Minum Nusantara (FR-21) · 42 Peserta Aktif</text>
+        <line x1="0" y1="56" x2="808" y2="56" stroke="#334155" stroke-width="1" />
+
+        <!-- TABS FILTER -->
+        <g transform="translate(0, 68)">
+          <!-- Scope Tabs -->
+          <rect x="0" y="0" width="160" height="32" rx="6" fill="#0284c7" />
+          <text x="80" y="20" fill="#ffffff" font-size="11.5" font-weight="700" text-anchor="middle">Seluruh Lembaga</text>
+          
+          <rect x="168" y="0" width="170" height="32" rx="6" fill="#1e293b" stroke="#334155" />
+          <text x="253" y="20" fill="#94a3b8" font-size="11" text-anchor="middle">Angkatan 2 (IPA)</text>
+
+          <!-- Time Tabs -->
+          <rect x="520" y="0" width="140" height="32" rx="6" fill="#0284c7" />
+          <text x="590" y="20" fill="#ffffff" font-size="11.5" font-weight="700" text-anchor="middle">Sepanjang Waktu</text>
+
+          <rect x="668" y="0" width="140" height="32" rx="6" fill="#1e293b" stroke="#334155" />
+          <text x="738" y="20" fill="#94a3b8" font-size="11" text-anchor="middle">Minggu Ini</text>
+        </g>
+
+        <!-- TABLE HEADER -->
+        <g transform="translate(0, 118)">
+          <rect width="808" height="36" rx="6" fill="#0f172a" />
+          <text x="24" y="23" fill="#64748b" font-size="11" font-weight="700">POS</text>
+          <text x="80" y="23" fill="#64748b" font-size="11" font-weight="700">NAMA OPERATOR</text>
+          <text x="310" y="23" fill="#64748b" font-size="11" font-weight="700">TINGKAT / LEVEL</text>
+          <text x="490" y="23" fill="#64748b" font-size="11" font-weight="700">BINTANG</text>
+          <text x="610" y="23" fill="#64748b" font-size="11" font-weight="700">TOTAL XP</text>
+          <text x="730" y="23" fill="#64748b" font-size="11" font-weight="700">STATUS</text>
+        </g>
+
+        <!-- RANK 1: Andi Kurniawan (peserta.lulus) -->
+        <g transform="translate(0, 162)">
+          <rect width="808" height="64" rx="8" fill="#1e293b" stroke="#f59e0b" stroke-width="1.5" />
+          <circle cx="36" cy="32" r="16" fill="#78350f" stroke="#fbbf24" stroke-width="1.5" />
+          <text x="36" y="37" fill="#fbbf24" font-size="12" font-weight="800" text-anchor="middle">🥇1</text>
+          
+          <text x="80" y="26" fill="#ffffff" font-size="13" font-weight="700">Andi Kurniawan <tspan fill="#fbbf24" font-size="11">(peserta.lulus)</tspan></text>
+          <text x="80" y="46" fill="#94a3b8" font-size="11">Angkatan 1 · Jalur Terpadu (17 Misi Lulus)</text>
+          
+          <rect x="310" y="16" width="130" height="24" rx="4" fill="#581c87" />
+          <text x="375" y="32" fill="#d8b4fe" font-size="11" font-weight="700" text-anchor="middle">Operator Ahli</text>
+          <text x="310" y="52" fill="#a855f7" font-size="10">≥3.500 XP (Tertinggi)</text>
+
+          <text x="490" y="34" fill="#fbbf24" font-size="14" font-weight="700">48 ★</text>
+          <text x="490" y="50" fill="#94a3b8" font-size="10">17 Misi</text>
+
+          <text x="610" y="34" fill="#38bdf8" font-size="14" font-weight="700">3.820 XP</text>
+          <text x="610" y="50" fill="#64748b" font-size="10">Pengali maks 3x</text>
+
+          <rect x="715" y="20" width="80" height="24" rx="4" fill="#065f46" />
+          <text x="755" y="36" fill="#34d399" font-size="10" font-weight="700" text-anchor="middle">Piagam Terbit</text>
+        </g>
+
+        <!-- RANK 2: Dimas Wahyu Pratama (peserta.ipa - CURRENT USER) -->
+        <g transform="translate(0, 234)">
+          <rect width="808" height="64" rx="8" fill="#0f172a" stroke="#0284c7" stroke-width="2" />
+          <circle cx="36" cy="32" r="16" fill="#0369a1" stroke="#38bdf8" stroke-width="1.5" />
+          <text x="36" y="37" fill="#ffffff" font-size="12" font-weight="800" text-anchor="middle">🥈2</text>
+          
+          <text x="80" y="26" fill="#38bdf8" font-size="13" font-weight="700">Dimas Wahyu Pratama <tspan fill="#34d399" font-size="11">(Anda · peserta.ipa)</tspan></text>
+          <text x="80" y="46" fill="#94a3b8" font-size="11">Angkatan 2 · Jalur IPA (7 dari 9 Misi Lulus)</text>
+          
+          <rect x="310" y="16" width="130" height="24" rx="4" fill="#1e3a8a" />
+          <text x="375" y="32" fill="#93c5fd" font-size="11" font-weight="700" text-anchor="middle">Operator Muda</text>
+          <text x="310" y="52" fill="#60a5fa" font-size="10">400–1.199 XP (Sisa 380 ke Madya)</text>
+
+          <text x="490" y="34" fill="#fbbf24" font-size="14" font-weight="700">14 ★</text>
+          <text x="490" y="50" fill="#94a3b8" font-size="10">7 Misi</text>
+
+          <text x="610" y="34" fill="#38bdf8" font-size="14" font-weight="700">820 XP</text>
+          <text x="610" y="50" fill="#64748b" font-size="10">+176 dari IPA-06</text>
+
+          <rect x="715" y="20" width="80" height="24" rx="4" fill="#854d0e" />
+          <text x="755" y="36" fill="#fef08a" font-size="10" font-weight="700" text-anchor="middle">Aktif Belajar</text>
+        </g>
+
+        <!-- RANK 3: Siti Rahmawati (peserta.distribusi) -->
+        <g transform="translate(0, 306)">
+          <rect width="808" height="60" rx="8" fill="#1e293b" stroke="#334155" />
+          <circle cx="36" cy="30" r="14" fill="#334155" />
+          <text x="36" y="35" fill="#f8fafc" font-size="11" font-weight="700" text-anchor="middle">🥉3</text>
+          
+          <text x="80" y="24" fill="#f8fafc" font-size="12.5" font-weight="600">Siti Rahmawati <tspan fill="#94a3b8" font-size="10">(peserta.distribusi)</tspan></text>
+          <text x="80" y="42" fill="#64748b" font-size="10.5">Angkatan 2 · Jalur Distribusi (5 dari 7 Misi)</text>
+          
+          <rect x="310" y="14" width="130" height="22" rx="4" fill="#1e3a8a" />
+          <text x="375" y="29" fill="#93c5fd" font-size="10.5" font-weight="700" text-anchor="middle">Operator Muda</text>
+
+          <text x="490" y="32" fill="#fbbf24" font-size="13" font-weight="700">12 ★</text>
+          <text x="610" y="32" fill="#38bdf8" font-size="13" font-weight="700">750 XP</text>
+
+          <rect x="715" y="18" width="80" height="22" rx="4" fill="#854d0e" />
+          <text x="755" y="33" fill="#fef08a" font-size="10" font-weight="700" text-anchor="middle">Aktif Belajar</text>
+        </g>
+
+        <!-- RANK 4: Rian Hidayat (peserta contoh - Angkatan 1) -->
+        <g transform="translate(0, 374)">
+          <rect width="808" height="60" rx="8" fill="#1e293b" stroke="#334155" />
+          <circle cx="36" cy="30" r="14" fill="#334155" />
+          <text x="36" y="35" fill="#94a3b8" font-size="11" font-weight="600" text-anchor="middle">4</text>
+          
+          <text x="80" y="24" fill="#f8fafc" font-size="12.5" font-weight="600">Rian Hidayat <tspan fill="#64748b" font-size="10">(peserta contoh · Angkatan 1)</tspan></text>
+          <text x="80" y="42" fill="#64748b" font-size="10.5">Angkatan 1 · Jalur IPA (9 dari 9 Misi - Ujian Selesai)</text>
+          
+          <rect x="310" y="14" width="130" height="22" rx="4" fill="#1e3a8a" />
+          <text x="375" y="29" fill="#93c5fd" font-size="10.5" font-weight="700" text-anchor="middle">Operator Muda</text>
+
+          <text x="490" y="32" fill="#fbbf24" font-size="13" font-weight="700">10 ★</text>
+          <text x="610" y="32" fill="#38bdf8" font-size="13" font-weight="700">620 XP</text>
+
+          <rect x="715" y="18" width="80" height="22" rx="4" fill="#78350f" />
+          <text x="755" y="33" fill="#fef08a" font-size="9.5" font-weight="700" text-anchor="middle">Menunggu Acc</text>
+        </g>
+
+        <!-- RANK 5: Eko Prasetyo (peserta contoh) -->
+        <g transform="translate(0, 442)">
+          <rect width="808" height="60" rx="8" fill="#1e293b" stroke="#334155" />
+          <circle cx="36" cy="30" r="14" fill="#334155" />
+          <text x="36" y="35" fill="#94a3b8" font-size="11" font-weight="600" text-anchor="middle">5</text>
+          
+          <text x="80" y="24" fill="#f8fafc" font-size="12.5" font-weight="600">Eko Prasetyo <tspan fill="#64748b" font-size="10">(peserta contoh · Angkatan 1)</tspan></text>
+          <text x="80" y="42" fill="#64748b" font-size="10.5">Angkatan 1 · Jalur Distribusi (4 dari 7 Misi)</text>
+          
+          <rect x="310" y="14" width="130" height="22" rx="4" fill="#1e3a8a" />
+          <text x="375" y="29" fill="#93c5fd" font-size="10.5" font-weight="700" text-anchor="middle">Operator Muda</text>
+
+          <text x="490" y="32" fill="#fbbf24" font-size="13" font-weight="700">8 ★</text>
+          <text x="610" y="32" fill="#38bdf8" font-size="13" font-weight="700">490 XP</text>
+
+          <rect x="715" y="18" width="80" height="22" rx="4" fill="#854d0e" />
+          <text x="755" y="33" fill="#fef08a" font-size="10" font-weight="700" text-anchor="middle">Aktif Belajar</text>
+        </g>
+
+        <!-- Ellipsis / Truncation indicator -->
+        <g transform="translate(0, 510)">
+          <rect width="808" height="40" rx="6" fill="#0f172a" />
+          <text x="404" y="25" fill="#64748b" font-size="11" text-anchor="middle">• • • 36 Peserta Lainnya Berada di Rentang 50 s/d 420 XP • • •</text>
+        </g>
+
+        <!-- RANK 42: Budi Baru (peserta.baru) -->
+        <g transform="translate(0, 560)">
+          <rect width="808" height="60" rx="8" fill="#1e293b" stroke="#334155" />
+          <circle cx="36" cy="30" r="14" fill="#1e293b" stroke="#475569" stroke-width="1" />
+          <text x="36" y="35" fill="#64748b" font-size="11" text-anchor="middle">42</text>
+          
+          <text x="80" y="24" fill="#94a3b8" font-size="12.5" font-weight="600">Budi Baru <tspan fill="#64748b" font-size="10">(peserta.baru)</tspan></text>
+          <text x="80" y="42" fill="#64748b" font-size="10.5">Angkatan 2 · Belum Memulai Misi (Baru Pre-Test 52/100)</text>
+          
+          <rect x="310" y="14" width="130" height="22" rx="4" fill="#334155" />
+          <text x="375" y="29" fill="#94a3b8" font-size="10.5" font-weight="700" text-anchor="middle">Operator Magang</text>
+
+          <text x="490" y="32" fill="#64748b" font-size="13">0 ★</text>
+          <text x="610" y="32" fill="#64748b" font-size="13">0 XP</text>
+
+          <rect x="715" y="18" width="80" height="22" rx="4" fill="#334155" />
+          <text x="755" y="33" fill="#cbd5e1" font-size="10" text-anchor="middle">Belum Mulai</text>
+        </g>
+
+        <!-- PRIVACY NOTE PRD FR-21 -->
+        <g transform="translate(0, 640)">
+          <rect width="808" height="170" rx="10" fill="#0b1120" stroke="#1e293b" />
+          <g transform="translate(20, 20)">
+            <text x="0" y="16" fill="#38bdf8" font-size="12" font-weight="700">🛡️ Kebijakan Isolasi Data &amp; Privasi Antar-Lembaga (PRD §5 &amp; FR-21):</text>
+            <text x="0" y="40" fill="#cbd5e1" font-size="11.5">• Papan peringkat hanya menampilkan peserta dari lembaga Anda (<tspan fill="#ffffff" font-weight="600">Balai Diklat Air Minum Nusantara</tspan>).</text>
+            <text x="0" y="60" fill="#cbd5e1" font-size="11.5">• Peserta dari <tspan fill="#94a3b8">Pusat Pelatihan Tirta Mandiri</tspan> atau lembaga lain terisolasi total demi kerahasiaan evaluasi.</text>
+            <text x="0" y="80" fill="#cbd5e1" font-size="11.5">• Admin Lembaga memiliki kendali saklar penuh untuk mengaktifkan/menonaktifkan fitur ini di menu Pengaturan.</text>
+            <text x="0" y="105" fill="#f59e0b" font-size="11" font-weight="600">Tangga Jenjang Jabatan Operator (PRD §8):</text>
+            <text x="0" y="125" fill="#94a3b8" font-size="10.5">Magang (0 XP) → Muda (400 XP) → Madya (1.200 XP) → Utama (2.500 XP) → Ahli (3.500 XP)</text>
+          </g>
+        </g>
+      </g>
+    </g>
+  </g>
+</svg>

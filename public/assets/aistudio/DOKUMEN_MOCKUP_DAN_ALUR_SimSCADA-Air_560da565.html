@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dokumen Blueprint &amp; Mock-up SimSCADA-Air v1.3</title>
+<style>
+  :root {
+    --bg:#0b1120; --panel:#0f172a; --card:#111a2e; --line:#24324d; --line2:#1e293b;
+    --text:#e2e8f0; --muted:#94a3b8; --dim:#64748b;
+    --blue:#38bdf8; --blue2:#0284c7; --green:#34d399; --amber:#f59e0b; --red:#f87171; --indigo:#818cf8; --purple:#c084fc;
+  }
+  * { box-sizing:border-box; }
+  html { scroll-behavior:smooth; }
+  body { margin:0; background:var(--bg); color:var(--text); font:15px/1.65 -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+  main { max-width:1180px; margin:0 auto; padding:48px 28px 96px; }
+  header.doc { border-bottom:1px solid var(--line); padding-bottom:24px; margin-bottom:28px; }
+  .eyebrow { color:var(--blue); font-size:12px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; }
+  h1 { font-size:30px; line-height:1.25; margin:6px 0 6px; }
+  .sub { color:var(--muted); margin:0; }
+  .meta { display:flex; flex-wrap:wrap; gap:8px; margin-top:16px; }
+  .chip { font-size:12px; padding:3px 10px; border-radius:999px; border:1px solid var(--line); color:var(--muted); background:var(--panel); }
+  .chip.ok { color:var(--green); border-color:#065f46; }
+  h2 { font-size:22px; margin:56px 0 14px; padding-bottom:8px; border-bottom:1px solid var(--line); scroll-margin-top:16px; }
+  h3 { font-size:17px; margin:30px 0 10px; color:#f1f5f9; scroll-margin-top:16px; }
+  h4 { font-size:14px; margin:18px 0 6px; color:var(--blue); text-transform:uppercase; letter-spacing:.05em; }
+  p { margin:8px 0 12px; }
+  a { color:var(--blue); text-decoration:none; }
+  a:hover { text-decoration:underline; }
+  ul, ol { padding-left:22px; margin:6px 0 14px; }
+  li { margin:3px 0; }
+  code { background:#1e293b; color:#bae6fd; padding:1px 6px; border-radius:4px; font-size:13px; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+  table { width:100%; border-collapse:collapse; margin:10px 0 18px; font-size:14px; }
+  th, td { text-align:left; padding:8px 10px; border-bottom:1px solid var(--line2); vertical-align:top; }
+  th { color:var(--muted); font-weight:600; font-size:12px; text-transform:uppercase; letter-spacing:.04em; background:var(--panel); }
+  tr:hover td { background:#0e1729; }
+  .note { background:var(--card); border:1px solid var(--line); border-left:4px solid var(--blue2); padding:14px 18px; border-radius:8px; margin:14px 0 18px; }
+  .note.warn { border-left-color:var(--amber); }
+  .note.ok { border-left-color:var(--green); }
+  .note b:first-child { color:#f1f5f9; }
+  nav.toc { background:var(--card); border:1px solid var(--line); border-radius:10px; padding:16px 22px; margin:20px 0 8px; }
+  nav.toc ol { margin:0; columns:2; column-gap:40px; }
+  nav.toc li { break-inside:avoid; }
+  .screen { display:grid; grid-template-columns: 360px 1fr; gap:24px; background:var(--card); border:1px solid var(--line); border-radius:12px; padding:18px; margin:18px 0; scroll-margin-top:16px; }
+  .screen img { width:100%; border-radius:8px; border:1px solid var(--line); display:block; background:#020617; }
+  .screen .cap { font-size:12px; color:var(--dim); margin-top:6px; }
+  .screen h3 { margin:0 0 4px; }
+  .screen .role { font-size:12px; color:var(--muted); margin-bottom:10px; }
+  .screen h4:first-of-type { margin-top:8px; }
+  .lane { border:1px solid var(--line); border-left-width:6px; border-radius:8px; padding:12px 16px; margin:10px 0; background:var(--card); }
+  .lane h4 { margin:0 0 4px; text-transform:none; letter-spacing:0; font-size:15px; }
+  .sw { display:inline-block; width:12px; height:12px; border-radius:3px; vertical-align:-1px; margin-right:6px; }
+  .flow { counter-reset:step; list-style:none; padding:0; }
+  .flow li { counter-increment:step; position:relative; padding:8px 12px 8px 44px; border:1px solid var(--line2); border-radius:8px; margin:6px 0; background:var(--panel); }
+  .flow li::before { content:counter(step); position:absolute; left:12px; top:8px; width:22px; height:22px; border-radius:50%; background:var(--blue2); color:#fff; font-size:12px; font-weight:700; text-align:center; line-height:22px; }
+  .gate { color:var(--amber); font-weight:600; }
+  .pill { display:inline-block; font-size:11px; font-weight:700; padding:1px 8px; border-radius:4px; }
+  .p-krit { background:#7f1d1d; color:#fecaca; } .p-tinggi { background:#78350f; color:#fde68a; }
+  .p-sedang { background:#0c4a6e; color:#bae6fd; } .p-info { background:#334155; color:#e2e8f0; }
+  .muted { color:var(--muted); }
+  .two { display:grid; grid-template-columns:1fr 1fr; gap:18px; }
+  footer { margin-top:64px; padding-top:18px; border-top:1px solid var(--line); color:var(--dim); font-size:13px; }
+  @media (max-width: 900px) { .screen, .two { grid-template-columns:1fr; } nav.toc ol { columns:1; } }
+  @media print { body { background:#fff; color:#111; } .screen, .note, .lane, nav.toc { background:#fff; } th { background:#f1f5f9; } a { color:#0369a1; } }
+</style>
+</head>
+<body>
+<main>
+
+<header class="doc">
+  <div class="eyebrow">Dokumen Blueprint &amp; Mock-up Desain Sistem</div>
+  <h1>SimSCADA-Air — Simulator SCADA Gamifikasi untuk Pelatihan Operator Air Minum</h1>
+  <p class="sub">Mock-up versi 1.3 · Arsitektur desain konseptual sebelum pengembangan · Acuan: PRD SimSCADA-Air v1.0 (27 Okt 2026)</p>
+  <div class="meta">
+    <span class="chip">19 layar SVG 1600 × 1000</span>
+    <span class="chip">1 diagram alur draw.io (5 swimlane)</span>
+    <span class="chip">5 peran · 2 lembaga demo · 10 akun demo</span>
+    <span class="chip ok">Semua berkas valid XML</span>
+  </div>
+</header>
+
+<div class="note">
+  <b>Pemberitahuan dokumen.</b> Dokumen ini memuat cetak biru (blueprint), diagram alur kerja per peran, dan 19 mock-up visual berskala penuh yang menggambarkan desain konseptual SimSCADA-Air sebelum implementasi kode. Semua layar memakai satu set data contoh yang sama (bagian 5) sehingga angka, nama, dan waktu konsisten dari layar ke layar. Bila ada perbedaan antara mock-up dan PRD, <b>PRD v1.0 tetap menjadi acuan utama</b>.
+</div>
+
+<nav class="toc" aria-label="Daftar isi">
+  <ol>
+    <li><a href="#riwayat">Riwayat versi mock-up</a></li>
+    <li><a href="#berkas">Daftar 19 berkas mock-up</a></li>
+    <li><a href="#drawio">Diagram alur kerja draw.io &amp; 5 swimlane</a></li>
+    <li><a href="#aturan">Aturan inti PRD yang divisualisasikan</a></li>
+    <li><a href="#data">Data acuan demo (tunggal untuk semua layar)</a></li>
+    <li><a href="#anatomi">Anatomi wireframe &amp; detail per layar</a></li>
+    <li><a href="#kriteria">Keterlacakan kriteria penerimaan PRD §18</a></li>
+    <li><a href="#batasan">Batasan &amp; catatan untuk pengembangan</a></li>
+    <li><a href="#petunjuk">Petunjuk penggunaan berkas</a></li>
+  </ol>
+</nav>
+
+<!-- ============================================================ -->
+<h2 id="riwayat">1. Riwayat versi mock-up</h2>
+<table>
+  <tr><th style="width:90px">Versi</th><th>Isi perubahan</th></tr>
+  <tr><td><b>v1.0</b></td><td>16 layar awal (L1–L16) dan diagram alur. Banyak istilah, jumlah misi, aturan bintang, level, lencana, dan isi piagam belum sesuai PRD.</td></tr>
+  <tr><td><b>v1.1</b></td><td>Kode misi IPA/DST/TRP, aturan bintang–XP–level, 8 lencana PRD, alarm 4 status, istilah "Piagam Kelulusan", definisi T1–T4, peringatan lisensi. Ditambah layar L4a, L5a, L8b. L1 dan L2 belum diubah; 7 SVG tidak valid XML.</td></tr>
+  <tr><td><b>v1.2</b></td><td>L1 dan L2 diperbaiki, semua SVG valid. Namun 11 layar (L7–L16, L8b) dibuat ulang dengan templat lain dan beberapa aturan PRD hilang kembali.</td></tr>
+  <tr><td><b>v1.3</b></td><td>Gabungan: layar peserta dari v1.2 (L1–L6, L4a, L5a) dan layar pengelola dari v1.1 (L7–L16, L8b), lalu diselaraskan ke satu data acuan. XP dihitung ulang dengan rumus PRD, piagam memakai peserta yang benar, L12/L13 dilengkapi, tata letak yang bertabrakan dirapikan. Semua layar 1600 × 1000, satu jenis font, valid XML.</td></tr>
+</table>
+
+<!-- ============================================================ -->
+<h2 id="berkas">2. Daftar 19 berkas mock-up</h2>
+<p>Semua berkas berada di folder yang sama dengan dokumen ini dan bisa dibuka langsung dengan mengeklik tautannya.</p>
+<table>
+  <tr><th>No</th><th>Kode</th><th>Nama layar</th><th>Peran</th><th>Rujukan PRD</th><th>Berkas</th></tr>
+  <tr><td>1</td><td>L1</td><td>Login multi-lembaga &amp; akun demo</td><td>Semua</td><td>§5, §6, FR-01, FR-02</td><td><a href="mockup_l1_login.svg">mockup_l1_login.svg</a></td></tr>
+  <tr><td>2</td><td>L2</td><td>Beranda Peserta / Dashboard Capaian</td><td>Peserta</td><td>§11, FR-07, FR-22</td><td><a href="mockup_l2_trainee_dashboard.svg">mockup_l2_trainee_dashboard.svg</a></td></tr>
+  <tr><td>3</td><td>L3</td><td>Pilih Jalur</td><td>Peserta</td><td>§7, FR-06</td><td><a href="mockup_l3_track_select.svg">mockup_l3_track_select.svg</a></td></tr>
+  <tr><td>4</td><td>L4</td><td>Materi, Kuis &amp; Briefing Misi</td><td>Peserta</td><td>§7, FR-08, FR-17</td><td><a href="mockup_l4_module_quiz.svg">mockup_l4_module_quiz.svg</a></td></tr>
+  <tr><td>5</td><td>L4a</td><td>Pre-test &amp; Post-test</td><td>Peserta</td><td>§3 (T1), §13, FR-09</td><td><a href="mockup_l4a_pre_post_test.svg">mockup_l4a_pre_post_test.svg</a></td></tr>
+  <tr><td>6</td><td>L5</td><td>Simulator SCADA</td><td>Peserta, Instruktur</td><td>§9, §10, FR-10–FR-15</td><td><a href="mockup_l5_scada_workspace.svg">mockup_l5_scada_workspace.svg</a></td></tr>
+  <tr><td>7</td><td>L5a</td><td>Pop-up narasi titik kontrol</td><td>Peserta</td><td>§9, FR-16, FR-30</td><td><a href="mockup_l5a_control_narrative.svg">mockup_l5a_control_narrative.svg</a></td></tr>
+  <tr><td>8</td><td>L6</td><td>Hasil &amp; Umpan Balik</td><td>Peserta</td><td>§8, FR-19, FR-20</td><td><a href="mockup_l6_results_scoring.svg">mockup_l6_results_scoring.svg</a></td></tr>
+  <tr><td>9</td><td>L7</td><td>Lencana &amp; Papan Peringkat</td><td>Peserta</td><td>§8, FR-20, FR-21</td><td><a href="mockup_l7_badges_leaderboard.svg">mockup_l7_badges_leaderboard.svg</a></td></tr>
+  <tr><td>10</td><td>L8</td><td>Piagam Saya (terbit)</td><td>Peserta</td><td>§13, FR-28</td><td><a href="mockup_l8_certificate.svg">mockup_l8_certificate.svg</a></td></tr>
+  <tr><td>11</td><td>L8b</td><td>Piagam menunggu persetujuan</td><td>Peserta</td><td>§13</td><td><a href="mockup_l8b_certificate_pending.svg">mockup_l8b_certificate_pending.svg</a></td></tr>
+  <tr><td>12</td><td>L9</td><td>Dashboard Instruktur</td><td>Instruktur</td><td>§12, FR-24</td><td><a href="mockup_l9_instructor_dashboard.svg">mockup_l9_instructor_dashboard.svg</a></td></tr>
+  <tr><td>13</td><td>L10</td><td>Kelola Skenario</td><td>Instruktur, Admin Lembaga</td><td>§6, FR-23</td><td><a href="mockup_l10_manage_scenarios.svg">mockup_l10_manage_scenarios.svg</a></td></tr>
+  <tr><td>14</td><td>L11</td><td>Putar Ulang Sesi</td><td>Instruktur</td><td>§10, FR-25</td><td><a href="mockup_l11_session_replay.svg">mockup_l11_session_replay.svg</a></td></tr>
+  <tr><td>15</td><td>L12</td><td>Kelola Pengguna &amp; Kelompok</td><td>Admin Lembaga</td><td>§6, FR-05</td><td><a href="mockup_l12_manage_users.svg">mockup_l12_manage_users.svg</a></td></tr>
+  <tr><td>16</td><td>L13</td><td>Pengaturan Lembaga</td><td>Admin Lembaga</td><td>§6, §13, FR-21, FR-30</td><td><a href="mockup_l13_tenant_settings.svg">mockup_l13_tenant_settings.svg</a></td></tr>
+  <tr><td>17</td><td>L14</td><td>Dashboard Evaluasi Lembaga</td><td>Pimpinan, Admin Lembaga</td><td>§3, §12, FR-26, FR-27</td><td><a href="mockup_l14_tenant_evaluation.svg">mockup_l14_tenant_evaluation.svg</a></td></tr>
+  <tr><td>18</td><td>L15</td><td>Kelola Lembaga &amp; Lisensi</td><td>Super Admin</td><td>§6, §12, FR-04</td><td><a href="mockup_l15_superadmin.svg">mockup_l15_superadmin.svg</a></td></tr>
+  <tr><td>19</td><td>L16</td><td>Verifikasi Piagam Publik</td><td>Tanpa login</td><td>§13, FR-29</td><td><a href="mockup_l16_public_verification.svg">mockup_l16_public_verification.svg</a></td></tr>
+</table>
+<p class="muted">L4a, L5a, dan L8b adalah layar tambahan di luar 16 layar PRD §17. L4a menggambarkan FR-09 (pre/post-test, prioritas W), L5a menggambarkan narasi pop-up yang menjadi kriteria penerimaan, dan L8b menggambarkan status piagam "menunggu persetujuan instruktur".</p>
+
+<!-- ============================================================ -->
+<h2 id="drawio">3. Diagram alur kerja draw.io &amp; 5 swimlane</h2>
+
+<h3>Berkas diagram</h3>
+<ul>
+  <li><b>Nama berkas:</b> <a href="alur_kerja_simscada.drawio">alur_kerja_simscada.drawio</a> (format XML standar diagrams.net / draw.io).</li>
+  <li><b>Membuka di peramban:</b> buka <code>app.diagrams.net</code>, pilih <i>File › Open From › Device…</i>, atau seret berkas ke kanvas.</li>
+  <li><b>Membuka di VS Code / Cursor:</b> pasang ekstensi <i>Draw.io Integration</i> (Henning Dieterichs), lalu klik berkasnya.</li>
+</ul>
+
+<h3>Struktur 5 swimlane peran</h3>
+<p>Diagram disusun dalam lima jalur peran yang terpisah tegas supaya tanggung jawab setiap peran tidak tercampur.</p>
+
+<div class="lane" style="border-left-color:#4338ca">
+  <h4><span class="sw" style="background:#4338ca"></span>Swimlane 1 · Super Admin Platform (L15)</h4>
+  <p class="muted">Warna indigo (#1e1b4b / #4338ca)</p>
+  Mendaftarkan lembaga pembeli (Nusantara dan Tirta Mandiri), mengatur paket jalur, kuota kursi, dan masa lisensi, menetapkan ambang alarm baku serta pustaka misi dan narasi baku, lalu memantau peringatan kuota ≥ 90% dan lisensi berakhir ≤ 30 hari.
+</div>
+<div class="lane" style="border-left-color:#059669">
+  <h4><span class="sw" style="background:#059669"></span>Swimlane 2 · Admin Lembaga (L1, L12, L13)</h4>
+  <p class="muted">Warna hijau zamrud (#064e3b / #059669)</p>
+  Mengelola akun instruktur dan peserta, membentuk kelompok angkatan, memantau sisa kursi, mengatur identitas lembaga (nama, logo, penanda tangan, warna aksen piagam), saklar persetujuan instruktur dan papan peringkat, ambang kelulusan, serta catatan SOP lokal per titik kontrol.
+</div>
+<div class="lane" style="border-left-color:#d97706">
+  <h4><span class="sw" style="background:#d97706"></span>Swimlane 3 · Instruktur (L9, L10, L11)</h4>
+  <p class="muted">Warna amber (#451a03 / #d97706)</p>
+  Memantau matriks peserta × misi, mendeteksi peserta tertinggal (gagal misi yang sama 3 kali), membuka kunci misi, merancang dan menugaskan skenario kustom, memutar ulang sesi, lalu menyetujui kelulusan sehingga piagam terbit. Instruktur bukan peserta ujian; mode uji simulator hanya untuk mencoba skenario.
+</div>
+<div class="lane" style="border-left-color:#0284c7">
+  <h4><span class="sw" style="background:#0284c7"></span>Swimlane 4 · Peserta (L4a, L2–L8, L8b)</h4>
+  <p class="muted">Warna biru laut (#082f49 / #0284c7)</p>
+  Pre-test, memilih jalur, membaca materi dan mengerjakan kuis (≥ 60 membuka simulator), menjalankan misi di simulator, menerima skor 4 komponen, bintang, XP, dan lencana, mengulang misi yang belum lulus, mengerjakan post-test, lalu mengunduh piagam setelah disetujui.
+</div>
+<div class="lane" style="border-left-color:#9333ea">
+  <h4><span class="sw" style="background:#9333ea"></span>Swimlane 5 · Pimpinan Lembaga &amp; Verifikasi Publik (L14, L16)</h4>
+  <p class="muted">Warna ungu (#3b0764 / #9333ea)</p>
+  Membaca dashboard evaluasi T1–T4 dan pemakaian lisensi, mengekspor laporan berkop lembaga, menandatangani piagam secara digital. Pihak luar memverifikasi piagam lewat nomor atau QR tanpa login.
+</div>
+
+<h3>Alur utama peserta (dari diagram)</h3>
+<ol class="flow">
+  <li>Login dengan akun peserta; sistem langsung mengenali lembaga dan peran (L1).</li>
+  <li>Pre-test diagnostik saat mulai jalur sebagai nilai awal T1 (L4a).</li>
+  <li>Memilih satu jalur aktif: IPA, Distribusi, atau Terpadu sesuai paket lembaga (L3).</li>
+  <li>Beranda menampilkan peta misi berkunci berurutan dan saran belajar (L2).</li>
+  <li>Membuka materi singkat dan kuis 5 soal. <span class="gate">Gerbang: kuis ≥ 60</span>; bila kurang, ulang kuis (L4).</li>
+  <li>Menjalankan simulator: mengakui alarm, bertindak di titik kontrol, membuka narasi "i" tanpa pengurangan skor (L5, L5a).</li>
+  <li>Hasil misi: skor 4 komponen, bintang, XP, lencana baru (L6, L7). <span class="gate">Gerbang: skor ≥ 70 (Misi Kelulusan ≥ 80)</span>; bila kurang, ulang tanpa batas atau instruktur membuka kunci.</li>
+  <li>Semua misi wajib lulus, lalu post-test akhir. <span class="gate">Gerbang: post-test ≥ 70</span> (L4a).</li>
+  <li>Piagam berstatus menunggu persetujuan instruktur bila saklar persetujuan aktif (L8b, L9).</li>
+  <li>Setelah disetujui, piagam terbit dengan nomor unik dan QR (L8), tercatat di dashboard evaluasi (L14), dan bisa diverifikasi publik (L16).</li>
+</ol>
+
+<!-- ============================================================ -->
+<h2 id="aturan">4. Aturan inti PRD yang divisualisasikan</h2>
+
+<h3>4.1 Jalur belajar &amp; katalog misi (PRD §7)</h3>
+<p>Peserta memilih <b>satu jalur aktif</b>: IPA (9 misi), Distribusi (7 misi), atau Terpadu (17 misi = IPA-01–08 + DST-01–06 + TRP-01 + TRP-02). Tidak ada prasyarat untuk memilih Terpadu; misi yang sudah lulus di jalur lain dihitung otomatis saat pindah. Jalur di luar paket lisensi lembaga tidak ditampilkan. Misi berikutnya terbuka setelah misi sebelumnya lulus (minimal 1★), dan instruktur dapat membuka kunci.</p>
+<table>
+  <tr><th>Tingkat</th><th>Jalur IPA</th><th>Jalur Distribusi</th><th>Khusus Terpadu</th></tr>
+  <tr><td>1 · Pengenalan (Mudah, ×1)</td><td>IPA-01 Kenali Ruang Kendali IPA</td><td>DST-01 Kenali Jaringan Distribusi</td><td>—</td></tr>
+  <tr><td>2 · Operasi normal</td><td>IPA-02 Menyalakan Intake (Mudah ×1)<br>IPA-03 Dosis Koagulan Normal (Sedang ×1,5)<br>IPA-04 Jaga Filter, Backwash (Sedang)<br>IPA-05 Klorinasi Tepat (Sedang)</td><td>DST-02 Pompa Distribusi &amp; Level Reservoir (Mudah ×1)<br>DST-03 Atur Tekanan Jam Puncak (Sedang)<br>DST-04 Sisa Klor di Ujung Jaringan (Sedang)</td><td>—</td></tr>
+  <tr><td>3 · Gangguan tunggal (Sulit, ×2)</td><td>IPA-06 Lonjakan Kekeruhan Air Baku<br>IPA-07 Pompa Trip<br>IPA-08 Dosis Klor Tidak Sesuai</td><td>DST-05 Kebocoran Pipa<br>DST-06 Tekanan Jaringan Drop</td><td>—</td></tr>
+  <tr><td>4 · Gangguan berantai (Sangat sulit, ×2,5)</td><td>—</td><td>—</td><td>TRP-01 Hulu ke Hilir</td></tr>
+  <tr><td>5 · Misi Kelulusan (Ujian, ×3, skor ≥ 80)</td><td>IPA-09</td><td>DST-07</td><td>TRP-02</td></tr>
+</table>
+<p class="muted">Lima gangguan utama untuk metrik T2: IPA-06, IPA-07, IPA-08, DST-05, DST-06.</p>
+
+<h3>4.2 Skor misi, bintang, XP, dan level (PRD §8)</h3>
+<div class="two">
+  <div>
+    <h4>Komponen skor 0–100</h4>
+    <table>
+      <tr><th>Komponen</th><th>Bobot</th></tr>
+      <tr><td>Ketepatan tindakan</td><td>40%</td></tr>
+      <tr><td>Waktu respons</td><td>25%</td></tr>
+      <tr><td>Stabilitas parameter</td><td>20%</td></tr>
+      <tr><td>Penanganan alarm</td><td>15%</td></tr>
+    </table>
+    <p>Pengurang: tindakan tidak aman −15 per kejadian, petunjuk −5 per petunjuk, waktu habis pada Misi Kelulusan = gagal. Membuka narasi titik kontrol tidak mengurangi skor. Bobot dan pengurang ini baku dan tidak bisa diubah lembaga (ditegaskan di L13).</p>
+  </div>
+  <div>
+    <h4>Bintang &amp; level</h4>
+    <table>
+      <tr><th>Skor</th><th>Hasil</th></tr>
+      <tr><td>&lt; 70</td><td>Belum lulus, boleh mengulang</td></tr>
+      <tr><td>70–84</td><td>1★, lulus</td></tr>
+      <tr><td>85–94</td><td>2★</td></tr>
+      <tr><td>≥ 95</td><td>3★</td></tr>
+    </table>
+    <p><b>XP</b> = skor terbaik baru × pengali tingkat, ditambah XP kuis setara nilai kuis. <b>Level:</b> Operator Magang 0 · Muda 400 · Madya 1.200 · Utama 2.500 · Ahli 3.500 XP.</p>
+  </div>
+</div>
+
+<h3>4.3 Delapan lencana (PRD §8)</h3>
+<table>
+  <tr><th>Lencana</th><th>Syarat</th><th>Contoh di mock-up</th></tr>
+  <tr><td>Penjelajah Titik Kontrol</td><td>Membuka narasi semua titik kontrol di satu jalur</td><td>Terbuka untuk Dimas (L5a mencatat setiap narasi yang dibuka)</td></tr>
+  <tr><td>Respons Kilat</td><td>Tindakan benar pertama &lt; 50% waktu target pada misi gangguan</td><td>Dimas, IPA-06: 25 detik &lt; 30 detik (50% × 60 detik)</td></tr>
+  <tr><td>Tanpa Alarm Terlewat</td><td>Semua alarm diakui dan clear pada misi gangguan</td><td>Terbuka untuk Dimas</td></tr>
+  <tr><td>Penjaga Mutu Air</td><td>Kekeruhan dan sisa klor di rentang normal sepanjang misi IPA</td><td>Terkunci</td></tr>
+  <tr><td>Penjaga Tekanan</td><td>Tekanan semua zona di rentang layanan sepanjang misi distribusi</td><td>Terkunci (Dimas jalur IPA)</td></tr>
+  <tr><td>Tiga Bintang IPA / Distribusi</td><td>Semua misi di jalur itu 3★</td><td>Terkunci</td></tr>
+  <tr><td>Hulu ke Hilir</td><td>Lulus TRP-01</td><td>Terkunci</td></tr>
+  <tr><td>Lulus Tanpa Petunjuk</td><td>Lulus jalur tanpa memakai petunjuk</td><td>Terkunci</td></tr>
+</table>
+
+<h3>4.4 Sistem alarm (PRD §10)</h3>
+<div class="two">
+  <div>
+    <h4>Prioritas</h4>
+    <table>
+      <tr><th>Prioritas</th><th>Contoh</th></tr>
+      <tr><td><span class="pill p-krit">KRITIS</span></td><td>Sisa klor &lt; 0,2 mg/L, pompa distribusi trip</td></tr>
+      <tr><td><span class="pill p-tinggi">TINGGI</span></td><td>Kekeruhan air olahan ≥ 3 NTU, tekanan zona di bawah batas</td></tr>
+      <tr><td><span class="pill p-sedang">SEDANG</span></td><td>Kekeruhan air baku tinggi, headloss filter tinggi, level reservoir rendah</td></tr>
+      <tr><td><span class="pill p-info">INFO</span></td><td>Backwash selesai, pompa cadangan berjalan</td></tr>
+    </table>
+    <p>Simbol alarm memakai bentuk (segitiga, lingkaran) selain warna, sesuai NFR-09.</p>
+  </div>
+  <div>
+    <h4>Empat status &amp; aturan clear</h4>
+    <ol>
+      <li><b>Aktif, belum diakui</b> → peserta menekan Akui.</li>
+      <li><b>Aktif, diakui</b> → peserta bertindak; tombol Clear ditolak dengan pesan "Penyebab belum ditangani" dan dicatat sebagai kesalahan.</li>
+      <li><b>Pulih, belum di-clear</b> → Clear manual, atau tunggu clear otomatis.</li>
+      <li><b>Clear</b> → pindah ke riwayat.</li>
+    </ol>
+    <p>Clear otomatis bila parameter kembali ke rentang normal dengan deadband (kekeruhan ≤ 2,7 NTU untuk alarm 3 NTU) dan bertahan 10 detik. Alarm pompa trip terkunci: jalankan pompa cadangan → tangani penyebab → Reset → Clear.</p>
+  </div>
+</div>
+
+<h3>4.5 Piagam kelulusan (PRD §13)</h3>
+<ul>
+  <li><b>Syarat terbit:</b> semua misi wajib lulus, Misi Kelulusan ≥ 80, post-test ≥ 70, dan persetujuan instruktur (bisa dimatikan Admin Lembaga di L13).</li>
+  <li><b>Predikat</b> dari rata-rata skor terbaik semua misi jalur: Lulus (70–84), Lulus dengan Baik (85–94), Lulus dengan Pujian (≥ 95).</li>
+  <li><b>Isi:</b> logo dan nama lembaga, nama jalur, nama peserta, kelompok, tanggal, predikat, level operator, jumlah bintang, nomor <code>SSA/&lt;kode&gt;/&lt;tahun&gt;/&lt;urut&gt;</code>, tanda tangan Pimpinan dan instruktur penilai, QR, teks kecil "Simulator: SimSCADA-Air".</li>
+  <li><b>Catatan kaki wajib</b> di L8, L8b, dan L16: "Piagam ini menyatakan penyelesaian pelatihan berbasis simulator dan bukan sertifikat kompetensi resmi."</li>
+  <li>Tanpa NIP dan tanpa rincian nilai, sesuai prinsip data pribadi minimum (NFR-13).</li>
+</ul>
+
+<h3>4.6 Metrik keberhasilan T1–T4 (PRD §3, §12)</h3>
+<table>
+  <tr><th>Kode</th><th>Definisi</th><th>Target</th><th>Nilai di L14</th></tr>
+  <tr><td>T1</td><td>Rata-rata (post-test − pre-test) ÷ pre-test</td><td>≥ 25%</td><td>+28,6% (56 → 72)</td></tr>
+  <tr><td>T2</td><td>% peserta aktif yang lulus IPA-06, IPA-07, IPA-08, DST-05, DST-06</td><td>≥ 80%</td><td>83,3% (35 / 42)</td></tr>
+  <tr><td>T3</td><td>Median hari dari mulai jalur sampai piagam terbit</td><td>±2 bulan</td><td>58 hari</td></tr>
+  <tr><td>T4</td><td>Piagam terbit ÷ peserta aktif</td><td>≥ 70% (usulan)</td><td>76,2% (32 / 42)</td></tr>
+</table>
+<p class="muted">Peserta aktif = peserta yang login dalam 14 hari terakhir. Definisi ini dipakai sama di T2, T4, dan kartu lisensi.</p>
+
+<!-- ============================================================ -->
+<h2 id="data">5. Data acuan demo (tunggal untuk semua layar)</h2>
+<p>Semua angka di mock-up diturunkan dari tabel berikut. Bila aplikasi prototipe dibangun mengikuti mock-up, data awal (seed) sebaiknya memakai nilai yang sama.</p>
+
+<h3>5.1 Sepuluh akun demo (PRD §5)</h3>
+<p>Semua akun memakai kata sandi <code>Demo#2026</code>, khusus lingkungan prototipe, dan bisa dipilih dari tombol "Masuk sebagai…" di L1.</p>
+<table>
+  <tr><th>Username</th><th>Nama tampilan</th><th>Peran</th><th>Lembaga</th><th>Kondisi data</th></tr>
+  <tr><td><code>superadmin</code></td><td>—</td><td>Super Admin</td><td>Platform</td><td>2 lembaga aktif, masing-masing 50 kursi</td></tr>
+  <tr><td><code>admin.nusantara</code></td><td>Rina Oktaviani</td><td>Admin Lembaga</td><td>Nusantara</td><td>2 kelompok, 1 instruktur, 4 peserta demo + 42 peserta contoh</td></tr>
+  <tr><td><code>pimpinan.nusantara</code></td><td>Dr. Ir. Bambang Sutrisno, M.Eng.</td><td>Pimpinan Lembaga</td><td>Nusantara</td><td>Dashboard evaluasi terisi data angkatan contoh</td></tr>
+  <tr><td><code>instruktur.nusantara</code></td><td>Budi Santoso, S.T.</td><td>Instruktur</td><td>Nusantara</td><td>Membina Angkatan 1 (24 peserta)</td></tr>
+  <tr><td><code>peserta.baru</code></td><td>Budi Baru</td><td>Peserta, Terpadu</td><td>Nusantara</td><td>Belum mulai, 0 XP, Operator Magang</td></tr>
+  <tr><td><code>peserta.ipa</code></td><td>Dimas Wahyu Pratama</td><td>Peserta, IPA</td><td>Nusantara</td><td>7/9 misi lulus, 14★, 1.465 XP, Operator Madya</td></tr>
+  <tr><td><code>peserta.distribusi</code></td><td>Siti Rahmawati</td><td>Peserta, Distribusi</td><td>Nusantara</td><td>DST-01–05 lulus, 11★, 1.010 XP, Operator Muda</td></tr>
+  <tr><td><code>peserta.lulus</code></td><td>Andi Kurniawan</td><td>Peserta, Terpadu</td><td>Nusantara</td><td>17 misi lulus, 48★, 3.820 XP, Operator Ahli, piagam terbit</td></tr>
+  <tr><td><code>admin.tirta</code></td><td>—</td><td>Admin Lembaga</td><td>Tirta Mandiri</td><td>1 kelompok, data terpisah dari Nusantara</td></tr>
+  <tr><td><code>peserta.tirta</code></td><td>—</td><td>Peserta, IPA</td><td>Tirta Mandiri</td><td>Untuk uji isolasi data</td></tr>
+</table>
+<p>Peserta contoh tambahan (bukan akun demo): <b>Rian Hidayat</b> (jalur IPA selesai, IPA-09 skor 82, post-test 82, predikat Lulus, menunggu persetujuan, nomor dicadangkan SSA/NUS/2026/0002) dan <b>Eko Prasetyo</b> (tertinggal, gagal IPA-07 tiga kali).</p>
+
+<h3>5.2 Perhitungan XP Dimas (bukti konsistensi)</h3>
+<table>
+  <tr><th>Misi</th><th>Skor terbaik</th><th>Bintang</th><th>Pengali</th><th>XP misi</th></tr>
+  <tr><td>IPA-01</td><td>96</td><td>3★</td><td>Mudah ×1</td><td>96</td></tr>
+  <tr><td>IPA-02</td><td>92</td><td>2★</td><td>Mudah ×1</td><td>92</td></tr>
+  <tr><td>IPA-03</td><td>88</td><td>2★</td><td>Sedang ×1,5</td><td>132</td></tr>
+  <tr><td>IPA-04</td><td>85</td><td>2★</td><td>Sedang ×1,5</td><td>128</td></tr>
+  <tr><td>IPA-05</td><td>86</td><td>2★</td><td>Sedang ×1,5</td><td>129</td></tr>
+  <tr><td>IPA-06</td><td>88</td><td>2★</td><td>Sulit ×2</td><td>176</td></tr>
+  <tr><td>IPA-07</td><td>76</td><td>1★</td><td>Sulit ×2</td><td>152</td></tr>
+  <tr><td colspan="4">Subtotal misi + XP kuis (7 kuis × 80)</td><td>905 + 560 = <b>1.465 XP</b></td></tr>
+</table>
+<p>Setelah IPA-06 (layar L6) XP Dimas adalah 1.233, sehingga ia naik dari Operator Muda ke Operator Madya. Itu sebabnya L4, L5, dan L5a (sebelum IPA-06 selesai) masih menampilkan "Operator Muda", sedangkan L6 dan layar sesudahnya menampilkan "Operator Madya".</p>
+
+<h3>5.3 Sesi contoh IPA-06 (identik di L4, L5, L6, L11)</h3>
+<table>
+  <tr><th>Waktu</th><th>Kejadian</th></tr>
+  <tr><td>01:15</td><td><span class="pill p-sedang">SEDANG</span> Kekeruhan air baku 20 → 185 NTU</td></tr>
+  <tr><td>01:25</td><td>ACK alarm air baku (10 detik)</td></tr>
+  <tr><td>01:45</td><td><span class="pill p-tinggi">TINGGI</span> Kekeruhan air olahan 3,4 NTU</td></tr>
+  <tr><td>01:50</td><td>ACK alarm air olahan (5 detik)</td></tr>
+  <tr><td>02:10</td><td>Dosis PAC 20 → 48 mg/L — tindakan benar pertama, respons 25 detik terhadap target 60 detik</td></tr>
+  <tr><td>02:25</td><td>Dosis kapur 8,5 mg/L, pH 7,20</td></tr>
+  <tr><td>02:40</td><td>Debit intake 100 → 75 L/s</td></tr>
+  <tr><td>02:45</td><td>Posisi layar L5 (kedua alarm masih aktif dan sudah diakui)</td></tr>
+  <tr><td>06:10</td><td>Air olahan 2,4 NTU (≤ 2,7 NTU)</td></tr>
+  <tr><td>06:20</td><td>Alarm Tinggi clear otomatis setelah stabil 10 detik</td></tr>
+  <tr><td>08:30</td><td>Selesai. Ketepatan 38/40 + Respons 22/25 + Stabilitas 15/20 + Alarm 13/15 = <b>88 → 2★, +176 XP</b></td></tr>
+</table>
+
+<h3>5.4 Angka lembaga</h3>
+<table>
+  <tr><th>Data</th><th>Balai Diklat Air Minum Nusantara (NUS)</th><th>Pusat Pelatihan Tirta Mandiri (TRM)</th></tr>
+  <tr><td>Paket jalur</td><td>IPA + Distribusi + Terpadu</td><td>IPA</td></tr>
+  <tr><td>Kursi terpakai / kuota</td><td>46 / 50 (92%, peringatan ≥ 90%)</td><td>22 / 50 (44%)</td></tr>
+  <tr><td>Peserta aktif (14 hari)</td><td>42</td><td>18</td></tr>
+  <tr><td>Piagam terbit</td><td>32</td><td>12</td></tr>
+  <tr><td>Sisa masa lisensi</td><td>245 hari</td><td>28 hari (peringatan ≤ 30 hari)</td></tr>
+  <tr><td>Kelompok</td><td>Angkatan 1 (24 peserta, termasuk 4 akun demo) · Angkatan 2 (22 peserta)</td><td>1 kelompok</td></tr>
+</table>
+<p class="muted">Total platform di L15: 68 / 100 kursi, 60 peserta aktif, 44 piagam.</p>
+
+<!-- ============================================================ -->
+<h2 id="anatomi">6. Anatomi wireframe &amp; detail per layar</h2>
+<p>Semua layar lembaga memakai header yang sama: logo dan nama lembaga di depan, teks kecil "Didukung oleh SimSCADA-Air", serta nama dan level/peran pengguna di kanan (PRD §6).</p>
+
+<section class="screen" id="L1">
+  <div><a href="mockup_l1_login.svg"><img src="mockup_l1_login.svg" alt="Mock-up L1 Login"></a><div class="cap">mockup_l1_login.svg</div></div>
+  <div>
+    <h3>A. L1 · Login multi-lembaga &amp; akun demo</h3>
+    <div class="role">Semua peran · PRD §5, §6 · FR-01, FR-02</div>
+    <h4>Tujuan desain</h4>
+    <p>Satu pintu masuk untuk semua peran, dengan isolasi data antar-lembaga sejak login, dan akses demo satu klik untuk penguji.</p>
+    <h4>Elemen desain</h4>
+    <ul>
+      <li>Form username dan kata sandi. Lembaga dan peran dikenali otomatis dari akun; tidak ada pemilih peran manual.</li>
+      <li>Panel "Masuk sebagai…" berisi 10 tombol akun demo PRD §5, dengan keterangan singkat kondisi datanya.</li>
+      <li>Catatan sandi demo <code>Demo#2026</code> khusus prototipe.</li>
+      <li>Kotak penjelasan: lima peran dan dua akun Tirta Mandiri untuk uji isolasi.</li>
+    </ul>
+  </div>
+</section>
+
+<section class="screen" id="L2">
+  <div><a href="mockup_l2_trainee_dashboard.svg"><img src="mockup_l2_trainee_dashboard.svg" alt="Mock-up L2"></a><div class="cap">mockup_l2_trainee_dashboard.svg</div></div>
+  <div>
+    <h3>B. L2 · Beranda Peserta / Dashboard Capaian</h3>
+    <div class="role">Peserta (Dimas) · PRD §11 · FR-07, FR-22</div>
+    <h4>Tujuan desain</h4>
+    <p>Menjawab tiga pertanyaan peserta: sejauh mana saya di jalur ini, di mana kelemahan saya, dan apa yang harus dikerjakan berikutnya.</p>
+    <h4>Elemen desain</h4>
+    <ul>
+      <li><b>Kartu profil:</b> Operator Madya, 1.465 XP, progres 1.465 / 2.500 XP (sisa 1.035 ke Utama), 7 misi lulus, 14★, peringkat kelompok.</li>
+      <li><b>Peta misi jalur IPA</b> per tingkat (1, 2, 3, 5) dengan status lulus/terbuka/terkunci, skor, bintang, dan XP per misi.</li>
+      <li><b>Peta kompetensi 5 kompetensi PRD:</b> Operasi Normal IPA 89, Mutu Air 87, Respons Gangguan 82, Penanganan Alarm 86, Hidrolika Distribusi "–" (bukan jalur IPA).</li>
+      <li>Grafik tren skor, saran belajar otomatis dari komponen skor terendah, deretan 3 lencana yang sudah didapat.</li>
+      <li>Status piagam "belum memenuhi" dengan sisa misi IPA-08 dan IPA-09.</li>
+    </ul>
+  </div>
+</section>
+
+<section class="screen" id="L3">
+  <div><a href="mockup_l3_track_select.svg"><img src="mockup_l3_track_select.svg" alt="Mock-up L3"></a><div class="cap">mockup_l3_track_select.svg</div></div>
+  <div>
+    <h3>C. L3 · Pilih Jalur</h3>
+    <div class="role">Peserta · PRD §7 · FR-06</div>
+    <h4>Tujuan desain</h4>
+    <p>Peserta memilih fokus kompetensi tanpa prasyarat, dengan informasi jumlah misi, isi katalog, dan capaian akhir tiap jalur.</p>
+    <h4>Elemen desain</h4>
+    <ul>
+      <li>Banner aturan jalur: satu jalur aktif, tanpa prasyarat Terpadu, pengakuan progres otomatis, jalur di luar paket tidak tampil.</li>
+      <li>Kartu <b>Operator IPA</b> (9 misi, jalur aktif Dimas, 7/9 selesai, tombol "Lanjutkan IPA-08").</li>
+      <li>Kartu <b>Operator Distribusi</b> (7 misi DST-01–DST-07).</li>
+      <li>Kartu <b>Air Minum Terpadu</b> (17 misi, satu-satunya dengan TRP-01 gangguan berantai), dengan catatan bahwa IPA-01–07 milik Dimas akan dihitung otomatis.</li>
+    </ul>
+  </div>
+</section>
+
+<section class="screen" id="L4">
+  <div><a href="mockup_l4_module_quiz.svg"><img src="mockup_l4_module_quiz.svg" alt="Mock-up L4"></a><div class="cap">mockup_l4_module_quiz.svg</div></div>
+  <div>
+    <h3>D. L4 · Materi, Kuis &amp; Briefing Misi</h3>
+    <div class="role">Peserta · PRD §7, §9 · FR-08, FR-17</div>
+    <h4>Tujuan desain</h4>
+    <p>Memastikan peserta memahami konteks gangguan, ambang mutu, dan urutan SOP sebelum diberi hak mengendalikan simulator.</p>
+    <h4>Elemen desain</h4>
+    <ul>
+      <li>Ringkasan skenario IPA-06: air baku 20 → 185 NTU akibat hujan di hulu.</li>
+      <li>Kartu ambang: kekeruhan air olahan &lt; 3,0 NTU (≥ 3 = alarm Tinggi), pH 6,5–8,5, target waktu skenario 60 detik.</li>
+      <li>Tujuh langkah SOP penanganan, termasuk aturan clear otomatis ≤ 2,7 NTU stabil 10 detik.</li>
+      <li>Kuis 5 soal dengan status "lulus gerbang" (80/100, +80 XP). Tombol "Mulai Simulator" hanya aktif bila kuis ≥ 60.</li>
+    </ul>
+  </div>
+</section>
+
+<section class="screen" id="L4a">
+  <div><a href="mockup_l4a_pre_post_test.svg"><img src="mockup_l4a_pre_post_test.svg" alt="Mock-up L4a"></a><div class="cap">mockup_l4a_pre_post_test.svg</div></div>
+  <div>
+    <h3>E. L4a · Pre-test &amp; Post-test</h3>
+    <div class="role">Peserta · PRD §3 (T1), §13 · FR-09</div>
+    <h4>Tujuan desain</h4>
+    <p>Mengukur kenaikan kompetensi (T1) dari nilai awal ke nilai akhir, sekaligus menjadi salah satu syarat piagam.</p>
+    <h4>Elemen desain</h4>
+    <ul>
+      <li>Rumus T1 di bagian atas: (post − pre) ÷ pre × 100%, target ≥ 25%.</li>
+      <li><b>Kolom kiri — pre-test Dimas:</b> skor awal 56, peta kompetensi awal, catatan evaluasi sistem.</li>
+      <li><b>Kolom tengah — lembar uji:</b> 20 soal, batas waktu 30 menit, navigator nomor soal.</li>
+      <li><b>Kolom kanan — post-test Andi:</b> 54 → 88 (+63%), status 4 syarat piagam terpenuhi, tombol ke L8.</li>
+    </ul>
+  </div>
+</section>
+
+<section class="screen" id="L5">
+  <div><a href="mockup_l5_scada_workspace.svg"><img src="mockup_l5_scada_workspace.svg" alt="Mock-up L5"></a><div class="cap">mockup_l5_scada_workspace.svg</div></div>
+  <div>
+    <h3>F. L5 · Simulator SCADA</h3>
+    <div class="role">Peserta, Instruktur (mode uji) · PRD §9, §10 · FR-10–FR-15</div>
+    <h4>Tujuan desain</h4>
+    <p>Meniru layar HMI ruang kendali dengan nilai proses langsung, alarm, dan kontrol yang cukup untuk melatih respons gangguan secara aman.</p>
+    <h4>Elemen desain</h4>
+    <ul>
+      <li><b>Header misi:</b> IPA-06, waktu 02:45 / 10:00, skor sementara, tombol "Petunjuk (−5 poin)" dan "Selesai Simulasi".</li>
+      <li><b>Banner alarm</b> prioritas tertinggi: kekeruhan air olahan 3,4 NTU, sudah diakui pukul 01:50, keterangan syarat clear otomatis.</li>
+      <li><b>Diagram mimic 7 unit:</b> intake (pompa 1 RUN, pompa 2 STANDBY, Reset pompa), koagulasi, flokulasi 3 kompartemen, sedimentasi (blowdown), filtrasi (headloss, backwash), reservoir (level, sisa klor, valve), jaringan distribusi diredupkan karena jalur IPA. Setiap unit punya ikon "i".</li>
+      <li><b>Panel kendali</b> titik terpilih (koagulasi): setpoint PAC 48 mg/L, dosis kapur 8,5 mg/L, motor flash mixer, dosis klor. Setpoint PRV disembunyikan pada misi IPA.</li>
+      <li><b>Grafik tren</b> kekeruhan air olahan dengan garis ambang 3,0 NTU dan penanda waktu kejadian.</li>
+      <li><b>Daftar alarm</b> dengan kolom bentuk/prioritas, status, dan aksi. Kedua alarm berstatus "Aktif, Diakui"; tombol Clear tampil nonaktif dengan alasan penyebab belum selesai.</li>
+    </ul>
+  </div>
+</section>
+
+<section class="screen" id="L5a">
+  <div><a href="mockup_l5a_control_narrative.svg"><img src="mockup_l5a_control_narrative.svg" alt="Mock-up L5a"></a><div class="cap">mockup_l5a_control_narrative.svg</div></div>
+  <div>
+    <h3>G. L5a · Pop-up narasi titik kontrol</h3>
+    <div class="role">Peserta · PRD §9 · FR-16, FR-30</div>
+    <h4>Tujuan desain</h4>
+    <p>Memberi penjelasan kontekstual setiap unit kapan saja, termasuk saat misi berjalan, tanpa mengurangi skor.</p>
+    <h4>Elemen desain</h4>
+    <ul>
+      <li>Tooltip saat kursor diarahkan: nama titik dan nilai saat ini.</li>
+      <li>Enam bagian narasi: (1) apa ini dengan skema, (2) parameter yang dipantau dengan rentang normal dan nilai saat ini, (3) kontrol yang tersedia, (4) dampak ke hilir bila kurang/lebih dosis, (5) gangguan umum dan SOP singkat, (6) tautan pelajari lebih lanjut.</li>
+      <li>Kotak "Catatan SOP Lokal Lembaga" yang diatur Admin Lembaga di L13.</li>
+      <li>Keterangan bahwa narasi yang dibuka dicatat untuk lencana Penjelajah Titik Kontrol.</li>
+    </ul>
+  </div>
+</section>
+
+<section class="screen" id="L6">
+  <div><a href="mockup_l6_results_scoring.svg"><img src="mockup_l6_results_scoring.svg" alt="Mock-up L6"></a><div class="cap">mockup_l6_results_scoring.svg</div></div>
+  <div>
+    <h3>H. L6 · Hasil &amp; Umpan Balik</h3>
+    <div class="role">Peserta · PRD §8 · FR-19, FR-20</div>
+    <h4>Tujuan desain</h4>
+    <p>Menjelaskan dari mana skor berasal, apa yang sudah benar dan salah, serta langkah berikutnya.</p>
+    <h4>Elemen desain</h4>
+    <ul>
+      <li>Skor total 88, 2★, +176 XP (pengali Sulit 2,0). XP kuis +80 sudah diberikan di L4.</li>
+      <li>Rincian 4 komponen: Ketepatan 38/40, Respons 22/25, Stabilitas 15/20, Alarm 13/15.</li>
+      <li>Log tindakan kronologis 01:15–08:30, sama dengan L11.</li>
+      <li>Debriefing dari tokoh mentor operator senior.</li>
+      <li>Panel lencana baru (Respons Kilat, 3 dari 8 lencana), catatan sistem bahwa Dimas naik ke Operator Madya (1.233 XP), dan tombol Putar Ulang Sesi (L11), Lanjut ke IPA-07, Kembali ke Beranda.</li>
+    </ul>
+  </div>
+</section>
+
+<section class="screen" id="L7">
+  <div><a href="mockup_l7_badges_leaderboard.svg"><img src="mockup_l7_badges_leaderboard.svg" alt="Mock-up L7"></a><div class="cap">mockup_l7_badges_leaderboard.svg</div></div>
+  <div>
+    <h3>I. L7 · Lencana &amp; Papan Peringkat</h3>
+    <div class="role">Peserta · PRD §8 · FR-20, FR-21</div>
+    <h4>Tujuan desain</h4>
+    <p>Motivasi jangka panjang lewat koleksi lencana dan kompetisi sehat yang hanya terlihat di lembaga sendiri.</p>
+    <h4>Elemen desain</h4>
+    <ul>
+      <li>Galeri 8 lencana PRD: 3 terbuka (dengan tanggal dan misi asal), 5 terkunci berwarna abu-abu beserta syaratnya.</li>
+      <li>Papan peringkat dengan tab Kelompok / Lembaga dan Mingguan / Sepanjang waktu.</li>
+      <li>Urutan: Andi 3.820 XP (Ahli), Dimas 1.465 XP (Madya), Siti 1.010 XP (Muda), Budi Baru 0 XP (Magang).</li>
+      <li>Catatan bahwa Admin Lembaga dapat menonaktifkan papan peringkat (L13).</li>
+    </ul>
+  </div>
+</section>
+
+<section class="screen" id="L8">
+  <div><a href="mockup_l8_certificate.svg"><img src="mockup_l8_certificate.svg" alt="Mock-up L8"></a><div class="cap">mockup_l8_certificate.svg</div></div>
+  <div>
+    <h3>J. L8 · Piagam Saya (terbit)</h3>
+    <div class="role">Peserta (Andi) · PRD §13 · FR-28</div>
+    <h4>Tujuan desain</h4>
+    <p>Pratinjau piagam A4 mendatar yang siap diunduh, lengkap dengan bukti syarat yang terpenuhi.</p>
+    <h4>Elemen desain</h4>
+    <ul>
+      <li>Piagam: logo dan nama lembaga, "Piagam Kelulusan", jalur Operator Air Minum Terpadu, Andi Kurniawan, Angkatan 1, predikat <b>Lulus dengan Pujian</b>, Operator Ahli, 48 bintang, tanggal 28 Oktober 2026, nomor SSA/NUS/2026/0001, QR.</li>
+      <li>Tanda tangan instruktur penilai (Budi Santoso, S.T.) dan Pimpinan (Dr. Ir. Bambang Sutrisno, M.Eng.).</li>
+      <li>Catatan kaki wajib "bukan sertifikat kompetensi resmi" dan teks "Simulator: SimSCADA-Air".</li>
+      <li>Panel 4 syarat: 17 misi lulus, TRP-02 skor 94, post-test 88 (pre 54, +63%), disetujui instruktur.</li>
+      <li>Tombol Unduh PDF, Verifikasi di portal publik (L16), dan bagikan.</li>
+    </ul>
+  </div>
+</section>
+
+<section class="screen" id="L8b">
+  <div><a href="mockup_l8b_certificate_pending.svg"><img src="mockup_l8b_certificate_pending.svg" alt="Mock-up L8b"></a><div class="cap">mockup_l8b_certificate_pending.svg</div></div>
+  <div>
+    <h3>K. L8b · Piagam menunggu persetujuan</h3>
+    <div class="role">Peserta (Rian, peserta contoh) · PRD §13</div>
+    <h4>Tujuan desain</h4>
+    <p>Menunjukkan status antara ketika semua syarat otomatis sudah terpenuhi tetapi instruktur belum menyetujui.</p>
+    <h4>Elemen desain</h4>
+    <ul>
+      <li>Banner "Menunggu persetujuan instruktur (Budi Santoso, S.T.)".</li>
+      <li>Pratinjau piagam jalur Operator IPA dengan tanda air "menunggu validasi", nomor dicadangkan SSA/NUS/2026/0002, predikat Lulus.</li>
+      <li>Daftar syarat: 9 misi IPA lulus, IPA-09 skor 82, post-test 82, persetujuan instruktur masih menunggu.</li>
+      <li>Tombol unduh nonaktif dan tombol kirim pengingat ke instruktur.</li>
+    </ul>
+  </div>
+</section>
+
+<section class="screen" id="L9">
+  <div><a href="mockup_l9_instructor_dashboard.svg"><img src="mockup_l9_instructor_dashboard.svg" alt="Mock-up L9"></a><div class="cap">mockup_l9_instructor_dashboard.svg</div></div>
+  <div>
+    <h3>L. L9 · Dashboard Instruktur</h3>
+    <div class="role">Instruktur · PRD §12 · FR-24</div>
+    <h4>Tujuan desain</h4>
+    <p>Memantau seluruh peserta binaan dalam satu layar dan melakukan intervensi tepat waktu.</p>
+    <h4>Elemen desain</h4>
+    <ul>
+      <li>Tombol aksi: Tugaskan Skenario, Buka Kunci, Setujui Piagam, Putar Ulang, Beri Catatan.</li>
+      <li>Banner peringatan peserta tertinggal: Eko Prasetyo gagal IPA-07 tiga kali.</li>
+      <li>Tabel peserta: misi saat ini, skor terakhir, bintang, aktivitas terakhir, status, dan matriks misi berwarna sesuai bintang.</li>
+      <li>Baris contoh: Dimas (IPA-08 terbuka, skor terakhir 76, 1★), Andi (piagam terbit), Eko (tertinggal), Siti (DST-06 berikutnya), Rian (menunggu persetujuan, tombol "Setujui Piagam").</li>
+    </ul>
+  </div>
+</section>
+
+<section class="screen" id="L10">
+  <div><a href="mockup_l10_manage_scenarios.svg"><img src="mockup_l10_manage_scenarios.svg" alt="Mock-up L10"></a><div class="cap">mockup_l10_manage_scenarios.svg</div></div>
+  <div>
+    <h3>M. L10 · Kelola Skenario</h3>
+    <div class="role">Instruktur, Admin Lembaga · PRD §6 · FR-23</div>
+    <h4>Tujuan desain</h4>
+    <p>Merancang skenario gangguan milik lembaga tanpa mengubah pustaka misi baku Super Admin.</p>
+    <h4>Elemen desain</h4>
+    <ul>
+      <li>Formulir: judul, tingkat kesulitan dan pengali XP, jalur, titik kontrol terdampak, waktu pemicu, ambang deviasi alarm.</li>
+      <li>Kunci penilaian SOP: target waktu 60 detik, tindakan tidak aman −15 poin, aturan clear otomatis 10 detik.</li>
+      <li>Penugasan ke kelompok (Angkatan 1, 24 peserta) dan tombol "Simpan &amp; Terbitkan".</li>
+      <li>Daftar skenario: misi baku (IPA-06, DST-05) berlabel "tidak dapat diubah", skenario kustom lembaga dengan Edit dan Duplikasi.</li>
+      <li>Catatan isolasi: skenario kustom Nusantara tidak terlihat oleh Tirta Mandiri.</li>
+    </ul>
+  </div>
+</section>
+
+<section class="screen" id="L11">
+  <div><a href="mockup_l11_session_replay.svg"><img src="mockup_l11_session_replay.svg" alt="Mock-up L11"></a><div class="cap">mockup_l11_session_replay.svg</div></div>
+  <div>
+    <h3>N. L11 · Putar Ulang Sesi</h3>
+    <div class="role">Instruktur · PRD §10 · FR-25</div>
+    <h4>Tujuan desain</h4>
+    <p>Mengaudit keputusan peserta detik demi detik sebagai dasar umpan balik dan penilaian objektif.</p>
+    <h4>Elemen desain</h4>
+    <ul>
+      <li>Kontrol putar (jeda, 1×/2×/3×) dan garis waktu dengan penanda kejadian: alarm baku, ACK, ≥ 3 NTU, debit 75 L/s, pulih, auto-clear, selesai.</li>
+      <li>Kondisi proses pada detik terpilih (02:10): intake, koagulasi, filtrasi, desinfeksi.</li>
+      <li>Grafik parameter tersinkron: kekeruhan baku, air olahan, dosis PAC, ambang 3,0 NTU.</li>
+      <li>Log audit dan catatan evaluasi instruktur. Semua waktu dan nilai sama dengan L6.</li>
+    </ul>
+  </div>
+</section>
+
+<section class="screen" id="L12">
+  <div><a href="mockup_l12_manage_users.svg"><img src="mockup_l12_manage_users.svg" alt="Mock-up L12"></a><div class="cap">mockup_l12_manage_users.svg</div></div>
+  <div>
+    <h3>O. L12 · Kelola Pengguna &amp; Kelompok</h3>
+    <div class="role">Admin Lembaga · PRD §6 · FR-05</div>
+    <h4>Tujuan desain</h4>
+    <p>Mengelola akun dan kelompok sambil memantau sisa kursi lisensi.</p>
+    <h4>Elemen desain</h4>
+    <ul>
+      <li>Kartu ringkasan: kursi 46 / 50, 2 kelompok, 1 instruktur dan 1 pimpinan.</li>
+      <li>Tabel 7 akun demo milik Nusantara (akun Tirta Mandiri tidak tampil karena isolasi data), dengan aksi per akun dan tautan Nonaktifkan.</li>
+      <li>Baris "+42 peserta contoh" (Angkatan 1: 20 + 4 akun demo, Angkatan 2: 22).</li>
+      <li>Daftar kelompok dengan Ubah, Arsip, dan Buat Kelompok.</li>
+      <li>Tombol Tambah Pengguna dan Impor CSV. Sesuai PRD §6, pendaftaran peserta baru ditolak bila kuota kursi habis (aturan sistem, tidak digambar sebagai pesan).</li>
+    </ul>
+  </div>
+</section>
+
+<section class="screen" id="L13">
+  <div><a href="mockup_l13_tenant_settings.svg"><img src="mockup_l13_tenant_settings.svg" alt="Mock-up L13"></a><div class="cap">mockup_l13_tenant_settings.svg</div></div>
+  <div>
+    <h3>P. L13 · Pengaturan Lembaga</h3>
+    <div class="role">Admin Lembaga · PRD §6, §9, §13 · FR-21, FR-30</div>
+    <h4>Tujuan desain</h4>
+    <p>Kustomisasi identitas dan kebijakan lembaga tanpa menyentuh aturan baku platform.</p>
+    <h4>Elemen desain</h4>
+    <ul>
+      <li>Nama resmi lembaga dan unggah logo.</li>
+      <li>Penanda tangan piagam: Pimpinan (nama, jabatan) dan instruktur penilai.</li>
+      <li>Warna aksen templat piagam (empat pilihan).</li>
+      <li>Saklar persetujuan instruktur wajib dan saklar papan peringkat.</li>
+      <li>Ambang kelulusan: misi ≥ 70, Misi Kelulusan ≥ 80, post-test ≥ 70; catatan bahwa bobot skor dan ambang alarm baku tidak dapat diubah lembaga.</li>
+      <li>Editor catatan SOP lokal per titik kontrol, yang langsung tampil di L5a, dan panel "ambang alarm baku terkunci".</li>
+    </ul>
+  </div>
+</section>
+
+<section class="screen" id="L14">
+  <div><a href="mockup_l14_tenant_evaluation.svg"><img src="mockup_l14_tenant_evaluation.svg" alt="Mock-up L14"></a><div class="cap">mockup_l14_tenant_evaluation.svg</div></div>
+  <div>
+    <h3>Q. L14 · Dashboard Evaluasi Lembaga</h3>
+    <div class="role">Pimpinan, Admin Lembaga · PRD §3, §12 · FR-26, FR-27</div>
+    <h4>Tujuan desain</h4>
+    <p>Menunjukkan kepada pembeli apakah pelatihan berhasil dan apakah lisensinya terpakai.</p>
+    <h4>Elemen desain</h4>
+    <ul>
+      <li>Filter periode, jalur, kelompok, instruktur; tombol Ekspor Excel dan Ekspor PDF berkop lembaga.</li>
+      <li>Empat kartu T1–T4 dengan rumus dan target (lihat bagian 4.6).</li>
+      <li>Kartu pemakaian lisensi: 46 / 50 kursi, 245 hari tersisa, 412 jam simulasi, 42 peserta aktif.</li>
+      <li>Lima misi paling sulit berdasarkan gagal percobaan pertama.</li>
+      <li>Kesalahan tersering dan perbandingan Angkatan 1 vs Angkatan 2.</li>
+    </ul>
+  </div>
+</section>
+
+<section class="screen" id="L15">
+  <div><a href="mockup_l15_superadmin.svg"><img src="mockup_l15_superadmin.svg" alt="Mock-up L15"></a><div class="cap">mockup_l15_superadmin.svg</div></div>
+  <div>
+    <h3>R. L15 · Kelola Lembaga &amp; Lisensi</h3>
+    <div class="role">Super Admin · PRD §6, §12 · FR-04</div>
+    <h4>Tujuan desain</h4>
+    <p>Tata kelola tingkat platform untuk semua lembaga pembeli.</p>
+    <h4>Elemen desain</h4>
+    <ul>
+      <li>Dua banner peringatan: kuota Nusantara 92% (≥ 90%) dan lisensi Tirta Mandiri berakhir dalam 28 hari (≤ 30 hari).</li>
+      <li>Statistik global: 2 lembaga, 68 / 100 kursi, 60 peserta aktif, 44 piagam.</li>
+      <li>Tabel lembaga: kode, status lisensi, paket jalur, kursi terpakai, peserta aktif, piagam terbit, sisa lisensi, aksi Kelola Lisensi / Perpanjang.</li>
+    </ul>
+  </div>
+</section>
+
+<section class="screen" id="L16">
+  <div><a href="mockup_l16_public_verification.svg"><img src="mockup_l16_public_verification.svg" alt="Mock-up L16"></a><div class="cap">mockup_l16_public_verification.svg</div></div>
+  <div>
+    <h3>S. L16 · Verifikasi Piagam Publik</h3>
+    <div class="role">Tanpa login · PRD §13 · FR-29</div>
+    <h4>Tujuan desain</h4>
+    <p>Layanan publik bagi pihak ketiga untuk memastikan keaslian piagam, tanpa membuka data pribadi berlebih.</p>
+    <h4>Elemen desain</h4>
+    <ul>
+      <li>Kolom nomor piagam (SSA/NUS/2026/0001) atau pindai QR.</li>
+      <li>Status SAH dan enam data minimum: nama peserta, lembaga, jalur, tanggal kelulusan, predikat, status keabsahan. Tanpa skor, XP, atau tombol unduh.</li>
+      <li>Contoh tampilan bila piagam DICABUT beserta alasan yang tercatat.</li>
+      <li>Pemberitahuan hukum: bukan sertifikat kompetensi resmi; sertifikasi profesi tetap oleh LSP berlisensi BNSP.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<h2 id="kriteria">7. Keterlacakan kriteria penerimaan PRD §18</h2>
+<table>
+  <tr><th>Kriteria penerimaan prototipe</th><th>Digambarkan di</th></tr>
+  <tr><td>Setiap akun demo dapat login dan hanya melihat menu sesuai peran</td><td>L1 (10 akun), header tiap layar per peran</td></tr>
+  <tr><td><code>admin.tirta</code> dan <code>peserta.tirta</code> tidak dapat melihat data Nusantara</td><td>L1, L10 (catatan isolasi), L12 (akun Tirta tidak tampil), L15</td></tr>
+  <tr><td>Nama dan logo lembaga tampil di header, dashboard evaluasi, laporan, dan piagam</td><td>Header semua layar lembaga, L13, L14, L8</td></tr>
+  <tr><td>Peserta dapat memilih jalur dan peta misinya sesuai katalog</td><td>L3, L2</td></tr>
+  <tr><td>Misi berikutnya terkunci; instruktur dapat membuka kunci</td><td>L2 (ikon kunci), L9 (tombol Buka Kunci)</td></tr>
+  <tr><td>Kelima gangguan utama dapat dipicu dan memunculkan alarm</td><td>L5 (IPA-06), L10 (DST-05), L14 (T2)</td></tr>
+  <tr><td>Alarm kekeruhan clear otomatis setelah dosis koagulan dinaikkan dan stabil 10 detik</td><td>L4, L5, L6, L11 (06:10 → 06:20)</td></tr>
+  <tr><td>Tombol Clear ditolak selama kondisi abnormal; pompa trip baru clear setelah Reset</td><td>L5 (Clear nonaktif, tombol Reset pompa), L4 (soal kuis)</td></tr>
+  <tr><td>Setiap titik kontrol membuka narasi pop-up 6 bagian</td><td>L5 (ikon "i" di 7 unit), L5a</td></tr>
+  <tr><td>Layar hasil menampilkan skor 4 komponen, bintang, XP, tindakan benar/salah</td><td>L6</td></tr>
+  <tr><td>Dashboard capaian menampilkan level, XP, progres, lencana, status piagam</td><td>L2</td></tr>
+  <tr><td>Dashboard evaluasi menampilkan T1–T4 dan pemakaian lisensi</td><td>L14</td></tr>
+  <tr><td>Piagam PDF terbit untuk <code>peserta.lulus</code> dengan nomor unik dan QR yang lolos verifikasi</td><td>L8, L16</td></tr>
+  <tr><td>Simulator tidak memiliki konfigurasi koneksi ke perangkat lapangan</td><td>Tidak ada layar konfigurasi koneksi apa pun (NFR-01)</td></tr>
+</table>
+
+<!-- ============================================================ -->
+<h2 id="batasan">8. Batasan &amp; catatan untuk pengembangan</h2>
+<div class="note warn">
+  <b>Hal yang belum atau sengaja tidak digambarkan.</b>
+  <ul>
+    <li>L14 menampilkan rata-rata skor per kelompok, tetapi belum menampilkan rata-rata bintang per misi dan per jalur.</li>
+    <li>Layar untuk skenario gangguan lain (IPA-07 pompa trip, DST-05 kebocoran) tidak dibuat tersendiri; perilakunya mengikuti tabel alarm PRD §10 dengan pola tampilan L5.</li>
+    <li>Pustaka misi dan narasi baku milik Super Admin tidak punya layar khusus (PRD §17 juga tidak mencantumkannya).</li>
+    <li>Contoh laporan PDF/Excel hasil ekspor, mode tim (FR-31, prioritas N), dan pembayaran lisensi berada di luar cakupan mock-up.</li>
+    <li>Beberapa ikon memakai emoji; tampilannya bergantung pada font perangkat. Pada aplikasi sebaiknya diganti ikon SVG.</li>
+  </ul>
+</div>
+<div class="note ok">
+  <b>Saat membangun aplikasi dari mock-up ini</b>, pakai tabel di bagian 5 sebagai data awal (seed), jangan mengubah bobot skor, aturan bintang/XP, atau ambang alarm baku, dan pastikan tata letak tetap terbaca di resolusi 1366 × 768 (NFR-04).
+</div>
+
+<!-- ============================================================ -->
+<h2 id="petunjuk">9. Petunjuk penggunaan berkas</h2>
+<ul>
+  <li><b>Membuka:</b> klik tautan berkas SVG di dokumen ini, atau buka langsung di Chrome, Edge, atau Firefox. Semua berkas sudah divalidasi sebagai XML yang benar.</li>
+  <li><b>Ketajaman:</b> SVG adalah gambar vektor, sehingga bisa diperbesar tanpa pecah.</li>
+  <li><b>Menyunting:</b> impor ke Figma, Inkscape, atau Adobe Illustrator. Teks di dalam SVG adalah teks asli, bukan gambar, sehingga mudah diubah.</li>
+  <li><b>Presentasi:</b> rasio 16:10 (1600 × 1000) cocok untuk slide; ekspor ke PNG dari peramban atau Inkscape bila diperlukan.</li>
+  <li><b>Diagram alur:</b> buka <code>alur_kerja_simscada.drawio</code> di diagrams.net untuk dilihat atau disunting (bagian 3).</li>
+</ul>
+
+<footer>
+  Mock-up SimSCADA-Air v1.3 · Tugas proyek kelompok Program S2, Pradita University · Acuan PRD SimSCADA-Air v1.0. Nama lembaga dan peserta dalam mock-up bersifat fiktif.
+</footer>
+
+</main>
+</body>
+</html>

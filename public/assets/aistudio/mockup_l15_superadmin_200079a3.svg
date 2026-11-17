@@ -1,0 +1,233 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1000" width="1600" height="1000" style="background:#0b1120; font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0f172a" />
+      <stop offset="50%" stop-color="#0b1329" />
+      <stop offset="100%" stop-color="#020617" />
+    </linearGradient>
+    <linearGradient id="cardGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#1e293b" />
+      <stop offset="100%" stop-color="#0f172a" />
+    </linearGradient>
+    <linearGradient id="cardDark" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#0f172a" />
+      <stop offset="100%" stop-color="#070c18" />
+    </linearGradient>
+    <linearGradient id="primaryGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#0284c7" />
+      <stop offset="100%" stop-color="#2563eb" />
+    </linearGradient>
+    <linearGradient id="accentGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#06b6d4" />
+      <stop offset="100%" stop-color="#3b82f6" />
+    </linearGradient>
+    <linearGradient id="amberGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#d97706" />
+      <stop offset="100%" stop-color="#b45309" />
+    </linearGradient>
+    <linearGradient id="emeraldGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#059669" />
+      <stop offset="100%" stop-color="#10b981" />
+    </linearGradient>
+    <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#f59e0b" />
+      <stop offset="100%" stop-color="#d97706" />
+    </linearGradient>
+    <filter id="dropShadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="10" stdDeviation="14" flood-color="#000000" flood-opacity="0.55"/>
+    </filter>
+    <filter id="glowCyan" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="0" stdDeviation="6" flood-color="#06b6d4" flood-opacity="0.6"/>
+    </filter>
+    <filter id="glowRed" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="0" stdDeviation="6" flood-color="#ef4444" flood-opacity="0.7"/>
+    </filter>
+    <filter id="glowAmber" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="0" stdDeviation="6" flood-color="#f59e0b" flood-opacity="0.7"/>
+    </filter>
+    <marker id="dotBlue" markerWidth="8" markerHeight="8" refX="4" refY="4">
+      <circle cx="4" cy="4" r="3.5" fill="#38bdf8" stroke="#ffffff" stroke-width="1" />
+    </marker>
+    <marker id="dotOrange" markerWidth="8" markerHeight="8" refX="4" refY="4">
+      <circle cx="4" cy="4" r="3.5" fill="#f59e0b" stroke="#ffffff" stroke-width="1" />
+    </marker>
+    <marker id="dotGreen" markerWidth="8" markerHeight="8" refX="4" refY="4">
+      <circle cx="4" cy="4" r="3.5" fill="#10b981" stroke="#ffffff" stroke-width="1" />
+    </marker>
+  </defs>
+
+  <!-- Background Base -->
+  <rect width="1600" height="1000" fill="url(#bgGrad)" />
+
+  <!-- Blueprint Pattern -->
+  <g opacity="0.04" stroke="#38bdf8" stroke-width="1">
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M 40 0 L 0 0 0 40" fill="none" />
+    </pattern>
+    <rect width="1600" height="1000" fill="url(#grid)" />
+  </g>
+
+  <!-- Top Mockup Window Bar -->
+  <rect x="0" y="0" width="1600" height="40" fill="#030712" />
+  <circle cx="24" cy="20" r="5" fill="#ef4444" />
+  <circle cx="42" cy="20" r="5" fill="#f59e0b" />
+  <circle cx="60" cy="20" r="5" fill="#10b981" />
+  <text x="88" y="25" fill="#94a3b8" font-size="13" font-weight="600">MOCKUP L15: KONSOL SUPER ADMIN MULTI-TENANT (SimSCADA-Air v1.3)</text>
+  <rect x="1390" y="9" width="180" height="22" rx="11" fill="#1e293b" />
+  <text x="1480" y="24" fill="#38bdf8" font-size="11" font-weight="600" text-anchor="middle">MOCKUP v1.3 · PRD v1.0</text>
+
+  <!-- Super Admin Custom Header PRD §5 -->
+  <g transform="translate(0, 40)">
+    <rect width="1600" height="58" fill="#030712" stroke="#1e293b" stroke-width="1" />
+    <g transform="translate(32, 12)">
+      <rect width="36" height="36" rx="8" fill="#4338ca" />
+      <text x="18" y="24" fill="#ffffff" font-size="16" font-weight="800" text-anchor="middle">👑</text>
+      <text x="48" y="20" fill="#ffffff" font-size="16" font-weight="700">SimSCADA-Air Console</text>
+      <text x="48" y="34" fill="#818cf8" font-size="11">KONSOL SUPER ADMIN GLOBAL · PENGELOLA MULTI-TENANT</text>
+    </g>
+    <g transform="translate(1380, 14)">
+      <rect width="188" height="32" rx="6" fill="#1e1b4b" stroke="#4338ca" />
+      <text x="94" y="21" fill="#c7d2fe" font-size="11.5" font-weight="700" text-anchor="middle">superadmin (Root)</text>
+    </g>
+  </g>
+
+  <!-- Clean Non-Colliding Title Block -->
+  <g transform="translate(32, 104)">
+    <text x="0" y="22" fill="#ffffff" font-size="18" font-weight="700" letter-spacing="0.3">Konsol Pengelola Lembaga &amp; Lisensi Multi-Tenant</text>
+    <text x="0" y="42" fill="#94a3b8" font-size="12">Super Admin Platform SimSCADA-Air · Monitoring Kapasitas &amp; Peringatan Dini Sistem (PRD §5 &amp; §12)</text>
+  </g>
+
+  <!-- TWO CRITICAL ALERT BANNERS PRD §12 (Quota >= 90% &amp; Expiry <= 30 Days) -->
+  <g transform="translate(32, 155)">
+    <!-- Alert 1: Quota >= 90% (Nusantara) -->
+    <rect width="750" height="65" rx="8" fill="#451a03" stroke="#f59e0b" stroke-width="2" filter="url(#glowAmber)" />
+    <text x="20" y="26" fill="#fde68a" font-size="12" font-weight="800">⚠️ PERINGATAN SISTEM: KUOTA KURSI MENCAPAI AMBANG TINGGI (≥ 90%)</text>
+    <text x="20" y="48" fill="#ffffff" font-size="12">Lembaga <tspan font-weight="700" fill="#fde68a">Balai Diklat Air Minum Nusantara</tspan> telah memakai <tspan font-weight="800" fill="#fde68a">46 dari 50 kursi (92%)</tspan>. Tawarkan ekspansi kuota lisensi.</text>
+
+    <!-- Alert 2: Expiry <= 30 Days (Tirta Mandiri) -->
+    <g transform="translate(786, 0)">
+      <rect width="750" height="65" rx="8" fill="#450a0a" stroke="#ef4444" stroke-width="2" filter="url(#glowRed)" />
+      <text x="20" y="26" fill="#fca5a5" font-size="12" font-weight="800">⚠️ PERINGATAN SISTEM: MASA LISENSI AKAN BERAKHIR (≤ 30 HARI)</text>
+      <text x="20" y="48" fill="#ffffff" font-size="12">Lembaga <tspan font-weight="700" fill="#fca5a5">Pusat Pelatihan Tirta Mandiri</tspan> berakhir dalam <tspan font-weight="800" fill="#fca5a5">28 Hari</tspan>. Kirimkan notifikasi penagihan perpanjangan.</text>
+    </g>
+  </g>
+
+  <!-- Global Platform Overview Cards (Width: 1536) -->
+  <g transform="translate(32, 235)">
+    <rect width="365" height="85" rx="8" fill="#0f172a" stroke="#1e293b" />
+    <text x="20" y="28" fill="#94a3b8" font-size="11">Total Lembaga Aktif</text>
+    <text x="20" y="58" fill="#ffffff" font-size="24" font-weight="800">2 Lembaga Pembeli</text>
+
+    <g transform="translate(390, 0)">
+      <rect width="365" height="85" rx="8" fill="#0f172a" stroke="#1e293b" />
+      <text x="20" y="28" fill="#94a3b8" font-size="11">Total Kuota Kursi</text>
+      <text x="20" y="58" fill="#38bdf8" font-size="24" font-weight="800">68 / 100 Kursi (68%)</text>
+    </g>
+
+    <g transform="translate(780, 0)">
+      <rect width="365" height="85" rx="8" fill="#0f172a" stroke="#1e293b" />
+      <text x="20" y="28" fill="#94a3b8" font-size="11">Total Peserta Aktif</text>
+      <text x="20" y="58" fill="#34d399" font-size="24" font-weight="800">60 Peserta Aktif</text>
+    </g>
+
+    <g transform="translate(1170, 0)">
+      <rect width="366" height="85" rx="8" fill="#0f172a" stroke="#1e293b" />
+      <text x="20" y="28" fill="#94a3b8" font-size="11">Total Piagam Terbit</text>
+      <text x="20" y="58" fill="#f59e0b" font-size="24" font-weight="800">44 Piagam Sah</text>
+    </g>
+  </g>
+
+  <!-- Table: Lembaga &amp; Status Lisensi PRD §5 &amp; §12 (Width: 1536) -->
+  <g transform="translate(32, 335)">
+    <rect width="1536" height="610" rx="12" fill="url(#cardGrad)" stroke="#334155" stroke-width="1.5" />
+    
+    <g transform="translate(24, 20)">
+      <text x="0" y="20" fill="#ffffff" font-size="16" font-weight="700">Daftar Lembaga Pembeli (Multi-Tenant Management PRD §5)</text>
+      <text x="0" y="38" fill="#94a3b8" font-size="12">Manajemen paket jalur, alokasi kuota kursi, tanggal kontrak, dan status pemakaian</text>
+
+      <rect x="1350" y="6" width="160" height="34" rx="6" fill="#4338ca" />
+      <text x="1430" y="28" fill="#ffffff" font-size="12" font-weight="700" text-anchor="middle">+ Daftarkan Tenant</text>
+    </g>
+
+    <!-- Table Header Columns PRD §12 -->
+    <g transform="translate(0, 75)">
+      <rect width="1536" height="42" fill="#0f172a" />
+      <text x="32" y="26" fill="#94a3b8" font-size="11" font-weight="700">NAMA LEMBAGA (TENANT)</text>
+      <text x="280" y="26" fill="#94a3b8" font-size="11" font-weight="700">KODE</text>
+      <text x="360" y="26" fill="#94a3b8" font-size="11" font-weight="700">STATUS LISENSI</text>
+      <text x="500" y="26" fill="#94a3b8" font-size="11" font-weight="700">PAKET JALUR</text>
+      <text x="680" y="26" fill="#94a3b8" font-size="11" font-weight="700">KURSI TERPAKAI / KUOTA</text>
+      <text x="940" y="26" fill="#94a3b8" font-size="11" font-weight="700">PESERTA AKTIF</text>
+      <text x="1100" y="26" fill="#94a3b8" font-size="11" font-weight="700">PIAGAM TERBIT</text>
+      <text x="1260" y="26" fill="#94a3b8" font-size="11" font-weight="700">SISA LISENSI</text>
+      <text x="1420" y="26" fill="#94a3b8" font-size="11" font-weight="700">AKSI</text>
+
+      <line x1="0" y1="42" x2="1536" y2="42" stroke="#1e293b" />
+
+      <!-- Row 1: Balai Diklat Air Minum Nusantara -->
+      <g transform="translate(0, 52)">
+        <rect width="1536" height="70" fill="#0f172a" />
+        <text x="32" y="32" fill="#ffffff" font-size="13" font-weight="700">Balai Diklat Air Minum Nusantara</text>
+        <text x="32" y="50" fill="#94a3b8" font-size="11">Admin: admin.nusantara · Pimpinan: pimpinan.nusantara</text>
+        
+        <text x="280" y="38" fill="#38bdf8" font-size="12" font-weight="700">NUS</text>
+
+        <rect x="360" y="22" width="75" height="26" rx="4" fill="#065f46" />
+        <text x="397" y="39" fill="#34d399" font-size="11" font-weight="700" text-anchor="middle">AKTIF ✓</text>
+
+        <text x="500" y="38" fill="#c7d2fe" font-size="12" font-weight="600">IPA + Distribusi + Terpadu</text>
+
+        <!-- Quota Seat (46/50 = 92% -> WARNING) -->
+        <g transform="translate(680, 20)">
+          <text x="0" y="16" fill="#f59e0b" font-size="13" font-weight="800">46 / 50 Kursi (92%)</text>
+          <rect y="22" width="180" height="8" rx="4" fill="#1e293b" />
+          <rect y="22" width="165" height="8" rx="4" fill="#f59e0b" />
+          <text x="0" y="44" fill="#fde68a" font-size="9.5" font-weight="600">⚠️ Peringatan Kuota ≥90%</text>
+        </g>
+
+        <text x="940" y="38" fill="#ffffff" font-size="13" font-weight="700">42 Peserta</text>
+        <text x="1100" y="38" fill="#34d399" font-size="13" font-weight="700">32 Piagam</text>
+
+        <text x="1260" y="38" fill="#ffffff" font-size="12">245 Hari</text>
+
+        <rect x="1410" y="22" width="90" height="28" rx="6" fill="#1e293b" stroke="#334155" />
+        <text x="1455" y="40" fill="#cbd5e1" font-size="11" font-weight="600" text-anchor="middle">Kelola Lisensi</text>
+      </g>
+
+      <!-- Row 2: Pusat Pelatihan Tirta Mandiri (Expiry <= 30 Days) -->
+      <g transform="translate(0, 132)">
+        <rect width="1536" height="70" fill="#450a0a" opacity="0.3" stroke="#ef4444" stroke-width="1" />
+        <text x="32" y="32" fill="#ffffff" font-size="13" font-weight="700">Pusat Pelatihan Tirta Mandiri</text>
+        <text x="32" y="50" fill="#94a3b8" font-size="11">Admin: admin.tirta · Uji Isolasi Multi-Tenant</text>
+        
+        <text x="280" y="38" fill="#38bdf8" font-size="12" font-weight="700">TRM</text>
+
+        <rect x="360" y="22" width="75" height="26" rx="4" fill="#065f46" />
+        <text x="397" y="39" fill="#34d399" font-size="11" font-weight="700" text-anchor="middle">AKTIF ✓</text>
+
+        <text x="500" y="38" fill="#38bdf8" font-size="12" font-weight="600">Operator IPA (9 Misi)</text>
+
+        <!-- Quota Seat (22/50 = 44%) -->
+        <g transform="translate(680, 20)">
+          <text x="0" y="16" fill="#ffffff" font-size="13" font-weight="700">22 / 50 Kursi (44%)</text>
+          <rect y="22" width="180" height="8" rx="4" fill="#1e293b" />
+          <rect y="22" width="79" height="8" rx="4" fill="#0284c7" />
+          <text x="0" y="44" fill="#94a3b8" font-size="9.5">Kapasitas Aman</text>
+        </g>
+
+        <text x="940" y="38" fill="#ffffff" font-size="13" font-weight="700">18 Peserta</text>
+        <text x="1100" y="38" fill="#34d399" font-size="13" font-weight="700">12 Piagam</text>
+
+        <!-- Expiry Warning <= 30 Days -->
+        <g transform="translate(1260, 20)">
+          <text x="0" y="16" fill="#ef4444" font-size="13" font-weight="800">28 Hari Tersisa</text>
+          <text x="0" y="34" fill="#fca5a5" font-size="10" font-weight="700">⚠️ Berakhir ≤30 Hari</text>
+        </g>
+
+        <rect x="1410" y="22" width="90" height="28" rx="6" fill="#ef4444" />
+        <text x="1455" y="40" fill="#ffffff" font-size="11" font-weight="700" text-anchor="middle">Perpanjang</text>
+      </g>
+    </g>
+  </g>
+
+</svg>

@@ -1,0 +1,311 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1000" width="1600" height="1000" style="background:#0b1120; font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0f172a" />
+      <stop offset="50%" stop-color="#0b1329" />
+      <stop offset="100%" stop-color="#020617" />
+    </linearGradient>
+    <linearGradient id="cardGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#1e293b" />
+      <stop offset="100%" stop-color="#0f172a" />
+    </linearGradient>
+    <linearGradient id="cardDark" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#0f172a" />
+      <stop offset="100%" stop-color="#070c18" />
+    </linearGradient>
+    <linearGradient id="primaryGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#0284c7" />
+      <stop offset="100%" stop-color="#2563eb" />
+    </linearGradient>
+    <linearGradient id="accentGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#06b6d4" />
+      <stop offset="100%" stop-color="#3b82f6" />
+    </linearGradient>
+    <linearGradient id="amberGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#d97706" />
+      <stop offset="100%" stop-color="#b45309" />
+    </linearGradient>
+    <linearGradient id="emeraldGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#059669" />
+      <stop offset="100%" stop-color="#10b981" />
+    </linearGradient>
+    <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#f59e0b" />
+      <stop offset="100%" stop-color="#d97706" />
+    </linearGradient>
+    <filter id="dropShadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="10" stdDeviation="14" flood-color="#000000" flood-opacity="0.55"/>
+    </filter>
+    <filter id="glowCyan" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="0" stdDeviation="6" flood-color="#06b6d4" flood-opacity="0.6"/>
+    </filter>
+    <filter id="glowRed" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="0" stdDeviation="6" flood-color="#ef4444" flood-opacity="0.7"/>
+    </filter>
+    <filter id="glowAmber" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="0" stdDeviation="6" flood-color="#f59e0b" flood-opacity="0.7"/>
+    </filter>
+    <marker id="dotBlue" markerWidth="8" markerHeight="8" refX="4" refY="4">
+      <circle cx="4" cy="4" r="3.5" fill="#38bdf8" stroke="#ffffff" stroke-width="1" />
+    </marker>
+    <marker id="dotOrange" markerWidth="8" markerHeight="8" refX="4" refY="4">
+      <circle cx="4" cy="4" r="3.5" fill="#f59e0b" stroke="#ffffff" stroke-width="1" />
+    </marker>
+    <marker id="dotGreen" markerWidth="8" markerHeight="8" refX="4" refY="4">
+      <circle cx="4" cy="4" r="3.5" fill="#10b981" stroke="#ffffff" stroke-width="1" />
+    </marker>
+  </defs>
+
+  <!-- Background Base -->
+  <rect width="1600" height="1000" fill="url(#bgGrad)" />
+
+  <!-- Blueprint Pattern -->
+  <g opacity="0.04" stroke="#38bdf8" stroke-width="1">
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M 40 0 L 0 0 0 40" fill="none" />
+    </pattern>
+    <rect width="1600" height="1000" fill="url(#grid)" />
+  </g>
+
+  <!-- Top Mockup Window Bar -->
+  <rect x="0" y="0" width="1600" height="40" fill="#030712" />
+  <circle cx="24" cy="20" r="5" fill="#ef4444" />
+  <circle cx="42" cy="20" r="5" fill="#f59e0b" />
+  <circle cx="60" cy="20" r="5" fill="#10b981" />
+  <text x="88" y="25" fill="#94a3b8" font-size="13" font-weight="600">MOCKUP L14: DASBOR EVALUASI LEMBAGA (SimSCADA-Air v1.3)</text>
+  <rect x="1390" y="9" width="180" height="22" rx="11" fill="#1e293b" />
+  <text x="1480" y="24" fill="#38bdf8" font-size="11" font-weight="600" text-anchor="middle">MOCKUP v1.3 · PRD v1.0</text>
+
+  <!-- Standard Tenant Header PRD §6 -->
+  <g transform="translate(0, 40)">
+    <rect width="1600" height="66" fill="#0b1329" stroke="#1e293b" stroke-width="1" />
+    
+    <!-- Tenant Logo &amp; Name -->
+    <g transform="translate(32, 11)">
+      <rect width="44" height="44" rx="10" fill="#0284c7" />
+      <path d="M 22 10 C 22 10, 14 22, 14 28 A 8 8 0 0 0 30 28 C 30 22, 22 10, 22 10 Z" fill="#ffffff" />
+      <text x="56" y="22" fill="#f8fafc" font-size="17" font-weight="700" letter-spacing="0.3">Balai Diklat Air Minum Nusantara</text>
+      <text x="56" y="38" fill="#94a3b8" font-size="11" font-weight="500">Didukung oleh <tspan font-weight="700" fill="#38bdf8">SimSCADA-Air</tspan> · Platform Simulator SCADA Air Minum</text>
+    </g>
+
+    <!-- User &amp; Role Profile Right -->
+    <g transform="translate(1260, 13)">
+      <rect width="308" height="40" rx="8" fill="#1e293b" stroke="#334155" stroke-width="1" />
+      <circle cx="22" cy="20" r="13" fill="#0369a1" />
+      <text x="22" y="24" fill="#ffffff" font-size="11" font-weight="700" text-anchor="middle">BS</text>
+      <text x="44" y="18" fill="#f1f5f9" font-size="12" font-weight="600">Dr. Ir. Bambang Sutrisno, M.Eng.</text>
+      <text x="44" y="31" fill="#38bdf8" font-size="10" font-weight="500">Pimpinan Lembaga · Evaluasi Eksekutif</text>
+      <circle cx="286" cy="20" r="4" fill="#10b981" />
+    </g>
+  </g>
+  <!-- Clean Non-Colliding Title Block -->
+  <g transform="translate(32, 120)">
+    <text x="0" y="24" fill="#ffffff" font-size="22" font-weight="700" letter-spacing="0.3">Dasbor Evaluasi Lembaga &amp; ROI Pelatihan</text>
+    <text x="0" y="46" fill="#94a3b8" font-size="13">4 Metrik Kunci Keberhasilan (T1–T4 PRD §3) · Kartu Pemakaian Lisensi &amp; Ekspor Laporan (PRD §12)</text>
+  </g>
+
+  <!-- Filter &amp; Period Bar PRD §12 (Width: 1536) -->
+  <g transform="translate(32, 190)">
+    <rect width="1536" height="50" rx="8" fill="#0f172a" stroke="#334155" />
+    
+    <text x="20" y="31" fill="#94a3b8" font-size="11.5">Periode:</text>
+    <rect x="75" y="10" width="160" height="30" rx="4" fill="#1e293b" stroke="#334155" />
+    <text x="88" y="29" fill="#ffffff" font-size="11.5">6 Bulan Terakhir ▾</text>
+
+    <text x="260" y="31" fill="#94a3b8" font-size="11.5">Jalur:</text>
+    <rect x="300" y="10" width="140" height="30" rx="4" fill="#1e293b" stroke="#334155" />
+    <text x="312" y="29" fill="#ffffff" font-size="11.5">Semua Jalur ▾</text>
+
+    <text x="460" y="31" fill="#94a3b8" font-size="11.5">Kelompok:</text>
+    <rect x="530" y="10" width="150" height="30" rx="4" fill="#1e293b" stroke="#334155" />
+    <text x="542" y="29" fill="#ffffff" font-size="11.5">Angkatan 1 &amp; 2 ▾</text>
+
+    <text x="700" y="31" fill="#94a3b8" font-size="11.5">Instruktur:</text>
+    <rect x="770" y="10" width="160" height="30" rx="4" fill="#1e293b" stroke="#334155" />
+    <text x="782" y="29" fill="#ffffff" font-size="11.5">Budi Santoso, S.T. ▾</text>
+
+    <!-- Export Buttons PRD §12 -->
+    <rect x="1220" y="9" width="145" height="32" rx="6" fill="#1e293b" stroke="#0284c7" />
+    <text x="1292" y="29" fill="#38bdf8" font-size="11" font-weight="700" text-anchor="middle">📊 Ekspor Excel (.xlsx)</text>
+
+    <rect x="1375" y="9" width="145" height="32" rx="6" fill="#0284c7" />
+    <text x="1447" y="29" fill="#ffffff" font-size="11" font-weight="700" text-anchor="middle">📄 Ekspor PDF Berkop</text>
+  </g>
+
+  <!-- 4 PRIMARY KPI METRICS PRD §3 (T1, T2, T3, T4 - Mathematical Consistency) -->
+  <g transform="translate(32, 255)">
+    <!-- T1: Peningkatan Kompetensi PRD §3 -->
+    <rect width="365" height="135" rx="10" fill="url(#cardGrad)" stroke="#059669" stroke-width="2" />
+    <g transform="translate(20, 20)">
+      <text x="0" y="16" fill="#a7f3d0" font-size="11" font-weight="700">T1: PENINGKATAN KOMPETENSI (PRD §3):</text>
+      <text x="0" y="52" fill="#34d399" font-size="34" font-weight="800">+28,6%</text>
+      <rect x="170" y="26" width="140" height="24" rx="4" fill="#065f46" />
+      <text x="240" y="42" fill="#ffffff" font-size="10.5" font-weight="700" text-anchor="middle">TARGET: ≥ 25% (LULUS)</text>
+      <text x="0" y="76" fill="#cbd5e1" font-size="11">Pre-Test Rata-Rata: <tspan font-weight="700">56,0</tspan> ➔ Post-Test: <tspan font-weight="700">72,0</tspan></text>
+      <text x="0" y="94" fill="#6ee7b7" font-size="10.5">Formula: ((72 − 56) ÷ 56) × 100% = +28,6% ✓</text>
+    </g>
+
+    <!-- T2: Penguasaan 5 Gangguan Utama PRD §3 -->
+    <g transform="translate(390, 0)">
+      <rect width="365" height="135" rx="10" fill="url(#cardGrad)" stroke="#059669" stroke-width="2" />
+      <g transform="translate(20, 20)">
+        <text x="0" y="16" fill="#a7f3d0" font-size="11" font-weight="700">T2: PENGUASAAN 5 GANGGUAN UTAMA:</text>
+        <text x="0" y="52" fill="#34d399" font-size="34" font-weight="800">83,3%</text>
+        <rect x="170" y="26" width="140" height="24" rx="4" fill="#065f46" />
+        <text x="240" y="42" fill="#ffffff" font-size="10.5" font-weight="700" text-anchor="middle">TARGET: ≥ 80% (LULUS)</text>
+        <text x="0" y="76" fill="#cbd5e1" font-size="11">Lulus IPA-06, 07, 08 &amp; DST-05, 06 (≥1★)</text>
+        <text x="0" y="94" fill="#6ee7b7" font-size="10.5">35 dari 42 peserta aktif lulus ke-5 gangguan</text>
+      </g>
+    </g>
+
+    <!-- T3: Waktu Menuju Lulus PRD §3 -->
+    <g transform="translate(780, 0)">
+      <rect width="365" height="135" rx="10" fill="url(#cardGrad)" stroke="#0284c7" stroke-width="2" />
+      <g transform="translate(20, 20)">
+        <text x="0" y="16" fill="#38bdf8" font-size="11" font-weight="700">T3: WAKTU MENUJU KELULUSAN:</text>
+        <text x="0" y="52" fill="#38bdf8" font-size="34" font-weight="800">58 Hari</text>
+        <rect x="160" y="26" width="150" height="24" rx="4" fill="#0369a1" />
+        <text x="235" y="42" fill="#ffffff" font-size="10.5" font-weight="700" text-anchor="middle">±2 BULAN (TARGET T3)</text>
+        <text x="0" y="76" fill="#cbd5e1" font-size="11">Median mulai jalur hingga piagam terbit</text>
+        <text x="0" y="94" fill="#7dd3fc" font-size="10.5">Turun dari orientasi konvensional (±90 hari)</text>
+      </g>
+    </g>
+
+    <!-- T4: Tingkat Kelulusan PRD §3 -->
+    <g transform="translate(1170, 0)">
+      <rect width="366" height="135" rx="10" fill="url(#cardGrad)" stroke="#059669" stroke-width="2" />
+      <g transform="translate(20, 20)">
+        <text x="0" y="16" fill="#a7f3d0" font-size="11" font-weight="700">T4: PENYELESAIAN JALUR (KELULUSAN):</text>
+        <text x="0" y="52" fill="#34d399" font-size="34" font-weight="800">76,2%</text>
+        <rect x="170" y="26" width="140" height="24" rx="4" fill="#065f46" />
+        <text x="240" y="42" fill="#ffffff" font-size="10.5" font-weight="700" text-anchor="middle">TARGET: ≥ 70% (LULUS)</text>
+        <text x="0" y="76" fill="#cbd5e1" font-size="11">32 Piagam Terbit ÷ 42 Peserta Aktif</text>
+        <text x="0" y="94" fill="#6ee7b7" font-size="10.5">Peserta aktif = login 14 hari terakhir</text>
+      </g>
+    </g>
+  </g>
+
+  <!-- SEPARATE DEDICATED CARD: PEMAKAIAN LISENSI PRD §12 (Width: 1536) -->
+  <g transform="translate(32, 405)">
+    <rect width="1536" height="105" rx="10" fill="#1e1b4b" stroke="#6366f1" stroke-width="1.5" />
+    <g transform="translate(24, 20)">
+      <text x="0" y="18" fill="#c7d2fe" font-size="13" font-weight="700">KARTU PEMAKAIAN LISENSI &amp; NILAI INVESTASI (ROI DIKLAT PRD §12):</text>
+      
+      <!-- Metric 1: Seats -->
+      <g transform="translate(0, 32)">
+        <text x="0" y="16" fill="#a5b4fc" font-size="11">Kursi Lisensi Terpakai:</text>
+        <text x="0" y="40" fill="#ffffff" font-size="20" font-weight="800">46 / 50 <tspan font-size="13" fill="#fbbf24">(92% Terpakai)</tspan></text>
+      </g>
+
+      <!-- Metric 2: Sisa Masa Lisensi -->
+      <g transform="translate(380, 32)">
+        <text x="0" y="16" fill="#a5b4fc" font-size="11">Sisa Masa Berlaku Lisensi:</text>
+        <text x="0" y="40" fill="#34d399" font-size="20" font-weight="800">245 Hari Tersisa</text>
+      </g>
+
+      <!-- Metric 3: Total Jam Simulasi -->
+      <g transform="translate(760, 32)">
+        <text x="0" y="16" fill="#a5b4fc" font-size="11">Total Waktu Simulasi SCADA:</text>
+        <text x="0" y="40" fill="#38bdf8" font-size="20" font-weight="800">412 Jam Praktik</text>
+      </g>
+
+      <!-- Metric 4: Peserta Aktif 14 Hari -->
+      <g transform="translate(1140, 32)">
+        <text x="0" y="16" fill="#a5b4fc" font-size="11">Peserta Aktif (14 Hari Terakhir):</text>
+        <text x="0" y="40" fill="#ffffff" font-size="20" font-weight="800">42 Peserta Aktif</text>
+      </g>
+    </g>
+  </g>
+
+  <!-- Detailed Diagnostic Grid: 5 Hardest Missions + Frequent Mistakes (Width: 1536) -->
+  <g transform="translate(32, 525)">
+    <!-- Left: 5 Misi Paling Sulit (Gagal Percobaan Pertama) PRD §12 -->
+    <rect width="750" height="420" rx="10" fill="url(#cardGrad)" stroke="#334155" stroke-width="1.5" />
+    <g transform="translate(24, 20)">
+      <text x="0" y="18" fill="#ffffff" font-size="14" font-weight="700">5 Misi Paling Sulit (Tingkat Gagal Percobaan Pertama PRD §12):</text>
+      <text x="0" y="36" fill="#94a3b8" font-size="11.5">Bahan evaluasi materi pengajaran bagi instruktur SPAM</text>
+
+      <line x1="0" y1="48" x2="702" y2="48" stroke="#334155" stroke-width="1" />
+
+      <!-- Mission 1: IPA-06 -->
+      <g transform="translate(0, 60)">
+        <text x="0" y="16" fill="#cbd5e1" font-size="12">1. <tspan font-weight="700" fill="#ffffff">IPA-06</tspan> Gangguan Lonjakan Kekeruhan Air Baku</text>
+        <text x="700" y="16" fill="#ef4444" font-size="12" font-weight="700" text-anchor="end">42% Gagal Percobaan 1</text>
+        <rect y="24" width="702" height="8" rx="4" fill="#0f172a" />
+        <rect y="24" width="295" height="8" rx="4" fill="#ef4444" />
+      </g>
+
+      <!-- Mission 2: DST-05 -->
+      <g transform="translate(0, 115)">
+        <text x="0" y="16" fill="#cbd5e1" font-size="12">2. <tspan font-weight="700" fill="#ffffff">DST-05</tspan> Gangguan Kebocoran Pipa Distribusi</text>
+        <text x="700" y="16" fill="#f59e0b" font-size="12" font-weight="700" text-anchor="end">38% Gagal Percobaan 1</text>
+        <rect y="24" width="702" height="8" rx="4" fill="#0f172a" />
+        <rect y="24" width="266" height="8" rx="4" fill="#f59e0b" />
+      </g>
+
+      <!-- Mission 3: TRP-01 -->
+      <g transform="translate(0, 170)">
+        <text x="0" y="16" fill="#cbd5e1" font-size="12">3. <tspan font-weight="700" fill="#ffffff">TRP-01</tspan> Gangguan Berantai Hulu ke Hilir</text>
+        <text x="700" y="16" fill="#f59e0b" font-size="12" font-weight="700" text-anchor="end">35% Gagal Percobaan 1</text>
+        <rect y="24" width="702" height="8" rx="4" fill="#0f172a" />
+        <rect y="24" width="245" height="8" rx="4" fill="#f59e0b" />
+      </g>
+
+      <!-- Mission 4: DST-06 -->
+      <g transform="translate(0, 225)">
+        <text x="0" y="16" fill="#cbd5e1" font-size="12">4. <tspan font-weight="700" fill="#ffffff">DST-06</tspan> Gangguan Tekanan Jaringan Drop</text>
+        <text x="700" y="16" fill="#38bdf8" font-size="12" font-weight="700" text-anchor="end">31% Gagal Percobaan 1</text>
+        <rect y="24" width="702" height="8" rx="4" fill="#0f172a" />
+        <rect y="24" width="217" height="8" rx="4" fill="#38bdf8" />
+      </g>
+
+      <!-- Mission 5: IPA-07 -->
+      <g transform="translate(0, 280)">
+        <text x="0" y="16" fill="#cbd5e1" font-size="12">5. <tspan font-weight="700" fill="#ffffff">IPA-07</tspan> Gangguan Pompa Intake Trip</text>
+        <text x="700" y="16" fill="#34d399" font-size="12" font-weight="700" text-anchor="end">28% Gagal Percobaan 1</text>
+        <rect y="24" width="702" height="8" rx="4" fill="#0f172a" />
+        <rect y="24" width="196" height="8" rx="4" fill="#34d399" />
+      </g>
+    </g>
+  </g>
+
+  <!-- Right: Kesalahan Tersering &amp; Perbandingan Angkatan PRD §12 -->
+  <g transform="translate(818, 525)">
+    <rect width="750" height="420" rx="10" fill="url(#cardGrad)" stroke="#334155" stroke-width="1.5" />
+    <g transform="translate(24, 20)">
+      <text x="0" y="18" fill="#ffffff" font-size="14" font-weight="700">Analisis Kesalahan Tersering &amp; Perbandingan Angkatan (PRD §12):</text>
+      <text x="0" y="36" fill="#94a3b8" font-size="11.5">Bahan penyempurnaan SOP operasional dan kurikulum kelas</text>
+
+      <line x1="0" y1="48" x2="702" y2="48" stroke="#334155" stroke-width="1" />
+
+      <!-- Top 3 Mistakes PRD §12 -->
+      <g transform="translate(0, 60)">
+        <rect width="702" height="54" rx="6" fill="#0f172a" stroke="#1e293b" />
+        <text x="16" y="24" fill="#ef4444" font-size="12" font-weight="700">1. Terlambat Naikkan Koagulan saat Lonjakan Baku (34 Kejadian)</text>
+        <text x="16" y="42" fill="#cbd5e1" font-size="11">Rata-rata respons terlambat 28 detik dari target awal.</text>
+
+        <rect y="64" width="702" height="54" rx="6" fill="#0f172a" stroke="#1e293b" />
+        <text x="16" y="88" fill="#f59e0b" font-size="12" font-weight="700">2. Menekan Tombol Clear saat Kondisi Masih Abnormal (26 Kejadian)</text>
+        <text x="16" y="106" fill="#cbd5e1" font-size="11">Sistem menolak dengan pesan "Penyebab belum ditangani".</text>
+
+        <rect y="128" width="702" height="54" rx="6" fill="#0f172a" stroke="#1e293b" />
+        <text x="16" y="152" fill="#38bdf8" font-size="12" font-weight="700">3. Menutup Valve Isolasi yang Salah pada Kebocoran (18 Kejadian)</text>
+        <text x="16" y="170" fill="#cbd5e1" font-size="11">Mengakibatkan tekanan drop merembet ke zona pelanggan aktif.</text>
+      </g>
+
+      <!-- Comparison: Angkatan 1 vs Angkatan 2 -->
+      <g transform="translate(0, 270)">
+        <text x="0" y="16" fill="#38bdf8" font-size="12" font-weight="700">KOMPARASI KELOMPOK (ANGKATAN 1 vs ANGKATAN 2):</text>
+        
+        <rect y="26" width="340" height="70" rx="8" fill="#0f172a" stroke="#1e293b" />
+        <text x="16" y="48" fill="#ffffff" font-size="12" font-weight="700">Angkatan 1 (Budi Santoso)</text>
+        <text x="16" y="68" fill="#34d399" font-size="11">Rata-Rata Skor: 84,2 · Kelulusan: 79%</text>
+
+        <rect x="360" y="26" width="342" height="70" rx="8" fill="#0f172a" stroke="#1e293b" />
+        <text x="376" y="48" fill="#ffffff" font-size="12" font-weight="700">Angkatan 2 (Budi Santoso)</text>
+        <text x="376" y="68" fill="#38bdf8" font-size="11">Rata-Rata Skor: 81,0 · Kelulusan: 71%</text>
+      </g>
+    </g>
+  </g>
+
+</svg>

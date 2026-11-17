@@ -1,0 +1,231 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" width="1920" height="1080">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0b1120" />
+      <stop offset="50%" stop-color="#0f172a" />
+      <stop offset="100%" stop-color="#080e1a" />
+    </linearGradient>
+    <linearGradient id="cardGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#1e293b" />
+      <stop offset="100%" stop-color="#0f172a" />
+    </linearGradient>
+    <linearGradient id="accentGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#0284c7" />
+      <stop offset="100%" stop-color="#06b6d4" />
+    </linearGradient>
+    <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#f59e0b" />
+      <stop offset="100%" stop-color="#fbbf24" />
+    </linearGradient>
+  </defs>
+  <rect width="1920" height="1080" fill="url(#bgGrad)" />
+  <!-- Standard Tenant Header PRD §6 -->
+  <g transform="translate(32, 24)">
+    <rect width="1856" height="64" rx="10" fill="#0f172a" stroke="#1e293b" stroke-width="1.5" />
+    <circle cx="44" cy="32" r="20" fill="#0284c7" />
+    <path d="M44 18 C44 18 34 29 34 35 C34 40.5 38.5 45 44 45 C49.5 45 54 40.5 54 35 C54 29 44 18 44 18 Z" fill="#ffffff" />
+    <text x="76" y="28" fill="#ffffff" font-size="16" font-weight="700">Balai Diklat Air Minum Nusantara</text>
+    <text x="76" y="46" fill="#38bdf8" font-size="11" font-weight="500">Platform Simulasi SCADA SPAM · <tspan fill="#64748b">Didukung oleh SimSCADA-Air</tspan></text>
+    
+    <g transform="translate(1420, 14)">
+      <rect width="404" height="36" rx="18" fill="#1e293b" stroke="#334155" />
+      <circle cx="20" cy="18" r="14" fill="#0369a1" />
+      <text x="20" y="22" fill="#ffffff" font-size="11" font-weight="700" text-anchor="middle">AN</text>
+      <text x="44" y="17" fill="#f8fafc" font-size="12" font-weight="600">Admin Nusantara</text>
+      <text x="44" y="30" fill="#94a3b8" font-size="10">Admin Lembaga · NUS</text>
+      <rect x="310" y="8" width="82" height="20" rx="10" fill="#b91c1c" />
+      <text x="351" y="22" fill="#ffffff" font-size="10" font-weight="700" text-anchor="middle">KELUAR</text>
+    </g>
+  </g>  <!-- Page Title Block -->
+  <g transform="translate(32, 112)">
+    <text x="0" y="22" fill="#ffffff" font-size="20" font-weight="700">Pengaturan Lembaga &amp; Standar Evaluasi</text>
+    <text x="0" y="42" fill="#94a3b8" font-size="12.5">Konfigurasi Bobot Skor, KKM, Logo Lembaga, Saklar Papan Peringkat (FR-21) &amp; Penanda Tangan</text>
+  </g>
+  <!-- Main Grid: Left = Scoring &amp; KKM with SUB-CARDS (Width 960), Right = Branding &amp; Signers (Width 864) -->
+  <g transform="translate(32, 180)">
+    <!-- LEFT CARD: SCORING &amp; KKM (Width 960) -->
+    <rect width="960" height="860" rx="14" fill="url(#cardGrad)" stroke="#334155" stroke-width="1.5" />
+    <g transform="translate(32, 26)">
+      <text x="0" y="20" fill="#ffffff" font-size="16" font-weight="700">Standar Ambang Kelulusan &amp; Bobot Komponen Evaluasi (PRD §8)</text>
+      <text x="0" y="40" fill="#94a3b8" font-size="12">Kriteria kelulusan otomatis mesin simulasi SCADA SPAM untuk seluruh modul</text>
+      <line x1="0" y1="56" x2="896" y2="56" stroke="#334155" stroke-width="1" />
+
+      <!-- SECTION 1: 3 KKM SUB-CARDS FIXED (WRAPPED IN <g transform="translate(...)"> TO PREVENT TEXT OVERLAP) -->
+      <g transform="translate(0, 75)">
+        <text x="0" y="16" fill="#fbbf24" font-size="12.5" font-weight="700">AMBANG KELULUSAN (KKM) &amp; BINTANG KELAYAKAN:</text>
+        
+        <!-- CARD 1: Misi Latihan (70) -->
+        <g transform="translate(0, 26)">
+          <rect width="285" height="120" rx="8" fill="#0f172a" stroke="#334155" />
+          <g transform="translate(16, 16)">
+            <text x="0" y="16" fill="#94a3b8" font-size="11" font-weight="700">MISI LATIHAN (1★)</text>
+            <text x="0" y="44" fill="#ffffff" font-size="24" font-weight="800">Skor ≥ 70</text>
+            <text x="0" y="66" fill="#38bdf8" font-size="11">Syarat Bintang 1 (70–84)</text>
+            <text x="0" y="82" fill="#64748b" font-size="10">Membuka skenario berikutnya</text>
+          </g>
+        </g>
+
+        <!-- CARD 2: Misi Kelulusan Ujian (80) -->
+        <g transform="translate(305, 26)">
+          <rect width="285" height="120" rx="8" fill="#0f172a" stroke="#d97706" stroke-width="1.5" />
+          <g transform="translate(16, 16)">
+            <text x="0" y="16" fill="#fbbf24" font-size="11" font-weight="700">MISI KELULUSAN UJIAN (KKM)</text>
+            <text x="0" y="44" fill="#fbbf24" font-size="24" font-weight="800">Skor ≥ 80</text>
+            <text x="0" y="66" fill="#fbbf24" font-size="11">Syarat Terbit Piagam PRD §8</text>
+            <text x="0" y="82" fill="#64748b" font-size="10">Ujian IPA-09 &amp; TRP-02</text>
+          </g>
+        </g>
+
+        <!-- CARD 3: Predikat Bintang 3 (95) -->
+        <g transform="translate(610, 26)">
+          <rect width="286" height="120" rx="8" fill="#0f172a" stroke="#059669" stroke-width="1.5" />
+          <g transform="translate(16, 16)">
+            <text x="0" y="16" fill="#34d399" font-size="11" font-weight="700">PREDIKAT SANGAT BAIK (3★)</text>
+            <text x="0" y="44" fill="#34d399" font-size="24" font-weight="800">Skor ≥ 95</text>
+            <text x="0" y="66" fill="#34d399" font-size="11">Pencapaian Tertinggi</text>
+            <text x="0" y="82" fill="#64748b" font-size="10">Syarat Lencana 3 Bintang</text>
+          </g>
+        </g>
+      </g>
+
+      <!-- SECTION 2: 4 COMPONENT WEIGHTS -->
+      <g transform="translate(0, 255)">
+        <text x="0" y="16" fill="#e2e8f0" font-size="12.5" font-weight="700">BOBOT 4 KOMPONEN PENILAIAN OTOMATIS (PRD §8):</text>
+        
+        <!-- Comp 1: Stabilitas Mutu (30%) -->
+        <g transform="translate(0, 30)">
+          <rect width="896" height="52" rx="6" fill="#0f172a" stroke="#334155" />
+          <text x="20" y="31" fill="#ffffff" font-size="12" font-weight="700">1. Stabilitas Parameter Kualitas &amp; Tekanan Air</text>
+          <rect x="740" y="12" width="70" height="28" rx="4" fill="#0284c7" />
+          <text x="775" y="30" fill="#ffffff" font-size="12" font-weight="700" text-anchor="middle">30%</text>
+          <text x="825" y="31" fill="#94a3b8" font-size="11">Maks 30 Pts</text>
+        </g>
+
+        <!-- Comp 2: Kecepatan Respons (25%) -->
+        <g transform="translate(0, 92)">
+          <rect width="896" height="52" rx="6" fill="#0f172a" stroke="#334155" />
+          <text x="20" y="31" fill="#ffffff" font-size="12" font-weight="700">2. Kecepatan Respons Tanggap Darurat Alarm</text>
+          <rect x="740" y="12" width="70" height="28" rx="4" fill="#0284c7" />
+          <text x="775" y="30" fill="#ffffff" font-size="12" font-weight="700" text-anchor="middle">25%</text>
+          <text x="825" y="31" fill="#94a3b8" font-size="11">Maks 25 Pts</text>
+        </g>
+
+        <!-- Comp 3: Efisiensi Kimia &amp; Energi (25%) -->
+        <g transform="translate(0, 154)">
+          <rect width="896" height="52" rx="6" fill="#0f172a" stroke="#334155" />
+          <text x="20" y="31" fill="#ffffff" font-size="12" font-weight="700">3. Efisiensi Penggunaan Bahan Kimia &amp; Energi Pompa</text>
+          <rect x="740" y="12" width="70" height="28" rx="4" fill="#0284c7" />
+          <text x="775" y="30" fill="#ffffff" font-size="12" font-weight="700" text-anchor="middle">25%</text>
+          <text x="825" y="31" fill="#94a3b8" font-size="11">Maks 25 Pts</text>
+        </g>
+
+        <!-- Comp 4: Prosedur Operasional Standar (20%) -->
+        <g transform="translate(0, 216)">
+          <rect width="896" height="52" rx="6" fill="#0f172a" stroke="#334155" />
+          <text x="20" y="31" fill="#ffffff" font-size="12" font-weight="700">4. Kepatuhan Urutan Prosedur Operasional Standar (SOP)</text>
+          <rect x="740" y="12" width="70" height="28" rx="4" fill="#0284c7" />
+          <text x="775" y="30" fill="#ffffff" font-size="12" font-weight="700" text-anchor="middle">20%</text>
+          <text x="825" y="31" fill="#94a3b8" font-size="11">Maks 20 Pts</text>
+        </g>
+      </g>
+
+      <!-- SECTION 3: PENALTY &amp; HINT CONFIG -->
+      <g transform="translate(0, 560)">
+        <text x="0" y="16" fill="#e2e8f0" font-size="12.5" font-weight="700">PENGURANG NILAI PETUNJUK &amp; REMEDIAL:</text>
+        <rect x="0" y="26" width="896" height="90" rx="6" fill="#0f172a" stroke="#334155" />
+        <g transform="translate(20, 20)">
+          <text x="0" y="16" fill="#cbd5e1" font-size="11.5">• Penalti Tombol Petunjuk: <tspan fill="#f87171" font-weight="700">−5 Poin per klik</tspan> (Nonaktifkan di Misi Kelulusan Ujian).</text>
+          <text x="0" y="38" fill="#cbd5e1" font-size="11.5">• Kesempatan Remedial: <tspan fill="#38bdf8" font-weight="700">Tidak terbatas</tspan> (Sistem mencatat skor tertinggi untuk piagam).</text>
+          <text x="0" y="58" fill="#cbd5e1" font-size="11.5">• Pengali XP: Diatur otomatis oleh tingkat kesulitan skenario PRD §7 (1,0x s/d 3,0x).</text>
+        </g>
+      </g>
+
+      <!-- Save Button -->
+      <g transform="translate(0, 710)">
+        <rect width="220" height="44" rx="8" fill="#0284c7" />
+        <text x="110" y="27" fill="#ffffff" font-size="13" font-weight="700" text-anchor="middle">Simpan Konfigurasi</text>
+      </g>
+    </g>
+
+    <!-- RIGHT CARD: BRANDING, LEADERBOARD TOGGLE &amp; SIGNERS (Width 864) -->
+    <g transform="translate(992, 0)">
+      <rect width="864" height="860" rx="14" fill="url(#cardGrad)" stroke="#334155" stroke-width="1.5" />
+      <g transform="translate(28, 26)">
+        <text x="0" y="20" fill="#ffffff" font-size="16" font-weight="700">Identitas Lembaga, Logo &amp; Tanda Tangan Piagam</text>
+        <text x="0" y="40" fill="#94a3b8" font-size="12">Informasi resmi yang tercetak pada sertifikat piagam kelulusan (PRD §6)</text>
+        <line x1="0" y1="56" x2="808" y2="56" stroke="#334155" stroke-width="1" />
+
+        <!-- 1. UPLOAD LOGO LEMBAGA RESTORED -->
+        <g transform="translate(0, 70)">
+          <text x="0" y="16" fill="#e2e8f0" font-size="12" font-weight="700">LOGO RESMI LEMBAGA (PNG / SVG MAKS 2MB):</text>
+          <rect x="0" y="26" width="808" height="110" rx="8" fill="#0f172a" stroke="#334155" />
+          <g transform="translate(20, 20)">
+            <!-- Preview Logo Nusantara -->
+            <circle cx="35" cy="35" r="30" fill="#0284c7" />
+            <path d="M35 15 C35 15 23 30 23 38 C23 45 28 50 35 50 C42 50 47 45 47 38 C47 30 35 15 35 15 Z" fill="#ffffff" />
+            
+            <text x="85" y="26" fill="#ffffff" font-size="13" font-weight="700">logo_balai_diklat_nusantara.svg</text>
+            <text x="85" y="46" fill="#34d399" font-size="11">✓ Terunggah &amp; Digunakan di Header serta Piagam Resmi</text>
+            
+            <rect x="620" y="18" width="150" height="34" rx="6" fill="#1e293b" stroke="#38bdf8" />
+            <text x="695" y="39" fill="#38bdf8" font-size="11.5" font-weight="700" text-anchor="middle">Ganti Logo...</text>
+          </g>
+        </g>
+
+        <!-- 2. SAKLAR PAPAN PERINGKAT FR-21 RESTORED -->
+        <g transform="translate(0, 215)">
+          <text x="0" y="16" fill="#e2e8f0" font-size="12" font-weight="700">PRIVASI &amp; PAPAN PERINGKAT ANTAR-PESERTA (FR-21):</text>
+          <rect x="0" y="26" width="808" height="90" rx="8" fill="#0f172a" stroke="#334155" />
+          <g transform="translate(20, 20)">
+            <text x="0" y="20" fill="#ffffff" font-size="13" font-weight="700">Tampilkan Papan Peringkat Kompetensi Peserta</text>
+            <text x="0" y="40" fill="#94a3b8" font-size="11">Aktifkan gamifikasi peringkat antar-peserta dalam lembaga Balai Diklat Nusantara</text>
+
+            <!-- Toggle Switch ON -->
+            <rect x="680" y="10" width="80" height="32" rx="16" fill="#0284c7" />
+            <circle cx="736" cy="26" r="12" fill="#ffffff" />
+            <text x="702" y="30" fill="#ffffff" font-size="10" font-weight="800">ON</text>
+          </g>
+        </g>
+
+        <!-- 3. PENANDA TANGAN PIAGAM RESTORED -->
+        <g transform="translate(0, 340)">
+          <text x="0" y="16" fill="#fbbf24" font-size="12" font-weight="700">PENANDA TANGAN PIAGAM KELULUSAN RESMI (PRD §6):</text>
+          
+          <!-- Signer 1: Instruktur Penilai -->
+          <g transform="translate(0, 26)">
+            <rect width="808" height="95" rx="8" fill="#0f172a" stroke="#334155" />
+            <g transform="translate(16, 16)">
+              <text x="0" y="16" fill="#38bdf8" font-size="11.5" font-weight="700">1. INSTRUKTUR PENILAI / PENGUJI:</text>
+              <text x="0" y="40" fill="#ffffff" font-size="13" font-weight="700">Budi Santoso, S.T.</text>
+              <text x="0" y="58" fill="#94a3b8" font-size="11">Jabatan: Instruktur Utama SPAM · NIP: 19820412 200801 1 005</text>
+              <rect x="680" y="16" width="100" height="30" rx="4" fill="#1e293b" stroke="#334155" />
+              <text x="730" y="35" fill="#cbd5e1" font-size="11" text-anchor="middle">Ubah Data</text>
+            </g>
+          </g>
+
+          <!-- Signer 2: Kepala Lembaga -->
+          <g transform="translate(0, 135)">
+            <rect width="808" height="95" rx="8" fill="#0f172a" stroke="#334155" />
+            <g transform="translate(16, 16)">
+              <text x="0" y="16" fill="#38bdf8" font-size="11.5" font-weight="700">2. PIMPINAN / KEPALA LEMBAGA DIKLAT:</text>
+              <text x="0" y="40" fill="#ffffff" font-size="13" font-weight="700">Ir. H. Bambang Sutrisno, M.Eng.</text>
+              <text x="0" y="58" fill="#94a3b8" font-size="11">Jabatan: Kepala Balai Diklat Air Minum Nusantara · NIP: 19710815 199603 1 002</text>
+              <rect x="680" y="16" width="100" height="30" rx="4" fill="#1e293b" stroke="#334155" />
+              <text x="730" y="35" fill="#cbd5e1" font-size="11" text-anchor="middle">Ubah Data</text>
+            </g>
+          </g>
+        </g>
+
+        <!-- Preview Button -->
+        <g transform="translate(0, 600)">
+          <rect width="808" height="50" rx="8" fill="#1e293b" stroke="#f59e0b" />
+          <g transform="translate(20, 15)">
+            <text x="0" y="20" fill="#fbbf24" font-size="12" font-weight="700">Lihat Contoh Piagam Sesuai Pengaturan Ini →</text>
+            <rect x="640" y="0" width="140" height="32" rx="6" fill="#f59e0b" />
+            <text x="710" y="20" fill="#0f172a" font-size="11" font-weight="800" text-anchor="middle">Pratinjau (L8)</text>
+          </g>
+        </g>
+      </g>
+    </g>
+  </g>
+</svg>

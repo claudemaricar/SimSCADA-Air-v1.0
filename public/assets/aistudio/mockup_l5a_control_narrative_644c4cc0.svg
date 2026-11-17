@@ -1,0 +1,254 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1000" width="1600" height="1000" style="background:#0b1120; font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0f172a" />
+      <stop offset="50%" stop-color="#0b1329" />
+      <stop offset="100%" stop-color="#020617" />
+    </linearGradient>
+    <linearGradient id="cardGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#1e293b" />
+      <stop offset="100%" stop-color="#0f172a" />
+    </linearGradient>
+    <linearGradient id="cardDark" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#0f172a" />
+      <stop offset="100%" stop-color="#070c18" />
+    </linearGradient>
+    <linearGradient id="primaryGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#0284c7" />
+      <stop offset="100%" stop-color="#2563eb" />
+    </linearGradient>
+    <linearGradient id="accentGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#06b6d4" />
+      <stop offset="100%" stop-color="#3b82f6" />
+    </linearGradient>
+    <linearGradient id="amberGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#d97706" />
+      <stop offset="100%" stop-color="#b45309" />
+    </linearGradient>
+    <linearGradient id="emeraldGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#059669" />
+      <stop offset="100%" stop-color="#10b981" />
+    </linearGradient>
+    <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#f59e0b" />
+      <stop offset="100%" stop-color="#d97706" />
+    </linearGradient>
+    <filter id="dropShadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="10" stdDeviation="14" flood-color="#000000" flood-opacity="0.55"/>
+    </filter>
+    <filter id="glowCyan" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="0" stdDeviation="6" flood-color="#06b6d4" flood-opacity="0.6"/>
+    </filter>
+    <filter id="glowRed" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="0" stdDeviation="6" flood-color="#ef4444" flood-opacity="0.7"/>
+    </filter>
+    <filter id="glowAmber" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="0" stdDeviation="6" flood-color="#f59e0b" flood-opacity="0.7"/>
+    </filter>
+    <marker id="dotBlue" markerWidth="8" markerHeight="8" refX="4" refY="4">
+      <circle cx="4" cy="4" r="3.5" fill="#38bdf8" stroke="#ffffff" stroke-width="1" />
+    </marker>
+    <marker id="dotOrange" markerWidth="8" markerHeight="8" refX="4" refY="4">
+      <circle cx="4" cy="4" r="3.5" fill="#f59e0b" stroke="#ffffff" stroke-width="1" />
+    </marker>
+    <marker id="dotGreen" markerWidth="8" markerHeight="8" refX="4" refY="4">
+      <circle cx="4" cy="4" r="3.5" fill="#10b981" stroke="#ffffff" stroke-width="1" />
+    </marker>
+  </defs>
+
+  <!-- Background Base -->
+  <rect width="1600" height="1000" fill="url(#bgGrad)" />
+
+  <!-- Blueprint Pattern -->
+  <g opacity="0.04" stroke="#38bdf8" stroke-width="1">
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M 40 0 L 0 0 0 40" fill="none" />
+    </pattern>
+    <rect width="1600" height="1000" fill="url(#grid)" />
+  </g>
+
+  <!-- Top Mockup Window Bar -->
+  <rect x="0" y="0" width="1600" height="40" fill="#030712" />
+  <circle cx="24" cy="20" r="5" fill="#ef4444" />
+  <circle cx="42" cy="20" r="5" fill="#f59e0b" />
+  <circle cx="60" cy="20" r="5" fill="#10b981" />
+  <text x="88" y="25" fill="#94a3b8" font-size="13" font-weight="600">MOCKUP L5a: POP-UP NARASI TITIK KONTROL KOAGULASI (SimSCADA-Air v1.3)</text>
+  <rect x="1390" y="9" width="180" height="22" rx="11" fill="#1e293b" />
+  <text x="1480" y="24" fill="#38bdf8" font-size="11" font-weight="600" text-anchor="middle">MOCKUP v1.3 · PRD v1.0</text>
+
+  <!-- Standard Tenant Header PRD §6 -->
+  <g transform="translate(0, 40)">
+    <rect width="1600" height="66" fill="#0b1329" stroke="#1e293b" stroke-width="1" />
+    
+    <!-- Tenant Logo &amp; Name -->
+    <g transform="translate(32, 11)">
+      <rect width="44" height="44" rx="10" fill="#0284c7" />
+      <path d="M 22 10 C 22 10, 14 22, 14 28 A 8 8 0 0 0 30 28 C 30 22, 22 10, 22 10 Z" fill="#ffffff" />
+      <text x="56" y="22" fill="#f8fafc" font-size="17" font-weight="700" letter-spacing="0.3">Balai Diklat Air Minum Nusantara</text>
+      <text x="56" y="38" fill="#94a3b8" font-size="11" font-weight="500">Didukung oleh <tspan font-weight="700" fill="#38bdf8">SimSCADA-Air</tspan> · Platform Simulator SCADA Air Minum</text>
+    </g>
+
+    <!-- User &amp; Role Profile Right -->
+    <g transform="translate(1260, 13)">
+      <rect width="308" height="40" rx="8" fill="#1e293b" stroke="#334155" stroke-width="1" />
+      <circle cx="22" cy="20" r="13" fill="#0369a1" />
+      <text x="22" y="24" fill="#ffffff" font-size="11" font-weight="700" text-anchor="middle">DW</text>
+      <text x="44" y="18" fill="#f1f5f9" font-size="12" font-weight="600">Dimas Wahyu Pratama</text>
+      <text x="44" y="31" fill="#38bdf8" font-size="10" font-weight="500">Operator Muda · Angkatan 1</text>
+      <circle cx="286" cy="20" r="4" fill="#10b981" />
+    </g>
+  </g>
+  <!-- Clean Non-Colliding Title Block -->
+  <g transform="translate(32, 120)">
+    <text x="0" y="24" fill="#ffffff" font-size="22" font-weight="700" letter-spacing="0.3">Pop-Up Narasi Titik Kontrol: Koagulasi</text>
+    <text x="0" y="46" fill="#94a3b8" font-size="13">6 Bagian Lengkap PRD §9 + Catatan SOP Lokal Lembaga · Akses 'i' Tidak Mengurangi Skor</text>
+  </g>
+
+  <!-- Underneath Backdrop: Dimmed SCADA Workspace -->
+  <rect x="32" y="185" width="1536" height="775" rx="14" fill="#050a14" opacity="0.8" stroke="#1e293b" />
+  
+  <!-- Interactive Cursor Tooltip on SCADA Mimic PRD §9 -->
+  <g transform="translate(100, 210)">
+    <rect width="280" height="52" rx="8" fill="#1e293b" stroke="#38bdf8" stroke-width="1.5" filter="url(#dropShadow)" />
+    <text x="14" y="22" fill="#38bdf8" font-size="11" font-weight="700">TOOLTIP (KURSOR):</text>
+    <text x="14" y="40" fill="#ffffff" font-size="12">Flash Mixer Koagulasi · 48 mg/L PAC · pH 7,20</text>
+    <polygon points="60,52 70,62 80,52" fill="#1e293b" />
+  </g>
+
+  <!-- Main Modal Container (Width: 1100, Centered at x=250, y=190) -->
+  <g transform="translate(250, 190)" filter="url(#dropShadow)">
+    <rect width="1100" height="770" rx="16" fill="url(#cardGrad)" stroke="#0284c7" stroke-width="2.5" />
+    
+    <!-- Modal Header -->
+    <g transform="translate(32, 28)">
+      <rect width="48" height="48" rx="10" fill="#0284c7" />
+      <text x="24" y="32" fill="#ffffff" font-size="22" font-weight="900" text-anchor="middle">i</text>
+      <text x="64" y="24" fill="#ffffff" font-size="19" font-weight="700">Narasi Detail Titik Kontrol: Flash Mixer Koagulasi</text>
+      <text x="64" y="44" fill="#38bdf8" font-size="12">Unit Operasi Kimia-Fisik · Pembubuhan Koagulan PAC &amp; Pengadukan Cepat (PRD §9)</text>
+
+      <rect x="990" y="8" width="36" height="36" rx="8" fill="#1e293b" stroke="#475569" />
+      <text x="1008" y="31" fill="#cbd5e1" font-size="16" font-weight="700" text-anchor="middle">✕</text>
+      <line x1="0" y1="64" x2="1036" y2="64" stroke="#334155" stroke-width="1" />
+    </g>
+
+    <!-- LEFT COLUMN (Sections 1, 2, 3) -->
+    <g transform="translate(32, 105)">
+      
+      <!-- 1. APA INI &amp; FUNGSINYA (+ Skema) -->
+      <g transform="translate(0, 0)">
+        <rect width="500" height="155" rx="10" fill="#0f172a" stroke="#1e293b" />
+        <text x="16" y="22" fill="#38bdf8" font-size="12" font-weight="700">1. APA INI &amp; FUNGSINYA (DESKRIPSI PROSES):</text>
+        <text x="16" y="44" fill="#ffffff" font-size="11.5">Unit pengaduk berkecepatan tinggi (G &gt; 750 s⁻¹)</text>
+        <text x="16" y="62" fill="#ffffff" font-size="11.5">yang meratakan koagulan PAC ke seluruh</text>
+        <text x="16" y="80" fill="#ffffff" font-size="11.5">aliran air baku dalam &lt; 60 detik.</text>
+        <text x="16" y="104" fill="#94a3b8" font-size="11">Tujuan: destabilisasi koloid penyebab kekeruhan.</text>
+
+        <!-- Mini Diagram Graphic -->
+        <g transform="translate(320, 20)">
+          <rect width="160" height="115" rx="6" fill="#1e293b" stroke="#334155" />
+          <path d="M 20 60 L 80 60 L 140 60" stroke="#0284c7" stroke-width="4" />
+          <line x1="80" y1="20" x2="80" y2="50" stroke="#38bdf8" stroke-width="3" stroke-dasharray="2,2" />
+          <circle cx="80" cy="60" r="14" fill="#0284c7" />
+          <text x="80" y="64" fill="#ffffff" font-size="9" text-anchor="middle">MIXER</text>
+          <text x="80" y="96" fill="#38bdf8" font-size="8.5" text-anchor="middle">Injeksi PAC 48 mg/L</text>
+        </g>
+      </g>
+
+      <!-- 2. YANG DIPANTAU -->
+      <g transform="translate(0, 170)">
+        <rect width="500" height="185" rx="10" fill="#0f172a" stroke="#1e293b" />
+        <text x="16" y="22" fill="#38bdf8" font-size="12" font-weight="700">2. YANG DIPANTAU (MONITORED PARAMETERS):</text>
+        
+        <g transform="translate(16, 32)">
+          <rect width="468" height="24" rx="4" fill="#1e293b" />
+          <text x="10" y="16" fill="#94a3b8" font-size="10" font-weight="700">PARAMETER</text>
+          <text x="150" y="16" fill="#94a3b8" font-size="10" font-weight="700">RENTANG NORMAL</text>
+          <text x="320" y="16" fill="#94a3b8" font-size="10" font-weight="700">NILAI SAAT INI</text>
+
+          <text x="10" y="44" fill="#cbd5e1" font-size="11">Kekeruhan Baku</text>
+          <text x="150" y="44" fill="#cbd5e1" font-size="11">15 – 50 NTU</text>
+          <text x="320" y="44" fill="#f59e0b" font-size="11" font-weight="700">185 NTU (Tinggi!)</text>
+
+          <text x="10" y="70" fill="#cbd5e1" font-size="11">Dosis Koagulan</text>
+          <text x="150" y="70" fill="#cbd5e1" font-size="11">15 – 50 mg/L</text>
+          <text x="320" y="70" fill="#38bdf8" font-size="11" font-weight="700">48,0 mg/L (Disesuaikan)</text>
+
+          <text x="10" y="96" fill="#cbd5e1" font-size="11">Derajat pH</text>
+          <text x="150" y="96" fill="#cbd5e1" font-size="11">6,5 – 8,5 (Permenkes)</text>
+          <text x="320" y="96" fill="#10b981" font-size="11" font-weight="700">7,20 pH (Normal ✓)</text>
+
+          <text x="10" y="122" fill="#cbd5e1" font-size="11">Kecepatan Mixer</text>
+          <text x="150" y="122" fill="#cbd5e1" font-size="11">100 – 150 RPM</text>
+          <text x="320" y="122" fill="#34d399" font-size="11" font-weight="700">120 RPM (Aktif)</text>
+        </g>
+      </g>
+
+      <!-- 3. YANG BISA DIKENDALIKAN -->
+      <g transform="translate(0, 370)">
+        <rect width="500" height="145" rx="10" fill="#0f172a" stroke="#1e293b" />
+        <text x="16" y="22" fill="#38bdf8" font-size="12" font-weight="700">3. YANG BISA DIKENDALIKAN (CONTROLS):</text>
+        <text x="16" y="46" fill="#ffffff" font-size="11.5">• <tspan font-weight="700" fill="#38bdf8">Setpoint Dosis Koagulan:</tspan> Stroke pompa dosing PAC.</text>
+        <text x="16" y="70" fill="#ffffff" font-size="11.5">• <tspan font-weight="700" fill="#10b981">Dosis Penyesuai pH:</tspan> Injeksi kapur jika pH air baku drop &lt;6,5.</text>
+        <text x="16" y="94" fill="#ffffff" font-size="11.5">• <tspan font-weight="700" fill="#f59e0b">Saklar On/Off Mixer:</tspan> Pengadukan seketika saat injeksi bahan.</text>
+      </g>
+    </g>
+
+    <!-- RIGHT COLUMN (Sections 4, 5, 6 + Catatan SOP Lokal Lembaga) - FIXED MULTILINE -->
+    <g transform="translate(564, 105)">
+      
+      <!-- 4. DAMPAK KE HILIR (Clean Wrapped Lines) -->
+      <g transform="translate(0, 0)">
+        <rect width="504" height="155" rx="10" fill="#0f172a" stroke="#1e293b" />
+        <text x="16" y="22" fill="#38bdf8" font-size="12" font-weight="700">4. DAMPAK KE HILIR (DOWNSTREAM IMPACT):</text>
+        
+        <text x="16" y="44" fill="#ef4444" font-size="11" font-weight="700">• Underdosing Koagulan:</text>
+        <text x="24" y="60" fill="#cbd5e1" font-size="10.5">Flok tidak terbentuk sempurna, kekeruhan lolos melewati bak</text>
+        <text x="24" y="74" fill="#cbd5e1" font-size="10.5">sedimentasi dan membebani filter pasir cepat hingga cepat jenuh.</text>
+
+        <text x="16" y="98" fill="#f59e0b" font-size="11" font-weight="700">• Overdosing Koagulan:</text>
+        <text x="24" y="114" fill="#cbd5e1" font-size="10.5">Pemborosan bahan kimia, pH air olahan anjlok tajam, dan lumpur</text>
+        <text x="24" y="128" fill="#cbd5e1" font-size="10.5">berlebih yang mempercepat sedimentasi meluap ke filter.</text>
+      </g>
+
+      <!-- 5. GANGGUAN UMUM &amp; SOP SINGKAT (Clean Wrapped Lines) -->
+      <g transform="translate(0, 170)">
+        <rect width="504" height="155" rx="10" fill="#0f172a" stroke="#1e293b" />
+        <text x="16" y="22" fill="#38bdf8" font-size="12" font-weight="700">5. GANGGUAN UMUM &amp; SOP SINGKAT (PRD §9 &amp; §10):</text>
+        
+        <text x="16" y="44" fill="#ffffff" font-size="10.5">1. <tspan font-weight="700" fill="#38bdf8">Lonjakan Kekeruhan Baku:</tspan> Naikkan dosis PAC (misal 20 ke 48 mg/L)</text>
+        <text x="32" y="58" fill="#94a3b8" font-size="10">sesuai kurva jar test; pantau pembentukan flok.</text>
+
+        <text x="16" y="78" fill="#ffffff" font-size="10.5">2. <tspan font-weight="700" fill="#f59e0b">Pompa Dosing Macet:</tspan> Pindahkan ke pompa injeksi cadangan (standby)</text>
+        <text x="32" y="92" fill="#94a3b8" font-size="10">lalu lakukan flushing pipa injeksi kimia.</text>
+
+        <text x="16" y="112" fill="#ffffff" font-size="10.5">3. <tspan font-weight="700" fill="#10b981">pH Drop:</tspan> Tambahkan kapur agar pH tetap di rentang 6,5–8,5.</text>
+      </g>
+
+      <!-- 6. PELAJARI LEBIH LANJUT -->
+      <g transform="translate(0, 340)">
+        <rect width="504" height="50" rx="8" fill="#1e293b" stroke="#334155" />
+        <text x="16" y="20" fill="#38bdf8" font-size="11" font-weight="700">6. PELAJARI LEBIH LANJUT:</text>
+        <text x="16" y="36" fill="#cbd5e1" font-size="10.5">Modul Teori IPA-03 (Koagulasi) &amp; Standar Permenkes No. 2/2023 Bab II</text>
+      </g>
+
+      <!-- KOTAK KHUSUS: CATATAN SOP LOKAL LEMBAGA PRD §9 -->
+      <g transform="translate(0, 405)">
+        <rect width="504" height="110" rx="10" fill="#064e3b" opacity="0.5" stroke="#059669" stroke-width="1.5" />
+        <text x="16" y="22" fill="#a7f3d0" font-size="11.5" font-weight="700">🏢 CATATAN SOP LOKAL LEMBAGA (BALAI NUSANTARA):</text>
+        <text x="16" y="42" fill="#ffffff" font-size="10.5">"Injeksi koagulan memakai dosing pump otomatis dengan kalibrasi</text>
+        <text x="16" y="58" fill="#ffffff" font-size="10.5">larutan PAC 10%. Batas minimum tangki harian adalah 20%."</text>
+        <text x="16" y="86" fill="#6ee7b7" font-size="10">Dikonfigurasi oleh Admin Lembaga di Layar L13</text>
+      </g>
+    </g>
+
+    <!-- Modal Footer -->
+    <g transform="translate(32, 655)">
+      <line x1="0" y1="0" x2="1036" y2="0" stroke="#334155" stroke-width="1" />
+      <text x="0" y="26" fill="#94a3b8" font-size="11.5">Membuka narasi ini dicatat dalam sistem untuk syarat perolehan Lencana <tspan fill="#38bdf8" font-weight="700">"Penjelajah Titik Kontrol"</tspan> (PRD §8).</text>
+      
+      <rect x="850" y="8" width="186" height="38" rx="8" fill="#0284c7" />
+      <text x="943" y="32" fill="#ffffff" font-size="12" font-weight="700" text-anchor="middle">KEMBALI KE WORKSPACE</text>
+    </g>
+  </g>
+
+</svg>

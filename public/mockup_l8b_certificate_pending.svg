@@ -1,0 +1,147 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" width="1920" height="1080">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0b1120" />
+      <stop offset="50%" stop-color="#0f172a" />
+      <stop offset="100%" stop-color="#080e1a" />
+    </linearGradient>
+    <linearGradient id="cardGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#1e293b" />
+      <stop offset="100%" stop-color="#0f172a" />
+    </linearGradient>
+    <linearGradient id="accentGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#0284c7" />
+      <stop offset="100%" stop-color="#06b6d4" />
+    </linearGradient>
+    <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#f59e0b" />
+      <stop offset="100%" stop-color="#fbbf24" />
+    </linearGradient>
+    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="6" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+  </defs>
+  <rect width="1920" height="1080" fill="url(#bgGrad)" />
+  <!-- Standard Tenant Header PRD §6 -->
+  <g transform="translate(32, 24)">
+    <rect width="1856" height="64" rx="10" fill="#0f172a" stroke="#1e293b" stroke-width="1.5" />
+    <circle cx="44" cy="32" r="20" fill="#0284c7" />
+    <path d="M44 18 C44 18 34 29 34 35 C34 40.5 38.5 45 44 45 C49.5 45 54 40.5 54 35 C54 29 44 18 44 18 Z" fill="#ffffff" />
+    <text x="76" y="28" fill="#ffffff" font-size="16" font-weight="700">Balai Diklat Air Minum Nusantara</text>
+    <text x="76" y="46" fill="#38bdf8" font-size="11" font-weight="500">Platform Simulasi SCADA SPAM · <tspan fill="#64748b">Didukung oleh SimSCADA-Air</tspan></text>
+    
+    <g transform="translate(1420, 14)">
+      <rect width="404" height="36" rx="18" fill="#1e293b" stroke="#334155" />
+      <circle cx="20" cy="18" r="14" fill="#0369a1" />
+      <text x="20" y="22" fill="#ffffff" font-size="11" font-weight="700" text-anchor="middle">RH</text>
+      <text x="44" y="17" fill="#f8fafc" font-size="12" font-weight="600">Rian Hidayat</text>
+      <text x="44" y="30" fill="#94a3b8" font-size="10">Operator Muda · Angkatan 1</text>
+      <rect x="310" y="8" width="82" height="20" rx="10" fill="#b91c1c" />
+      <text x="351" y="22" fill="#ffffff" font-size="10" font-weight="700" text-anchor="middle">KELUAR</text>
+    </g>
+  </g>  <!-- Page Title Block -->
+  <g transform="translate(32, 112)">
+    <text x="0" y="22" fill="#ffffff" font-size="20" font-weight="700">Pratinjau Status Pengajuan Piagam Kelulusan</text>
+    <text x="0" y="42" fill="#94a3b8" font-size="12.5">Status: Menunggu Verifikasi &amp; Persetujuan Instruktur · Rian Hidayat (peserta contoh - Angkatan 1)</text>
+  </g>
+  <!-- Main Certificate Container with Watermark (Width 1400, Height 860, Centered at x=260) -->
+  <g transform="translate(260, 180)">
+    <!-- Outer Card Frame with Pending Alert -->
+    <rect width="1400" height="860" rx="16" fill="#0f172a" stroke="#f59e0b" stroke-width="2.5" />
+    <rect x="12" y="12" width="1376" height="836" rx="12" fill="none" stroke="#78350f" stroke-width="1.5" stroke-dasharray="6,4" />
+
+    <!-- PENDING BANNER TOP -->
+    <g transform="translate(40, 28)">
+      <rect width="1320" height="48" rx="8" fill="#78350f" stroke="#f59e0b" stroke-width="1.5" />
+      <text x="24" y="30" fill="#fbbf24" font-size="13" font-weight="800">⏳ STATUS: MENUNGGU PERSETUJUAN INSTRUKTUR (DRAFT VERIFIKASI)</text>
+      <text x="620" y="30" fill="#fef08a" font-size="12">Post-test (82/100) dan Misi Kelulusan IPA-09 telah diserahkan. Menunggu validasi instruktur Budi Santoso, S.T.</text>
+      
+      <rect x="1190" y="10" width="115" height="28" rx="6" fill="#334155" />
+      <text x="1247" y="28" fill="#94a3b8" font-size="11" font-weight="700" text-anchor="middle">Unduh Nonaktif</text>
+    </g>
+
+    <!-- WATERMARK DRAFT ACROSS CERTIFICATE -->
+    <g transform="translate(700, 480) rotate(-25)">
+      <text x="0" y="0" fill="#f59e0b" fill-opacity="0.08" font-size="110" font-weight="900" text-anchor="middle" letter-spacing="10">DRAFT · MENUNGGU ACC</text>
+    </g>
+
+    <!-- Certificate Body Draft -->
+    <g transform="translate(80, 95)">
+      <circle cx="620" cy="40" r="30" fill="#334155" />
+      <path d="M620 20 C620 20 606 36 606 46 C606 54 612 60 620 60 C628 60 634 54 634 46 C634 36 620 20 620 20 Z" fill="#94a3b8" />
+      
+      <text x="620" y="92" fill="#ffffff" font-size="19" font-weight="800" text-anchor="middle">BALAI DIKLAT AIR MINUM NUSANTARA</text>
+      <text x="620" y="112" fill="#94a3b8" font-size="11.5" text-anchor="middle">Pusat Pendidikan dan Pelatihan Operator Sistem Penyediaan Air Minum</text>
+      
+      <line x1="260" y1="130" x2="980" y2="130" stroke="#475569" stroke-width="1" />
+
+      <text x="620" y="172" fill="#cbd5e1" font-size="26" font-weight="800" text-anchor="middle" letter-spacing="2">PIAGAM KELULUSAN (DRAFT)</text>
+      <text x="620" y="196" fill="#f59e0b" font-size="12.5" font-weight="600" text-anchor="middle">Nomor Registrasi Dicadangkan: <tspan fill="#ffffff" font-weight="700">SSA/NUS/2026/0002 (Pending)</tspan></text>
+
+      <text x="620" y="240" fill="#94a3b8" font-size="13" text-anchor="middle">Diberikan kepada:</text>
+      <text x="620" y="280" fill="#ffffff" font-size="30" font-weight="800" text-anchor="middle">RIAN HIDAYAT</text>
+      <text x="620" y="304" fill="#38bdf8" font-size="12" font-weight="600" text-anchor="middle">ID Peserta: NUS-2026-008 · Peserta Contoh · Angkatan 1</text>
+
+      <text x="620" y="342" fill="#cbd5e1" font-size="13" text-anchor="middle">Telah menyelesaikan evaluasi dan persyaratan kelulusan:</text>
+      <text x="620" y="370" fill="#fbbf24" font-size="17" font-weight="800" text-anchor="middle">JALUR PENGOLAHAN AIR MINUM (IPA) - 9 MISI</text>
+
+      <!-- Scores Box -->
+      <g transform="translate(180, 400)">
+        <rect width="880" height="95" rx="8" fill="#1e293b" stroke="#334155" />
+        
+        <g transform="translate(35, 16)">
+          <text x="75" y="18" fill="#94a3b8" font-size="11" text-anchor="middle">NILAI POST-TEST</text>
+          <text x="75" y="46" fill="#34d399" font-size="22" font-weight="800" text-anchor="middle">82 / 100</text>
+          <text x="75" y="66" fill="#64748b" font-size="10" text-anchor="middle">Lulus KKM (≥80)</text>
+        </g>
+        <line x1="225" y1="12" x2="225" y2="82" stroke="#334155" />
+
+        <g transform="translate(250, 16)">
+          <text x="75" y="18" fill="#94a3b8" font-size="11" text-anchor="middle">BINTANG &amp; PREDIKAT</text>
+          <text x="75" y="46" fill="#fbbf24" font-size="20" font-weight="800" text-anchor="middle">★</text>
+          <text x="75" y="66" fill="#f59e0b" font-size="10.5" font-weight="700" text-anchor="middle">Cukup (70–84)</text>
+        </g>
+        <line x1="445" y1="12" x2="445" y2="82" stroke="#334155" />
+
+        <g transform="translate(470, 16)">
+          <text x="75" y="18" fill="#94a3b8" font-size="11" text-anchor="middle">TOTAL XP</text>
+          <text x="75" y="46" fill="#38bdf8" font-size="20" font-weight="800" text-anchor="middle">620 XP</text>
+          <text x="75" y="66" fill="#64748b" font-size="10" text-anchor="middle">Operator Muda</text>
+        </g>
+        <line x1="665" y1="12" x2="665" y2="82" stroke="#334155" />
+
+        <g transform="translate(690, 16)">
+          <text x="75" y="18" fill="#94a3b8" font-size="11" text-anchor="middle">STATUS BERKAS</text>
+          <rect x="15" y="28" width="120" height="26" rx="4" fill="#78350f" />
+          <text x="75" y="45" fill="#fef08a" font-size="10.5" font-weight="800" text-anchor="middle">MENUNGGU ACC</text>
+          <text x="75" y="66" fill="#f59e0b" font-size="10" text-anchor="middle">Diserahkan Hari Ini</text>
+        </g>
+      </g>
+
+      <!-- Signatures Preview (Greyed out / Waiting) -->
+      <g transform="translate(120, 530)">
+        <g transform="translate(40, 0)">
+          <text x="120" y="16" fill="#64748b" font-size="11.5" text-anchor="middle">Instruktur Penilai (Validasi Diperlukan),</text>
+          <rect x="40" y="30" width="160" height="40" rx="4" fill="#1e293b" stroke="#f59e0b" stroke-dasharray="3,3" />
+          <text x="120" y="55" fill="#f59e0b" font-size="11" font-weight="700" text-anchor="middle">Menunggu Tinjauan</text>
+          <line x1="20" y1="80" x2="220" y2="80" stroke="#475569" stroke-width="1" />
+          <text x="120" y="98" fill="#cbd5e1" font-size="12" font-weight="600" text-anchor="middle">Budi Santoso, S.T.</text>
+        </g>
+
+        <g transform="translate(420, 10)">
+          <rect x="30" y="10" width="80" height="80" rx="6" fill="#1e293b" stroke="#334155" />
+          <text x="70" y="55" fill="#64748b" font-size="10" text-anchor="middle">QR Terkunci</text>
+        </g>
+
+        <g transform="translate(700, 0)">
+          <text x="130" y="16" fill="#64748b" font-size="11.5" text-anchor="middle">Kepala Balai Diklat,</text>
+          <rect x="50" y="30" width="160" height="40" rx="4" fill="#1e293b" stroke="#334155" stroke-dasharray="3,3" />
+          <text x="130" y="55" fill="#64748b" font-size="11" text-anchor="middle">Menunggu Acc Penilai</text>
+          <line x1="30" y1="80" x2="230" y2="80" stroke="#475569" stroke-width="1" />
+          <text x="130" y="98" fill="#cbd5e1" font-size="12" font-weight="600" text-anchor="middle">Ir. H. Bambang Sutrisno, M.Eng.</text>
+        </g>
+      </g>
+    </g>
+  </g>
+</svg>

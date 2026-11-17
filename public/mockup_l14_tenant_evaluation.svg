@@ -1,0 +1,223 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" width="1920" height="1080">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0b1120" />
+      <stop offset="50%" stop-color="#0f172a" />
+      <stop offset="100%" stop-color="#080e1a" />
+    </linearGradient>
+    <linearGradient id="cardGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#1e293b" />
+      <stop offset="100%" stop-color="#0f172a" />
+    </linearGradient>
+    <linearGradient id="accentGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#0284c7" />
+      <stop offset="100%" stop-color="#06b6d4" />
+    </linearGradient>
+    <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#f59e0b" />
+      <stop offset="100%" stop-color="#fbbf24" />
+    </linearGradient>
+  </defs>
+  <rect width="1920" height="1080" fill="url(#bgGrad)" />
+  <!-- Standard Tenant Header PRD §6 -->
+  <g transform="translate(32, 24)">
+    <rect width="1856" height="64" rx="10" fill="#0f172a" stroke="#1e293b" stroke-width="1.5" />
+    <circle cx="44" cy="32" r="20" fill="#0284c7" />
+    <path d="M44 18 C44 18 34 29 34 35 C34 40.5 38.5 45 44 45 C49.5 45 54 40.5 54 35 C54 29 44 18 44 18 Z" fill="#ffffff" />
+    <text x="76" y="28" fill="#ffffff" font-size="16" font-weight="700">Balai Diklat Air Minum Nusantara</text>
+    <text x="76" y="46" fill="#38bdf8" font-size="11" font-weight="500">Platform Simulasi SCADA SPAM · <tspan fill="#64748b">Didukung oleh SimSCADA-Air</tspan></text>
+    
+    <g transform="translate(1420, 14)">
+      <rect width="404" height="36" rx="18" fill="#1e293b" stroke="#334155" />
+      <circle cx="20" cy="18" r="14" fill="#0369a1" />
+      <text x="20" y="22" fill="#ffffff" font-size="11" font-weight="700" text-anchor="middle">BS</text>
+      <text x="44" y="17" fill="#f8fafc" font-size="12" font-weight="600">Ir. H. Bambang Sutrisno, M.Eng.</text>
+      <text x="44" y="30" fill="#94a3b8" font-size="10">Pimpinan Lembaga · NUS</text>
+      <rect x="310" y="8" width="82" height="20" rx="10" fill="#b91c1c" />
+      <text x="351" y="22" fill="#ffffff" font-size="10" font-weight="700" text-anchor="middle">KELUAR</text>
+    </g>
+  </g>  <!-- Page Title Block -->
+  <g transform="translate(32, 112)">
+    <text x="0" y="22" fill="#ffffff" font-size="20" font-weight="700">Evaluasi &amp; Utilisasi Lembaga Diklat SPAM</text>
+    <text x="0" y="42" fill="#94a3b8" font-size="12.5">Dashboard Eksekutif Target Keberhasilan (PRD §3 Target T1–T4) · 42 Peserta Aktif (Login 14 Hari)</text>
+  </g>
+  <!-- 4 Target KPI Cards PRD §3 (Height 130, Width 1856) -->
+  <g transform="translate(32, 175)">
+    <!-- TARGET T1: PRE-TO-POST IMPROVEMENT -->
+    <rect width="446" height="130" rx="10" fill="url(#cardGrad)" stroke="#10b981" stroke-width="1.5" />
+    <g transform="translate(24, 20)">
+      <text x="0" y="16" fill="#34d399" font-size="12" font-weight="700">TARGET T1: PENINGKATAN PRE-TO-POST</text>
+      <text x="0" y="46" fill="#ffffff" font-size="28" font-weight="800">+50,5%</text>
+      <rect x="140" y="28" width="90" height="24" rx="4" fill="#065f46" />
+      <text x="185" y="44" fill="#34d399" font-size="11" font-weight="700" text-anchor="middle">TARGET: ≥25%</text>
+      <text x="0" y="76" fill="#cbd5e1" font-size="11">Rata-rata Pre-Test: <tspan fill="#ffffff" font-weight="600">54,2</tspan> → Post-Test: <tspan fill="#34d399" font-weight="700">81,6</tspan></text>
+      <text x="0" y="94" fill="#94a3b8" font-size="10.5">Kenaikan riil +27,4 poin · Seluruh 42 peserta aktif</text>
+    </g>
+
+    <!-- TARGET T2: MISSION COMPLETION RATE -->
+    <g transform="translate(470, 0)">
+      <rect width="446" height="130" rx="10" fill="url(#cardGrad)" stroke="#0284c7" stroke-width="1.5" />
+      <g transform="translate(24, 20)">
+        <text x="0" y="16" fill="#38bdf8" font-size="12" font-weight="700">TARGET T2: PENYELESAIAN MISI JALUR</text>
+        <text x="0" y="46" fill="#ffffff" font-size="28" font-weight="800">83,3%</text>
+        <rect x="120" y="28" width="90" height="24" rx="4" fill="#0369a1" />
+        <text x="165" y="44" fill="#bae6fd" font-size="11" font-weight="700" text-anchor="middle">TARGET: ≥70%</text>
+        <text x="0" y="76" fill="#cbd5e1" font-size="11"><tspan fill="#34d399" font-weight="700">35 dari 42</tspan> peserta aktif menyelesaikan ≥80% misi</text>
+        <text x="0" y="94" fill="#94a3b8" font-size="10.5">Sisa 7 peserta masih menyelesaikan modul latihan</text>
+      </g>
+    </g>
+
+    <!-- TARGET T3: EMERGENCY RESPONSE TIME -->
+    <g transform="translate(940, 0)">
+      <rect width="446" height="130" rx="10" fill="url(#cardGrad)" stroke="#f59e0b" stroke-width="1.5" />
+      <g transform="translate(24, 20)">
+        <text x="0" y="16" fill="#fbbf24" font-size="12" font-weight="700">TARGET T3: WAKTU TANGGAP DARURAT</text>
+        <text x="0" y="46" fill="#ffffff" font-size="28" font-weight="800">28,4 dtk</text>
+        <rect x="145" y="28" width="90" height="24" rx="4" fill="#78350f" />
+        <text x="190" y="44" fill="#fde68a" font-size="11" font-weight="700" text-anchor="middle">TARGET: &lt;45s</text>
+        <text x="0" y="76" fill="#cbd5e1" font-size="11">Rata-rata respons alarm pertama pada skenario gangguan</text>
+        <text x="0" y="94" fill="#94a3b8" font-size="10.5">Contoh: Dimas Wahyu 25 dtk pada skenario IPA-06</text>
+      </g>
+    </g>
+
+    <!-- TARGET T4: GRADUATION / CERTIFICATION PASS RATE -->
+    <g transform="translate(1410, 0)">
+      <rect width="446" height="130" rx="10" fill="url(#cardGrad)" stroke="#a855f7" stroke-width="1.5" />
+      <g transform="translate(24, 20)">
+        <text x="0" y="16" fill="#c084fc" font-size="12" font-weight="700">TARGET T4: TINGKAT KELULUSAN (KKM ≥80)</text>
+        <text x="0" y="46" fill="#ffffff" font-size="28" font-weight="800">76,2%</text>
+        <rect x="120" y="28" width="90" height="24" rx="4" fill="#581c87" />
+        <text x="165" y="44" fill="#e9d5ff" font-size="11" font-weight="700" text-anchor="middle">TARGET: ≥60%</text>
+        <text x="0" y="76" fill="#cbd5e1" font-size="11"><tspan fill="#34d399" font-weight="700">32 dari 42</tspan> peserta aktif memenuhi ambang skor ≥80</text>
+        <text x="0" y="94" fill="#94a3b8" font-size="10.5">Piagam resmi terbit &amp; siap diterbitkan bagi peserta lulus</text>
+      </g>
+    </g>
+  </g>
+
+  <!-- SPLIT CHARTS: LEFT = COMPETENCY BY EQUIPMENT (Width 960), RIGHT = LICENSE UTILIZATION (Width 864) -->
+  <g transform="translate(32, 325)">
+    <!-- LEFT CARD: COMPETENCY DOMAIN PERFORMANCE -->
+    <rect width="960" height="715" rx="12" fill="url(#cardGrad)" stroke="#334155" stroke-width="1.5" />
+    <g transform="translate(28, 24)">
+      <text x="0" y="20" fill="#ffffff" font-size="16" font-weight="700">Penguasaan Kompetensi Berdasarkan Titik Kontrol (PRD §9)</text>
+      <text x="0" y="40" fill="#94a3b8" font-size="12">Rata-rata performa 42 peserta aktif pada masing-masing unit operasi SPAM</text>
+      <line x1="0" y1="56" x2="904" y2="56" stroke="#334155" />
+
+      <!-- Domain 1: Koagulasi &amp; Jar-test Dosing -->
+      <g transform="translate(0, 80)">
+        <text x="0" y="16" fill="#ffffff" font-size="13" font-weight="600">1. Pengendalian Dosis Koagulan &amp; Penyesuai pH (Flash Mixing)</text>
+        <text x="780" y="16" fill="#34d399" font-size="14" font-weight="700">89,2%</text>
+        <rect x="0" y="28" width="904" height="14" rx="7" fill="#0f172a" />
+        <rect x="0" y="28" width="806" height="14" rx="7" fill="#10b981" />
+        <text x="0" y="58" fill="#94a3b8" font-size="11">Rata-rata akurasi dosis kimia terhadap lonjakan kekeruhan air baku</text>
+      </g>
+
+      <!-- Domain 2: Filtrasi &amp; Backwash -->
+      <g transform="translate(0, 160)">
+        <text x="0" y="16" fill="#ffffff" font-size="13" font-weight="600">2. Filtrasi Pasir Cepat &amp; Prosedur Pencucian Balik (Backwash)</text>
+        <text x="780" y="16" fill="#38bdf8" font-size="14" font-weight="700">84,6%</text>
+        <rect x="0" y="28" width="904" height="14" rx="7" fill="#0f172a" />
+        <rect x="0" y="28" width="765" height="14" rx="7" fill="#0284c7" />
+        <text x="0" y="58" fill="#94a3b8" font-size="11">Ketepatan waktu backwash saat headloss tinggi atau kekeruhan filtrasi mendekati 1,5 NTU</text>
+      </g>
+
+      <!-- Domain 3: Desinfeksi Klorinasi -->
+      <g transform="translate(0, 240)">
+        <text x="0" y="16" fill="#ffffff" font-size="13" font-weight="600">3. Injeksi Klor &amp; Pemantauan Sisa Klor Bebas (Reservoir &amp; Jaringan)</text>
+        <text x="780" y="16" fill="#38bdf8" font-size="14" font-weight="700">86,1%</text>
+        <rect x="0" y="28" width="904" height="14" rx="7" fill="#0f172a" />
+        <rect x="0" y="28" width="778" height="14" rx="7" fill="#0284c7" />
+        <text x="0" y="58" fill="#94a3b8" font-size="11">Kepatuhan ambang Permenkes: 0,2–0,5 mg/L di ujung jaringan distribusi</text>
+      </g>
+
+      <!-- Domain 4: Manajemen Pompa Distribusi &amp; PRV -->
+      <g transform="translate(0, 320)">
+        <text x="0" y="16" fill="#ffffff" font-size="13" font-weight="600">4. Manajemen Tekanan Pompa Distribusi &amp; Valve PRV (Jalur Distribusi)</text>
+        <text x="780" y="16" fill="#fbbf24" font-size="14" font-weight="700">74,8%</text>
+        <rect x="0" y="28" width="904" height="14" rx="7" fill="#0f172a" />
+        <rect x="0" y="28" width="676" height="14" rx="7" fill="#f59e0b" />
+        <text x="0" y="58" fill="#94a3b8" font-size="11">Perlu penguatan pada mitigasi water hammer dan isolasi zona kebocoran</text>
+      </g>
+
+      <!-- Executive Recommendations Box -->
+      <g transform="translate(0, 420)">
+        <rect width="904" height="230" rx="8" fill="#0f172a" stroke="#334155" />
+        <g transform="translate(20, 20)">
+          <text x="0" y="16" fill="#fbbf24" font-size="13" font-weight="700">Rekomendasi Strategis untuk Pimpinan Lembaga Diklat:</text>
+          <text x="0" y="42" fill="#cbd5e1" font-size="11.5">1. <tspan fill="#ffffff" font-weight="600">Tingkat Utilisasi Tinggi (92% Kursi):</tspan> Dari 50 kuota lisensi, 46 telah terdaftar dengan 42 peserta aktif login dalam 14 hari terakhir.</text>
+          <text x="0" y="66" fill="#cbd5e1" font-size="11.5">2. <tspan fill="#34d399" font-weight="600">Seluruh KPI PRD §3 Terpenuhi:</tspan> Peningkatan Pre-to-Post (+50,5%), penyelesaian misi (83,3%), dan kelulusan (76,2%) melampaui target minimum.</text>
+          <text x="0" y="90" fill="#cbd5e1" font-size="11.5">3. <tspan fill="#38bdf8" font-weight="600">Rencana Pembukaan Angkatan 3:</tspan> Sisa 4 kursi lisensi dapat dialokasikan segera untuk peserta baru, atau upgrade kuota lisensi ke 100 kursi.</text>
+          <text x="0" y="114" fill="#cbd5e1" font-size="11.5">4. <tspan fill="#cbd5e1" font-weight="600">Kesiapan Sertifikasi:</tspan> Sebanyak 32 peserta telah lulus KKM dan siap menerima Piagam Kelulusan resmi.</text>
+        </g>
+      </g>
+    </g>
+
+    <!-- RIGHT CARD: LICENSE UTILIZATION &amp; MONTHLY TREND (Width 864) -->
+    <g transform="translate(992, 0)">
+      <rect width="864" height="715" rx="12" fill="url(#cardGrad)" stroke="#334155" stroke-width="1.5" />
+      <g transform="translate(28, 24)">
+        <text x="0" y="20" fill="#ffffff" font-size="16" font-weight="700">Utilisasi Lisensi Lembaga &amp; Tren Aktivitas Bulanan</text>
+        <text x="0" y="40" fill="#94a3b8" font-size="12">Kesesuaian kuota 50 kursi lisensi Balai Diklat Air Minum Nusantara</text>
+        <line x1="0" y1="56" x2="808" y2="56" stroke="#334155" />
+
+        <!-- License Ring &amp; Breakdown -->
+        <g transform="translate(0, 75)">
+          <rect width="808" height="150" rx="8" fill="#0f172a" stroke="#334155" />
+          <g transform="translate(30, 25)">
+            <!-- Circular Progress Representation -->
+            <circle cx="50" cy="50" r="42" fill="none" stroke="#1e293b" stroke-width="14" />
+            <circle cx="50" cy="50" r="42" fill="none" stroke="#0284c7" stroke-width="14" stroke-dasharray="242 264" />
+            <text x="50" y="56" fill="#ffffff" font-size="18" font-weight="800" text-anchor="middle">92%</text>
+
+            <g transform="translate(130, 10)">
+              <text x="0" y="16" fill="#ffffff" font-size="15" font-weight="700">Paket Lisensi Lembaga: 50 Kursi (Aktif)</text>
+              <text x="0" y="38" fill="#cbd5e1" font-size="12">• Kursi Terdaftar: <tspan fill="#38bdf8" font-weight="700">46 Kursi</tspan> (42 Peserta Aktif 14 hr + 4 Akun Staf/Penguji)</text>
+              <text x="0" y="58" fill="#cbd5e1" font-size="12">• Kursi Tersedia: <tspan fill="#34d399" font-weight="700">4 Kursi Kosong</tspan> (Dapat ditambahkan sewaktu-waktu)</text>
+              <text x="0" y="78" fill="#94a3b8" font-size="11">Masa Berlaku Lisensi: <tspan fill="#ffffff">Hingga 31 Desember 2026</tspan> (Paket Lengkap: IPA + DST + Terpadu)</text>
+            </g>
+          </g>
+        </g>
+
+        <!-- Monthly Simulation Activity Graph -->
+        <g transform="translate(0, 245)">
+          <text x="0" y="16" fill="#e2e8f0" font-size="12.5" font-weight="700">TREN SESI SIMULASI PER BULAN (TOTAL 1.480 SESI):</text>
+          <rect x="0" y="28" width="808" height="240" rx="8" fill="#0f172a" stroke="#334155" />
+          
+          <!-- Simulated Bar Graph -->
+          <g transform="translate(60, 50)">
+            <!-- Bar 1: Nov 2025 -->
+            <rect x="0" y="90" width="60" height="70" rx="4" fill="#334155" />
+            <text x="30" y="80" fill="#94a3b8" font-size="11" text-anchor="middle">180</text>
+            <text x="30" y="180" fill="#64748b" font-size="10" text-anchor="middle">Nov 25</text>
+
+            <!-- Bar 2: Des 2025 -->
+            <rect x="120" y="60" width="60" height="100" rx="4" fill="#334155" />
+            <text x="150" y="50" fill="#94a3b8" font-size="11" text-anchor="middle">290</text>
+            <text x="150" y="180" fill="#64748b" font-size="10" text-anchor="middle">Des 25</text>
+
+            <!-- Bar 3: Jan 2026 -->
+            <rect x="240" y="40" width="60" height="120" rx="4" fill="#0369a1" />
+            <text x="270" y="30" fill="#38bdf8" font-size="11" text-anchor="middle">380</text>
+            <text x="270" y="180" fill="#64748b" font-size="10" text-anchor="middle">Jan 26</text>
+
+            <!-- Bar 4: Feb 2026 -->
+            <rect x="360" y="20" width="60" height="140" rx="4" fill="#0284c7" />
+            <text x="390" y="10" fill="#38bdf8" font-size="11" text-anchor="middle">450</text>
+            <text x="390" y="180" fill="#64748b" font-size="10" text-anchor="middle">Feb 26</text>
+
+            <!-- Bar 5: Mar 2026 (Ongoing) -->
+            <rect x="480" y="50" width="60" height="110" rx="4" fill="#34d399" />
+            <text x="510" y="40" fill="#34d399" font-size="11" font-weight="700" text-anchor="middle">180*</text>
+            <text x="510" y="180" fill="#34d399" font-size="10" font-weight="700" text-anchor="middle">Mar 26</text>
+          </g>
+        </g>
+
+        <!-- Executive Export Button -->
+        <g transform="translate(0, 520)">
+          <rect width="808" height="50" rx="8" fill="#0284c7" />
+          <text x="404" y="31" fill="#ffffff" font-size="13" font-weight="700" text-anchor="middle">Unduh Laporan Evaluasi Eksekutif (PDF / XLSX)</text>
+        </g>
+      </g>
+    </g>
+  </g>
+</svg>

@@ -1,0 +1,371 @@
+<mxfile host="app.diagrams.net" modified="2026-11-10T12:00:00.000Z" agent="SimSCADA-Air Diagram Engine v2.0" version="24.7.17" type="device">
+  <diagram id="SimSCADA_MultiRole_PRD_Flow" name="Alur Kerja SimSCADA-Air PRD v1.0 (5 Role Swimlanes)">
+    <mxGraphModel dx="1800" dy="1200" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="2600" pageHeight="2000" background="#0f172a" math="0" shadow="1">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+
+        <!-- ========================================== -->
+        <!-- TITLE BLOCK                                -->
+        <!-- ========================================== -->
+        <mxCell id="title_block" value="DIAGRAM ALUR KERJA SISTEM SimSCADA-Air (MULTI-ROLE SWIMLANE ARCHITECTURE)&#xa;Berdasarkan Dokumen Kebutuhan Produk (PRD SimSCADA-Air v1.0) — 5 Peran Pengguna Lengkap (L1 s/d L16)" style="text;html=1;strokeColor=#0284c7;strokeWidth=2;fillColor=#1e293b;align=center;verticalAlign=middle;fontColor=#ffffff;fontSize=18;fontStyle=1;rounded=1;shadow=1;" vertex="1" parent="1">
+          <mxGeometry x="40" y="30" width="2500" height="60" as="geometry" />
+        </mxCell>
+
+        <!-- ========================================== -->
+        <!-- SWIMLANE POOL CONTAINER (VERTICAL 5 LANES) -->
+        <!-- ========================================== -->
+
+        <!-- LANE 1: SUPER ADMIN PLATFORM (L15) -->
+        <mxCell id="lane_superadmin" value="1. SUPER ADMIN PLATFORM (L15)&#xa;Provisioning Tenant, Alokasi Kuota Lisensi &amp; Ambang Baku" style="swimlane;html=1;startSize=44;fillColor=#1e1b4b;strokeColor=#4338ca;strokeWidth=2;fontColor=#c7d2fe;fontSize=13;fontStyle=1;align=center;rounded=1;shadow=1;" vertex="1" parent="1">
+          <mxGeometry x="40" y="110" width="400" height="1750" as="geometry" />
+        </mxCell>
+
+        <!-- LANE 2: ADMINISTRATOR LEMBAGA / TENANT (L1, L12, L13) -->
+        <mxCell id="lane_admintenant" value="2. ADMINISTRATOR LEMBAGA / TENANT (L1, L12, L13)&#xa;Pengaturan SOP Lokal, Manajemen Pengguna &amp; Kebijakan KKM" style="swimlane;html=1;startSize=44;fillColor=#064e3b;strokeColor=#059669;strokeWidth=2;fontColor=#a7f3d0;fontSize=13;fontStyle=1;align=center;rounded=1;shadow=1;" vertex="1" parent="1">
+          <mxGeometry x="440" y="110" width="460" height="1750" as="geometry" />
+        </mxCell>
+
+        <!-- LANE 3: INSTRUKTUR / PENGAJAR SPAM (L9, L10, L11) -->
+        <mxCell id="lane_instruktur" value="3. INSTRUKTUR / PENGAJAR SPAM (L9, L10, L11)&#xa;Authoring Skenario, Roster Monitor, Buka Kunci &amp; Persetujuan Piagam" style="swimlane;html=1;startSize=44;fillColor=#451a03;strokeColor=#d97706;strokeWidth=2;fontColor=#fde68a;fontSize=13;fontStyle=1;align=center;rounded=1;shadow=1;" vertex="1" parent="1">
+          <mxGeometry x="900" y="110" width="500" height="1750" as="geometry" />
+        </mxCell>
+
+        <!-- LANE 4: PESERTA OPERATOR AIR MINUM (L4a, L2 s/d L8, L8b) -->
+        <mxCell id="lane_operator" value="4. PESERTA OPERATOR AIR MINUM (L4a, L2 s/d L8, L8b)&#xa;Pre-Test, Teori, Kuis, Simulator HMI, 4 Komponen Skor &amp; Piagam" style="swimlane;html=1;startSize=44;fillColor=#082f49;strokeColor=#0284c7;strokeWidth=2;fontColor=#bae6fd;fontSize=13;fontStyle=1;align=center;rounded=1;shadow=1;" vertex="1" parent="1">
+          <mxGeometry x="1400" y="110" width="680" height="1750" as="geometry" />
+        </mxCell>
+
+        <!-- LANE 5: PIMPINAN LEMBAGA & VERIFIKASI PUBLIK (L14, L16) -->
+        <mxCell id="lane_exec_public" value="5. PIMPINAN LEMBAGA &amp; VERIFIKASI PUBLIK (L14, L16)&#xa;Dasbor Evaluasi T1–T4, Tanda Tangan &amp; Portal Validasi Terbuka" style="swimlane;html=1;startSize=44;fillColor=#3b0764;strokeColor=#9333ea;strokeWidth=2;fontColor=#f3e8ff;fontSize=13;fontStyle=1;align=center;rounded=1;shadow=1;" vertex="1" parent="1">
+          <mxGeometry x="2080" y="110" width="460" height="1750" as="geometry" />
+        </mxCell>
+
+        <!-- ========================================== -->
+        <!-- NODES: LANE 1 - SUPER ADMIN (L15)          -->
+        <!-- ========================================== -->
+        <mxCell id="sa_start" value="Mulai Operasi Platform" style="ellipse;whiteSpace=wrap;html=1;fillColor=#4338ca;strokeColor=#818cf8;strokeWidth=2;fontColor=#ffffff;fontStyle=1;fontSize=12;" vertex="1" parent="lane_superadmin">
+          <mxGeometry x="110" y="60" width="180" height="50" as="geometry" />
+        </mxCell>
+
+        <mxCell id="sa_l15_prov" value="[L15] Registrasi Lembaga Tenant&#xa;• Balai Diklat Air Minum Nusantara (NUS)&#xa;• Pusat Pelatihan Tirta Mandiri (TRM)&#xa;• Inisialisasi Isolasi Database Multi-Tenant" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#312e81;strokeColor=#6366f1;strokeWidth=2;fontColor=#ffffff;fontSize=11;align=left;spacingLeft=12;" vertex="1" parent="lane_superadmin">
+          <mxGeometry x="60" y="150" width="280" height="85" as="geometry" />
+        </mxCell>
+
+        <mxCell id="sa_l15_license" value="[L15] Alokasi Paket Lisensi &amp; Kuota Kursi&#xa;• Alokasi 50 Kursi Nusantara &amp; 50 Kursi Tirta&#xa;• Paket Jalur: Terpadu (17 Misi) / IPA (9 Misi)&#xa;• Tetapkan Ambang Alarm Baku Terpusat (Permenkes)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#312e81;strokeColor=#6366f1;strokeWidth=2;fontColor=#ffffff;fontSize=11;align=left;spacingLeft=12;" vertex="1" parent="lane_superadmin">
+          <mxGeometry x="60" y="275" width="280" height="85" as="geometry" />
+        </mxCell>
+
+        <mxCell id="sa_l15_monitor" value="[L15] Monitoring Global &amp; Peringatan Dini&#xa;• ⚠️ Peringatan Kuota ≥90% (Nusantara 46/50 kursi)&#xa;• ⚠️ Peringatan Lisensi ≤30 Hari (Tirta 28 hari)&#xa;• Pantau Latensi Server Simulasi 1 Hz Global" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#312e81;strokeColor=#6366f1;strokeWidth=1.5;fontColor=#c7d2fe;fontSize=11;align=left;spacingLeft=12;" vertex="1" parent="lane_superadmin">
+          <mxGeometry x="60" y="1500" width="280" height="95" as="geometry" />
+        </mxCell>
+
+        <!-- ========================================== -->
+        <!-- NODES: LANE 2 - ADMIN TENANT (L1, L12, L13)-->
+        <!-- ========================================== -->
+        <mxCell id="adm_l1_login" value="[L1] Login Multi-Tenant Admin&#xa;• Akun: admin.nusantara (Sandi: Demo#2026)&#xa;• Sistem otomatis mengenali peran &amp; tenant" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#065f46;strokeColor=#34d399;strokeWidth=2;fontColor=#ffffff;fontSize=11;align=left;spacingLeft=12;" vertex="1" parent="lane_admintenant">
+          <mxGeometry x="90" y="150" width="280" height="70" as="geometry" />
+        </mxCell>
+
+        <mxCell id="adm_l13_settings" value="[L13] Pengaturan Lembaga &amp; SOP Lokal&#xa;• Tetapkan Ambang Kelulusan (KKM 70, Misi Kelulusan 80)&#xa;• Pilih Warna Aksen Piagam (Navy Blue)&#xa;• Aktifkan Saklar: 'Persetujuan Instruktur Wajib'&#xa;• Input Catatan SOP Lokal per Titik Kontrol (Koagulasi)&#xa;• (Catatan: Ambang Alarm Baku Terkunci di Super Admin)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#064e3b;strokeColor=#059669;strokeWidth=2;fontColor=#ffffff;fontSize=11;align=left;spacingLeft=12;" vertex="1" parent="lane_admintenant">
+          <mxGeometry x="80" y="270" width="300" height="110" as="geometry" />
+        </mxCell>
+
+        <mxCell id="adm_l12_users" value="[L12] Kelola Akun &amp; Kuota Kursi&#xa;• Pantau Kuota Kursi: 46/50 Terpakai (Sisa 4)&#xa;• Buat Akun Instruktur (Pak Budi)&#xa;• Buat Akun Peserta: baru, ipa, distribusi, lulus&#xa;• Bentuk Kelompok: Angkatan 1 &amp; Angkatan 2" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#064e3b;strokeColor=#059669;strokeWidth=2;fontColor=#ffffff;fontSize=11;align=left;spacingLeft=12;" vertex="1" parent="lane_admintenant">
+          <mxGeometry x="80" y="420" width="300" height="95" as="geometry" />
+        </mxCell>
+
+        <!-- ========================================== -->
+        <!-- NODES: LANE 3 - INSTRUKTUR (L9, L10, L11)  -->
+        <!-- ========================================== -->
+        <mxCell id="ins_l1_login" value="[L1] Login Instruktur SPAM&#xa;• Akun: instruktur.nusantara (Pak Budi)&#xa;• Sandi Demo: Demo#2026" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#78350f;strokeColor=#f59e0b;strokeWidth=2;fontColor=#ffffff;fontSize=11;align=left;spacingLeft=12;" vertex="1" parent="lane_instruktur">
+          <mxGeometry x="110" y="150" width="280" height="70" as="geometry" />
+        </mxCell>
+
+        <mxCell id="ins_l9_roster" value="[L9] Dasbor Pengawasan Kelas Instruktur&#xa;• Pantau Matriks Peserta × Misi (IPA-01 s/d TRP-02)&#xa;• Pantau Capaian Bintang, Skor Terakhir &amp; Hari Aktif&#xa;• Deteksi Otomatis Peserta Tertinggal (3x Gagal)&#xa;• Tombol: Tugaskan Misi, Unlock, Beri Catatan" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#451a03;strokeColor=#d97706;strokeWidth=2;fontColor=#ffffff;fontSize=11;align=left;spacingLeft=12;" vertex="1" parent="lane_instruktur">
+          <mxGeometry x="90" y="275" width="320" height="95" as="geometry" />
+        </mxCell>
+
+        <mxCell id="ins_l10_author" value="[L10] Kelola Skenario Gangguan Kustom&#xa;• Rancang Skenario Abnormalitas (FR-23)&#xa;• Pilih Tingkat Kesulitan: 1 Mudah s/d 5 Ujian&#xa;• Set Waktu Picu &amp; Kunci Penilaian SOP&#xa;• Tugaskan ke Kelompok Angkatan 1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#451a03;strokeColor=#d97706;strokeWidth=2;fontColor=#ffffff;fontSize=11;align=left;spacingLeft=12;" vertex="1" parent="lane_instruktur">
+          <mxGeometry x="90" y="420" width="320" height="95" as="geometry" />
+        </mxCell>
+
+        <mxCell id="ins_l9_unlock" value="[L9] Intervensi Buka Kunci (Unlock)&#xa;• Buka Kunci Misi Manual bagi Peserta Remedial&#xa;• Berikan bimbingan tambahan sebelum ujian" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#78350f;strokeColor=#f59e0b;strokeWidth=1.5;fontColor=#fde68a;fontSize=11;align=left;spacingLeft=12;" vertex="1" parent="lane_instruktur">
+          <mxGeometry x="90" y="1030" width="320" height="65" as="geometry" />
+        </mxCell>
+
+        <mxCell id="ins_l11_replay" value="[L11] Investigasi Audit &amp; Putar Ulang (Replay)&#xa;• Interactive Timeline Scrubber (00:00 - 08:30)&#xa;• Audit Kronologis Alarm ISA-18.2 &amp; Waktu ACK&#xa;• Sinkronisasi Kurva Kekeruhan vs Dosis Koagulan&#xa;• Tulis Catatan Pedagogis &amp; Validasi Sesi Selesai" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#451a03;strokeColor=#d97706;strokeWidth=2;fontColor=#ffffff;fontSize=11;align=left;spacingLeft=12;" vertex="1" parent="lane_instruktur">
+          <mxGeometry x="90" y="1170" width="320" height="95" as="geometry" />
+        </mxCell>
+
+        <mxCell id="ins_approve" value="[L9] Verifikasi &amp; Tanda Tangan Piagam&#xa;• Validasi Kelulusan 4 Syarat PRD §13&#xa;• Bubuhkan Tanda Tangan Digital Instruktur&#xa;• Buka Kunci Unduh Piagam di Layar Peserta" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#065f46;strokeColor=#34d399;strokeWidth=2.5;fontColor=#ffffff;fontSize=11;align=left;spacingLeft=12;" vertex="1" parent="lane_instruktur">
+          <mxGeometry x="90" y="1410" width="320" height="85" as="geometry" />
+        </mxCell>
+
+        <!-- ========================================== -->
+        <!-- NODES: LANE 4 - OPERATOR TRAINEE (L2 - L8) -->
+        <!-- ========================================== -->
+        <mxCell id="tr_l1_login" value="[L1] Login Peserta Operator&#xa;• Akun: peserta.baru / peserta.ipa (Dimas)&#xa;• Sandi Demo: Demo#2026" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#0369a1;strokeColor=#38bdf8;strokeWidth=2;fontColor=#ffffff;fontSize=11;align=left;spacingLeft=12;" vertex="1" parent="lane_operator">
+          <mxGeometry x="190" y="150" width="300" height="70" as="geometry" />
+        </mxCell>
+
+        <mxCell id="tr_l4a_pre" value="[L4a] Pre-Test Diagnostik Awal (Baseline T1)&#xa;• Dilakukan saat pertama kali mendaftar jalur&#xa;• Mengukur baseline kompetensi awal (Contoh: Skor 56/100)&#xa;• Standar pengukur kenaikan kompetensi Metrik T1 (≥25%)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#082f49;strokeColor=#0284c7;strokeWidth=2;fontColor=#ffffff;fontSize=11;align=left;spacingLeft=12;" vertex="1" parent="lane_operator">
+          <mxGeometry x="170" y="250" width="340" height="80" as="geometry" />
+        </mxCell>
+
+        <mxCell id="tr_l2_dash" value="[L2] Beranda Peserta &amp; Roadmap Misi&#xa;• Level: Operator Magang ➔ Muda (400) ➔ Madya (1200)&#xa;• Peta Misi 5 Tingkat: Pengenalan, Normal, Gangguan, Kelulusan&#xa;• Saran Belajar Otomatis AI Smart Advisor (PRD §11)&#xa;• Status Piagam: Belum Memenuhi Syarat" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#082f49;strokeColor=#0284c7;strokeWidth=2;fontColor=#ffffff;fontSize=11;align=left;spacingLeft=12;" vertex="1" parent="lane_operator">
+          <mxGeometry x="170" y="360" width="340" height="95" as="geometry" />
+        </mxCell>
+
+        <mxCell id="tr_l3_track" value="[L3] Pemilihan Jalur Pembelajaran&#xa;• 3 Kartu Jalur PRD §7: IPA (9), Distribusi (7), Terpadu (17)&#xa;• Tanpa prasyarat untuk memilih Terpadu&#xa;• 1 Jalur Aktif; Misi lulus dihitung otomatis saat pindah" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#082f49;strokeColor=#0284c7;strokeWidth=2;fontColor=#ffffff;fontSize=11;align=left;spacingLeft=12;" vertex="1" parent="lane_operator">
+          <mxGeometry x="170" y="485" width="340" height="85" as="geometry" />
+        </mxCell>
+
+        <mxCell id="tr_l4_modquiz" value="[L4] Modul Materi &amp; Kuis 5 Soal Pra-Misi&#xa;• Contoh Konsisten: IPA-06 Lonjakan Kekeruhan (T3 Sulit)&#xa;• Briefing Mentor: Operator Senior (Pak Slamet)&#xa;• Batas Mutu Kritis Permenkes No. 2/2023 (&lt;3 NTU)&#xa;• Kuis 5 Soal: Nilai ≥ 60 membuka Simulator (+XP Kuis)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#082f49;strokeColor=#0284c7;strokeWidth=2;fontColor=#ffffff;fontSize=11;align=left;spacingLeft=12;" vertex="1" parent="lane_operator">
+          <mxGeometry x="170" y="600" width="340" height="95" as="geometry" />
+        </mxCell>
+
+        <mxCell id="tr_quiz_gate" value="Kuis ≥ 60?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#0369a1;strokeColor=#38bdf8;strokeWidth=2;fontColor=#ffffff;fontStyle=1;fontSize=12;" vertex="1" parent="lane_operator">
+          <mxGeometry x="270" y="725" width="140" height="60" as="geometry" />
+        </mxCell>
+
+        <mxCell id="tr_l5_hmi" value="[L5] Workspace Simulator SCADA HMI&#xa;• Mimic Dinamis Real-Time 1 Hz (Intake s/d Reservoir)&#xa;• Unit Distribusi Nonaktif/Redup pada Misi IPA&#xa;• Titik Pantau: Tekanan bar, Debit L/s, Sisa Klor mg/L&#xa;• Sistem Alarm ISA-18.2 (Bentuk Simbol, 4 Status, Auto-Clear)&#xa;• Tombol Clear Nonaktif jika Penyebab Belum Selesai" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#082f49;strokeColor=#0284c7;strokeWidth=2;fontColor=#ffffff;fontSize=11;align=left;spacingLeft=12;" vertex="1" parent="lane_operator">
+          <mxGeometry x="160" y="815" width="360" height="105" as="geometry" />
+        </mxCell>
+
+        <!-- Node L5a: Pop-up Narasi Titik Kontrol -->
+        <mxCell id="tr_l5a_narrative" value="[L5a] Pop-up Narasi Titik Kontrol (Koagulasi)&#xa;• Ikon 'i' dibuka kapan saja tanpa kurangi skor&#xa;• 6 Bagian: Definisi, Parameter Pantau, Kontrol, Dampak, SOP, Referensi&#xa;• Kotak SOP Lokal Lembaga (Balai Nusantara) &amp; Tooltip" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#0c4a6e;strokeColor=#38bdf8;strokeWidth=1.5;fontColor=#ffffff;fontSize=10.5;align=left;spacingLeft=12;" vertex="1" parent="lane_operator">
+          <mxGeometry x="20" y="940" width="280" height="95" as="geometry" />
+        </mxCell>
+
+        <mxCell id="tr_l6_scoring" value="[L6] Hasil Evaluasi Skor 4 Komponen (PRD §8)&#xa;• Ketepatan 38/40 + Respons 22/25 + Stabilitas 15/20 + Alarm 13/15 = 88&#xa;• Bintang: 2★ (Rentang 85–94) · XP: 88 × 2,0 = +176 XP&#xa;• Level Operator Muda ➔ Menuju Madya (820 XP)&#xa;• Lencana Baru Terbuka: 'Respons Kilat'&#xa;• Debriefing Tokoh Mentor: Operator Senior (Pak Slamet)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#082f49;strokeColor=#0284c7;strokeWidth=2;fontColor=#ffffff;fontSize=11;align=left;spacingLeft=12;" vertex="1" parent="lane_operator">
+          <mxGeometry x="160" y="940" width="360" height="105" as="geometry" />
+        </mxCell>
+
+        <mxCell id="tr_pass_check" value="Skor ≥ KKM?&#xa;(Biasa ≥70, Kelulusan ≥80)" style="rhombus;whiteSpace=wrap;html=1;fillColor=#0369a1;strokeColor=#38bdf8;strokeWidth=2;fontColor=#ffffff;fontStyle=1;fontSize=11;" vertex="1" parent="lane_operator">
+          <mxGeometry x="250" y="1075" width="180" height="70" as="geometry" />
+        </mxCell>
+
+        <mxCell id="tr_l7_gamify" value="[L7] Galeri Lencana &amp; Papan Peringkat&#xa;• 8 Lencana PRD: Penjelajah, Respons Kilat, Tanpa Alarm, Mutu, dll&#xa;• Papan Peringkat: Tab Kelompok/Lembaga &amp; Mingguan/All-Time" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#082f49;strokeColor=#0284c7;strokeWidth=2;fontColor=#ffffff;fontSize=11;align=left;spacingLeft=12;" vertex="1" parent="lane_operator">
+          <mxGeometry x="170" y="1175" width="340" height="75" as="geometry" />
+        </mxCell>
+
+        <mxCell id="tr_l4a_post" value="[L4a] Post-Test Evaluasi Akhir Jalur&#xa;• Diambil setelah menyelesaikan Misi Kelulusan&#xa;• Syarat Kelulusan PRD §13: Nilai Post-Test Wajib ≥ 70&#xa;• Capaian Dimas: Skor 84/100 (Kenaikan Metrik T1: +50%)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#082f49;strokeColor=#0284c7;strokeWidth=2;fontColor=#ffffff;fontSize=11;align=left;spacingLeft=12;" vertex="1" parent="lane_operator">
+          <mxGeometry x="170" y="1280" width="340" height="80" as="geometry" />
+        </mxCell>
+
+        <!-- Node L8b: Status Menunggu Persetujuan Instruktur -->
+        <mxCell id="tr_l8b_pending" value="[L8b] Status: Menunggu Persetujuan Instruktur&#xa;• Seluruh misi lulus, Post-Test 84, Menunggu Pak Budi&#xa;• Tombol Unduh PDF Nonaktif (Disabled) dengan Watermark&#xa;• Sesuai kebijakan lembaga di L13" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#451a03;strokeColor=#d97706;strokeWidth=2;fontColor=#fde68a;fontSize=11;align=left;spacingLeft=12;" vertex="1" parent="lane_operator">
+          <mxGeometry x="170" y="1390" width="340" height="85" as="geometry" />
+        </mxCell>
+
+        <mxCell id="tr_l8_cert" value="[L8] PIAGAM KELULUSAN RESMI TERBIT&#xa;• Format Cetak A4 Landscape Bersih (Bukan Sertifikat)&#xa;• Nomor Unik: SSA/NUS/2026/0001 · Predikat: Lulus dengan Baik&#xa;• Tanda Tangan: Pimpinan (Dr. Bambang) &amp; Instruktur (Pak Budi)&#xa;• QR Code Validasi Publik L16 · Catatan Kaki Wajib PRD §13" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#065f46;strokeColor=#34d399;strokeWidth=2.5;fontColor=#ffffff;fontSize=11;align=left;spacingLeft=12;" vertex="1" parent="lane_operator">
+          <mxGeometry x="160" y="1520" width="360" height="95" as="geometry" />
+        </mxCell>
+
+        <!-- ========================================== -->
+        <!-- NODES: LANE 5 - PIMPINAN & PUBLIK (L14, L16)-->
+        <!-- ========================================== -->
+        <mxCell id="exec_l14_dash" value="[L14] Dasbor Evaluasi Lembaga (Pimpinan)&#xa;• Metrik T1: Kenaikan Kompetensi (+28,6% &gt; 25% PRD)&#xa;• Metrik T2: 83,3% Lulus 5 Gangguan Utama (&gt; 80% PRD)&#xa;• Metrik T3: Waktu Menuju Lulus 58 Hari (±2 Bulan)&#xa;• Metrik T4: Kelulusan Jalur 75% (&gt; 70% PRD)&#xa;• Kartu Pemakaian Lisensi: 46/50 Kursi (92%), 245 Hari Sisa&#xa;• Analisis 5 Misi Paling Sulit &amp; Kesalahan Tersering&#xa;• Ekspor PDF Berkop &amp; Excel (.xlsx)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#3b0764;strokeColor=#9333ea;strokeWidth=2;fontColor=#ffffff;fontSize=11;align=left;spacingLeft=12;" vertex="1" parent="lane_exec_public">
+          <mxGeometry x="60" y="275" width="340" height="150" as="geometry" />
+        </mxCell>
+
+        <mxCell id="pub_l16_verify" value="[L16] Portal Verifikasi Piagam Publik&#xa;• Akses Terbuka Tanpa Login untuk Rekruter / Regulator&#xa;• Input Nomor Registrasi: SSA/NUS/2026/0001&#xa;• Menampilkan 5 Data PRD §13: Nama, Lembaga, Jalur, Tanggal, Predikat&#xa;• Status Keabsahan: SAH / VALID (Bebas Pencabutan)&#xa;• Tanpa NIP, Tanpa Detail Nilai &amp; Tanpa Tombol Unduh PDF&#xa;• Catatan Kaki Wajib PRD §13 Tampil Jelas Tidak Tertutup" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#3b0764;strokeColor=#9333ea;strokeWidth=2;fontColor=#ffffff;fontSize=11;align=left;spacingLeft=12;" vertex="1" parent="lane_exec_public">
+          <mxGeometry x="60" y="1500" width="340" height="130" as="geometry" />
+        </mxCell>
+
+        <mxCell id="sys_end" value="Operator Siap Bertugas di Instalasi Nyata" style="ellipse;whiteSpace=wrap;html=1;fillColor=#059669;strokeColor=#34d399;strokeWidth=2;fontColor=#ffffff;fontStyle=1;fontSize=12;" vertex="1" parent="lane_exec_public">
+          <mxGeometry x="110" y="1670" width="240" height="50" as="geometry" />
+        </mxCell>
+
+        <!-- ========================================== -->
+        <!-- CONNECTORS / WORKFLOW EDGES                -->
+        <!-- ========================================== -->
+
+        <!-- SUPER ADMIN PROVISIONING FLOW -->
+        <mxCell id="e_sa_1" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#818cf8;strokeWidth=2;" edge="1" source="sa_start" target="sa_l15_prov" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="e_sa_2" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#818cf8;strokeWidth=2;" edge="1" source="sa_l15_prov" target="sa_l15_license" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- SUPER ADMIN TO TENANT ADMIN -->
+        <mxCell id="e_sa_to_tenant" value="Inisialisasi Tenant &amp; Kuota Kursi" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#6366f1;strokeWidth=2;fontColor=#c7d2fe;fontSize=11;" edge="1" source="sa_l15_license" target="adm_l1_login" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- TENANT ADMIN SETUP FLOW -->
+        <mxCell id="e_adm_1" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#34d399;strokeWidth=2;" edge="1" source="adm_l1_login" target="adm_l13_settings" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="e_adm_2" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#34d399;strokeWidth=2;" edge="1" source="adm_l13_settings" target="adm_l12_users" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- TENANT ADMIN CREATES ACCOUNTS FOR INSTRUCTOR & OPERATOR -->
+        <mxCell id="e_adm_to_ins" value="Akun Instruktur Diterbitkan" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#059669;strokeWidth=2;fontColor=#a7f3d0;fontSize=11;" edge="1" source="adm_l12_users" target="ins_l1_login" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="870" y="550" />
+              <mxPoint x="870" y="185" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+
+        <mxCell id="e_adm_to_tr" value="Akun Peserta Diterbitkan" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#059669;strokeWidth=2;fontColor=#a7f3d0;fontSize=11;" edge="1" source="adm_l12_users" target="tr_l1_login" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="880" y="580" />
+              <mxPoint x="1380" y="580" />
+              <mxPoint x="1380" y="185" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+
+        <!-- INSTRUCTOR MANAGEMENT FLOW -->
+        <mxCell id="e_ins_1" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#f59e0b;strokeWidth=2;" edge="1" source="ins_l1_login" target="ins_l9_roster" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="e_ins_2" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#f59e0b;strokeWidth=2;" edge="1" source="ins_l9_roster" target="ins_l10_author" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- INSTRUCTOR ASSIGNS CUSTOM SCENARIO TO TRAINEE CATALOG -->
+        <mxCell id="e_ins_to_track" value="Tugaskan Skenario ke Katalog Kelas" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#d97706;strokeWidth=2;dashed=1;fontColor=#fde68a;fontSize=11;" edge="1" source="ins_l10_author" target="tr_l3_track" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- OPERATOR TRAINEE LEARNING JOURNEY FLOW -->
+        <mxCell id="e_tr_login_to_pre" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#38bdf8;strokeWidth=2;" edge="1" source="tr_l1_login" target="tr_l4a_pre" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="e_tr_pre_to_dash" value="Pre-Test Selesai (Baseline T1)" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#38bdf8;strokeWidth=2;fontColor=#bae6fd;fontSize=11;" edge="1" source="tr_l4a_pre" target="tr_l2_dash" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="e_tr_dash_to_track" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#38bdf8;strokeWidth=2;" edge="1" source="tr_l2_dash" target="tr_l3_track" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="e_tr_track_to_mod" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#38bdf8;strokeWidth=2;" edge="1" source="tr_l3_track" target="tr_l4_modquiz" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="e_tr_mod_to_gate" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#38bdf8;strokeWidth=2;" edge="1" source="tr_l4_modquiz" target="tr_quiz_gate" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="e_gate_yes" value="Kuis Lulus (≥60)" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#10b981;strokeWidth=2.5;fontColor=#a7f3d0;fontSize=11;fontStyle=1;" edge="1" source="tr_quiz_gate" target="tr_l5_hmi" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="e_gate_no" value="Remedial Kuis" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#ef4444;strokeWidth=1.5;fontColor=#fca5a5;fontSize=10.5;" edge="1" source="tr_quiz_gate" target="tr_l4_modquiz" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="490" y="755" />
+              <mxPoint x="490" y="647" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+
+        <!-- L5 to L5a (Pop-up Narrative without score reduction) -->
+        <mxCell id="e_hmi_to_l5a" value="Buka 'i' (0 Poin)" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#38bdf8;strokeWidth=1.5;dashed=1;fontColor=#bae6fd;fontSize=10;" edge="1" source="tr_l5_hmi" target="tr_l5a_narrative" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="e_hmi_to_score" value="Selesai Sesi Simulasi (08:30)" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#38bdf8;strokeWidth=2;fontColor=#bae6fd;fontSize=11;" edge="1" source="tr_l5_hmi" target="tr_l6_scoring" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- TELEMETRY & LOG STREAM TO INSTRUCTOR AUDIT REPLAY -->
+        <mxCell id="e_log_to_ins" value="Telemetri &amp; Log Sesi Mengalir ke L9 &amp; L11" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#f59e0b;strokeWidth=2;dashed=1;fontColor=#fde68a;fontSize=11;" edge="1" source="tr_l6_scoring" target="ins_l11_replay" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="e_score_to_check" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#38bdf8;strokeWidth=2;" edge="1" source="tr_l6_scoring" target="tr_pass_check" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="e_check_pass" value="Lulus (Skor ≥ KKM)" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#10b981;strokeWidth=2.5;fontColor=#a7f3d0;fontSize=11;fontStyle=1;" edge="1" source="tr_pass_check" target="tr_l7_gamify" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="e_check_fail" value="Remedial Misi (&lt; KKM)" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#ef4444;strokeWidth=1.5;fontColor=#fca5a5;fontSize=10.5;" edge="1" source="tr_pass_check" target="tr_l5_hmi" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="140" y="1110" />
+              <mxPoint x="140" y="867" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+
+        <!-- INSTRUCTOR UNLOCK FOR FAILED CANDIDATES -->
+        <mxCell id="e_unlock_to_hmi" value="Instruktur Buka Kunci Manual" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#d97706;strokeWidth=2;fontColor=#fde68a;fontSize=10.5;" edge="1" source="ins_l9_unlock" target="tr_l5_hmi" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1150" y="1062" />
+              <mxPoint x="1150" y="867" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+
+        <mxCell id="e_tr_gamify_to_post" value="Semua Misi Jalur Lulus" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#38bdf8;strokeWidth=2;fontColor=#bae6fd;fontSize=11;" edge="1" source="tr_l7_gamify" target="tr_l4a_post" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="e_tr_post_to_pending" value="Post-Test ≥ 70 (Metrik T1 Tercapai)" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#38bdf8;strokeWidth=2;fontColor=#bae6fd;fontSize=11;" edge="1" source="tr_l4a_post" target="tr_l8b_pending" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- L8b PENDING REQUEST TO INSTRUCTOR APPROVAL -->
+        <mxCell id="e_req_approval" value="Pengajuan Verifikasi Kelulusan" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#f59e0b;strokeWidth=2.5;fontColor=#fde68a;fontSize=11;fontStyle=1;" edge="1" source="tr_l8b_pending" target="ins_approve" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- INSTRUCTOR APPROVES -> PIAGAM L8 OFFICIAL ISSUANCE -->
+        <mxCell id="e_approved_to_l8" value="Disetujui &amp; Ditandatangani" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#34d399;strokeWidth=2.5;fontColor=#a7f3d0;fontSize=11;fontStyle=1;" edge="1" source="ins_approve" target="tr_l8_cert" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1150" y="1567" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+
+        <!-- CERTIFICATE DATA INTEGRATION WITH EXECUTIVE DASHBOARD & PUBLIC PORTAL -->
+        <mxCell id="e_cert_to_kpi" value="Agregasi Data Lulusan (T1–T4 &amp; ROI)" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#c084fc;strokeWidth=2;dashed=1;fontColor=#f3e8ff;fontSize=10.5;" edge="1" source="tr_l8_cert" target="exec_l14_dash" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="2040" y="1567" />
+              <mxPoint x="2040" y="350" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+
+        <mxCell id="e_cert_to_public" value="Daftarkan Nomor Registrasi SSA/NUS/2026/0001 &amp; QR" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#34d399;strokeWidth=2;fontColor=#a7f3d0;fontSize=10.5;" edge="1" source="tr_l8_cert" target="pub_l16_verify" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="e_pub_to_end" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#34d399;strokeWidth=2;" edge="1" source="pub_l16_verify" target="sys_end" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- KPI FEEDBACK TO SUPER ADMIN CAPACITY MONITOR -->
+        <mxCell id="e_kpi_to_sa" value="Utilisasi Kursi 92% &amp; Status Lisensi Multi-Tenant" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#818cf8;strokeWidth=1.5;dashed=1;fontColor=#c7d2fe;fontSize=10.5;" edge="1" source="exec_l14_dash" target="sa_l15_monitor" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="2420" y="240" />
+              <mxPoint x="2420" y="1710" />
+              <mxPoint x="240" y="1710" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
