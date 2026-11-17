@@ -13,7 +13,7 @@ import {
 } from 'lucide-react';
 
 export const L14_TenantEvaluationDashboard: React.FC = () => {
-  const { currentTenant, getTenantMetrics, getVisibleGroups, getVisibleUsers } = useApp();
+  const { currentTenant, getTenantMetrics, getVisibleGroups, getVisibleUsers, showTechnicalRefs } = useApp();
 
   const [period, setPeriod] = useState('6_months');
   const [trackFilter, setTrackFilter] = useState('all');
@@ -117,7 +117,7 @@ export const L14_TenantEvaluationDashboard: React.FC = () => {
           Dasbor Evaluasi Lembaga & ROI Pelatihan
         </h1>
         <p className="text-xs text-slate-400 mt-0.5">
-          {currentTenant.name} ({currentTenant.code}) · 4 Metrik Kunci Keberhasilan (T1–T4 PRD §3) · Kartu Pemakaian Lisensi & Ekspor Laporan (PRD §12)
+          {currentTenant.name} ({currentTenant.code}) · 4 Metrik Kunci Keberhasilan (T1–T4{showTechnicalRefs ? ' · PRD §3' : ''}) · Kartu Pemakaian Lisensi &amp; Ekspor Laporan{showTechnicalRefs ? ' (PRD §12)' : ''}
         </p>
       </div>
 
@@ -225,7 +225,7 @@ export const L14_TenantEvaluationDashboard: React.FC = () => {
         <div className="p-4 rounded-2xl bg-[#0f172a] border border-emerald-500/40 shadow-lg space-y-2">
           <div className="flex items-center justify-between">
             <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">
-              T1: PENINGKATAN KOMPETENSI (PRD §3):
+              T1: PENINGKATAN KOMPETENSI{showTechnicalRefs ? ' (PRD §3)' : ''}:
             </span>
             <span className="px-2 py-0.5 rounded-md bg-emerald-500/20 text-emerald-300 font-bold text-[9px] border border-emerald-500/30">
               TARGET: ≥ 25% (LULUS)
@@ -310,7 +310,7 @@ export const L14_TenantEvaluationDashboard: React.FC = () => {
       {/* Kartu Pemakaian Lisensi & Nilai Investasi (ROI Diklat PRD §12) */}
       <div className="p-5 rounded-2xl bg-[#0f172a] border border-[#24324d] shadow-lg space-y-3">
         <span className="text-xs font-bold text-slate-300 uppercase tracking-wider block">
-          KARTU PEMAKAIAN LISENSI & NILAI INVESTASI (ROI DIKLAT PRD §12):
+          KARTU PEMAKAIAN LISENSI &amp; NILAI INVESTASI (ROI DIKLAT{showTechnicalRefs ? ' · PRD §12' : ''}):
         </span>
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 text-center sm:text-left">
           <div className="p-3 rounded-xl bg-[#0b1120] border border-[#1e293b]">
@@ -349,7 +349,9 @@ export const L14_TenantEvaluationDashboard: React.FC = () => {
         {/* 5 Misi Paling Sulit */}
         <div className="bg-[#0f172a] rounded-2xl border border-[#24324d] p-5 space-y-4 shadow-lg">
           <div>
-            <h2 className="text-sm font-bold text-white">5 Misi Paling Sulit (Tingkat Gagal Percobaan Pertama PRD §12):</h2>
+            <h2 className="text-sm font-bold text-white">
+              5 Misi Paling Sulit (Tingkat Gagal Percobaan Pertama{showTechnicalRefs ? ' · PRD §12' : ''}):
+            </h2>
             <p className="text-[11px] text-slate-400">Bahan evaluasi materi pengajaran bagi instruktur {currentTenant.shortName}</p>
           </div>
 
@@ -371,7 +373,9 @@ export const L14_TenantEvaluationDashboard: React.FC = () => {
         {/* Analisis Kesalahan Tersering & Komparasi Kelompok */}
         <div className="bg-[#0f172a] rounded-2xl border border-[#24324d] p-5 space-y-4 shadow-lg">
           <div>
-            <h2 className="text-sm font-bold text-white">Analisis Kesalahan Tersering & Performa Kelompok (PRD §12):</h2>
+            <h2 className="text-sm font-bold text-white">
+              Analisis Kesalahan Tersering &amp; Performa Kelompok{showTechnicalRefs ? ' (PRD §12)' : ''}:
+            </h2>
             <p className="text-[11px] text-slate-400">Bahan penyempurnaan SOP operasional dan kurikulum kelas {currentTenant.shortName}</p>
           </div>
 

@@ -23,7 +23,7 @@ export const L16_PublicVerification: React.FC<PublicVerificationProps> = ({
   initialCertNumber = '',
   onBackToApp,
 }) => {
-  const { certificates, tenants, currentUser } = useApp();
+  const { certificates, tenants, currentUser, showTechnicalRefs } = useApp();
   const [certQuery, setCertQuery] = useState<string>(initialCertNumber);
   const [activeCertNo, setActiveCertNo] = useState<string>(initialCertNumber);
   const [isSimulatedRevoked, setIsSimulatedRevoked] = useState<boolean>(false);
@@ -91,7 +91,7 @@ export const L16_PublicVerification: React.FC<PublicVerificationProps> = ({
             Portal Verifikasi Keaslian Piagam Publik
           </h2>
           <p className="text-xs text-slate-400">
-            Portal Terbuka Tanpa Login untuk Rekruter, PDAM & Regulator (Sesuai Ketentuan PRD §13)
+            Portal Terbuka Tanpa Login untuk Rekruter, PDAM &amp; Regulator{showTechnicalRefs ? ' (Sesuai Ketentuan PRD §13)' : ''}
           </p>
         </div>
 
@@ -185,7 +185,9 @@ export const L16_PublicVerification: React.FC<PublicVerificationProps> = ({
                 </div>
 
                 <div className="p-4 rounded-xl bg-[#0b1120] border border-[#1e293b] space-y-1">
-                  <span className="text-[10px] text-slate-500 uppercase tracking-wider block font-bold">5. Predikat Kelulusan (PRD §13):</span>
+                  <span className="text-[10px] text-slate-500 uppercase tracking-wider block font-bold">
+                    5. Predikat Kelulusan{showTechnicalRefs ? ' (PRD §13)' : ''}:
+                  </span>
                   <div className="text-base font-black text-amber-400">{cert.predicate}</div>
                 </div>
 
@@ -236,7 +238,7 @@ export const L16_PublicVerification: React.FC<PublicVerificationProps> = ({
         {/* Legal Disclaimer Footnote */}
         <div className="p-4 rounded-xl bg-[#0f172a] border border-[#24324d] text-xs text-slate-400 space-y-1">
           <span className="font-bold text-slate-300 uppercase tracking-wider text-[11px] block">
-            Pemberitahuan Hukum (PRD §13):
+            Pemberitahuan Hukum{showTechnicalRefs ? ' (PRD §13)' : ''}:
           </span>
           <p className="text-[11px] leading-relaxed">
             "Piagam ini menyatakan penyelesaian pelatihan berbasis simulator dan bukan sertifikat kompetensi resmi." Sertifikasi profesi resmi operator air minum tetap diselenggarakan oleh Lembaga Sertifikasi Profesi (LSP) berlisensi BNSP.

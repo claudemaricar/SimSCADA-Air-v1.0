@@ -82,7 +82,7 @@ export const INITIAL_TENANTS: Tenant[] = [
       graduationThresholdScore: 80,
       leaderboardEnabled: true,
       localSopNotes: {
-        intake: 'SOP-TRM-01: Verifikasi debit inflow minimum 150 m3/jam saat pompa beroperasi.',
+        intake: 'SOP-TRM-01: Verifikasi debit inflow minimum 75 L/s saat pompa beroperasi.',
       },
     },
   },
@@ -130,7 +130,7 @@ export const INITIAL_USERS: User[] = [
     fullName: 'Super Administrator',
     email: 'superadmin@simscada-air.id',
     role: 'superadmin',
-    tenantId: 'nusantara',
+    tenantId: 'platform',
     createdAt: '2026-01-01',
     lastLoginAt: '2026-10-28T07:30:00Z',
   },
@@ -409,9 +409,9 @@ export const BADGES_LIST: Badge[] = [
   {
     id: 'b-tanpa-petunjuk',
     name: 'Lulus Tanpa Petunjuk',
-    description: 'Menuntaskan Misi Kelulusan tanpa menggunakan tombol bantuan petunjuk (-5 poin).',
+    description: 'Menyelesaikan seluruh jalur hingga lulus ujian kelulusan tanpa pernah memakai tombol bantuan petunjuk (-5 poin) di semua percobaan misi.',
     iconName: 'Award',
-    requirement: 'Selesaikan misi ujian kelulusan dengan 0 petunjuk terpakai.',
+    requirement: 'Lulus semua misi, Misi Kelulusan, dan Post-Test dengan 0 petunjuk terpakai di seluruh percobaan misi.',
   },
 ];
 
@@ -538,15 +538,15 @@ export const CONTROL_POINTS: ControlPointDef[] = [
     id: 'pompa_distribusi',
     name: 'Pompa Distribusi',
     category: 'distribusi',
-    monitoredParams: ['Tekanan Keluar (bar)', 'Total Debit Pompa (m3/h)', 'Status Pompa 1 & 2'],
+    monitoredParams: ['Tekanan Keluar (bar)', 'Total Debit Pompa (L/s)', 'Status Pompa 1 & 2'],
     controllableParams: ['Start / Stop Pompa 1 & 2', 'Jumlah Pompa Jalan', 'Reset Trip Pompa'],
     normalRanges: {
-      tekanan: { min: 3.5, max: 4.5, unit: 'bar', desc: 'Tekanan buang stasiun pompa (nominal 4.1 bar)' },
-      debit: { min: 140, max: 200, unit: 'm³/h', desc: 'Total aliran ke jaringan pipa' },
+      tekanan: { min: 3.5, max: 4.5, unit: 'bar', desc: 'Tekanan buang stasiun pompa (nominal 4,1 bar)' },
+      debit: { min: 39, max: 56, unit: 'L/s', desc: 'Total aliran normal ke jaringan pipa distribusi (L/s)' },
     },
     narrative: {
       apaIni: 'Stasiun Pompa Distribusi memompa air minum dari reservoir ke jaringan pipa perpipaan kota dengan tekanan memadai.',
-      yangDipantau: 'Tekanan pipa buang stasiun pompa (bar), total debit aliran (m³/h), dan status proteksi motor listrik.',
+      yangDipantau: 'Tekanan pipa buang stasiun pompa (bar), total debit aliran (L/s), dan status proteksi motor listrik.',
       yangBisaDikendalikan: 'Start/Stop pompa P-101 dan P-102, memilih jumlah pompa yang jalan, dan reset alarm trip.',
       dampakKeHilir: 'Pompa distribusi trip menyebabkan tekanan seluruh kota drop seketika, pasokan terhenti dan risiko kontaminasi dari air tanah masuk ke pipa.',
       gangguanUmumDanSop: 'Pompa trip: Alarm berbunyi KRITIS! Segera start pompa cadangan, periksa panel proteksi, tekan tombol Reset Pompa, lalu clear alarm.',
@@ -560,13 +560,13 @@ export const CONTROL_POINTS: ControlPointDef[] = [
     monitoredParams: ['Status Valve Zona 1 & 2', 'Setpoint PRV (bar)', 'Status Valve Isolasi Bocor'],
     controllableParams: ['Buka/Tutup Valve Zona 1', 'Buka/Tutup Valve Zona 2', 'Valve Isolasi Kebocoran', 'Setpoint PRV (bar)'],
     normalRanges: {
-      prv: { min: 2.0, max: 3.0, unit: 'bar', desc: 'Setpoint reduksi tekanan zona (nominal 2.5 bar)' },
+      prv: { min: 2.0, max: 2.8, unit: 'bar', desc: 'Setpoint reduksi tekanan zona (nominal 2,5 bar; rentang 2,0–2,8 bar)' },
     },
     narrative: {
       apaIni: 'Pressure Reducing Valve (PRV) dan Katup Sekat Zona mengontrol tekanan hidrolika dan mencegah lonjakan water hammer yang merusak meteran pelanggan.',
       yangDipantau: 'Posisi katup zona, setpoint PRV dalam satuan bar, dan status katup isolasi ruas pipa.',
       yangBisaDikendalikan: 'Mengatur setpoint bukaan PRV dalam bar dan menutup valve isolasi saat terjadi kebocoran pipa.',
-      dampakKeHilir: 'Kebocoran pipa tidak diisolasi menyebabkan kehilangan air masif dan tekanan zona drop di bawah 1.5 bar.',
+      dampakKeHilir: 'Kebocoran pipa tidak diisolasi menyebabkan kehilangan air masif dan tekanan zona drop di bawah 2,0 bar.',
       gangguanUmumDanSop: 'Pipa pecah/bocor: Tutup katup isolasi ruas pipa terkait (Valve Isolasi Bocor) dalam waktu target 60 detik untuk melokalisir kebocoran.',
       pelajariLebihLanjut: 'Modul Distribusi Bab 3: Manajemen Tekanan Zona (DMA) dan Operasional PRV.',
     },
@@ -575,18 +575,18 @@ export const CONTROL_POINTS: ControlPointDef[] = [
     id: 'titik_pantau_jaringan',
     name: 'Titik Pantau Jaringan (Zona 1 & 2)',
     category: 'distribusi',
-    monitoredParams: ['Tekanan Zona 1 (bar)', 'Tekanan Zona 2 (bar)', 'Debit Zona (m3/h)', 'Sisa Klor Ujung (mg/L)'],
+    monitoredParams: ['Tekanan Zona 1 (bar)', 'Tekanan Zona 2 (bar)', 'Debit Zona (L/s)', 'Sisa Klor Ujung (mg/L)'],
     controllableParams: ['Pemantauan Telemetri Lapangan'],
     normalRanges: {
-      tekananZona1: { min: 2.0, max: 2.8, unit: 'bar', desc: 'Tekanan layanan perumahan (nominal 2.4 bar)' },
-      tekananZona2: { min: 1.8, max: 2.5, unit: 'bar', desc: 'Tekanan layanan komersial (nominal 2.1 bar)' },
-      sisaKlorUjung: { min: 0.15, max: 0.35, unit: 'mg/L', desc: 'Residu klorin ujung pipa (nominal 0.26 mg/L)' },
+      tekananZona1: { min: 2.0, max: 2.8, unit: 'bar', desc: 'Tekanan layanan zona 1 (nominal 2,4 bar; standar 2,0–2,8 bar)' },
+      tekananZona2: { min: 2.0, max: 2.8, unit: 'bar', desc: 'Tekanan layanan zona 2 (nominal 2,2 bar; standar 2,0–2,8 bar)' },
+      sisaKlorUjung: { min: 0.2, max: 0.5, unit: 'mg/L', desc: 'Residu klorin ujung pipa (standar 0,20–0,50 mg/L)' },
     },
     narrative: {
       apaIni: 'Titik Pantau Jaringan telemetri IoT memantau tekanan hidrolika dan kualitas air di titik sambungan terjauh pelanggan.',
-      yangDipantau: 'Tekanan pipa dinamis (bar), laju aliran zona (m³/h), dan sisa klorin bebas ujung pipa.',
+      yangDipantau: 'Tekanan pipa dinamis (bar), laju aliran zona (L/s), dan sisa klorin bebas ujung pipa.',
       yangBisaDikendalikan: 'Unit sensor pantau (read-only) untuk diagnostik ruang kontrol.',
-      dampakKeHilir: 'Bila tekanan < 1.5 bar, air tidak naik ke lantai atas pelanggan. Bila sisa klor 0.0 mg/L, air berisiko tercemar bakteri.',
+      dampakKeHilir: 'Bila tekanan < 2,0 bar, pelayanan pelanggan terganggu dan berisiko intrusi air tanah. Bila sisa klor < 0,20 mg/L, air berisiko tercemar bakteri.',
       gangguanUmumDanSop: 'Tekanan drop diiringi debit melonjak: Indikasi kebocoran pipa distribusi. Lakukan isolasi katup zona segera.',
       pelajariLebihLanjut: 'Modul Distribusi Bab 4: Analisis Pola Kebocoran dan Residual Klorin.',
     },
@@ -605,6 +605,7 @@ export const MISSIONS_LIST: Mission[] = [
     levelName: 'Tingkat 1: Pengenalan (Mudah · 1,0x XP)',
     track: ['ipa', 'terpadu'],
     trainingFocus: 'Membuka narasi semua titik kontrol IPA, membaca nilai proses dan batas aman.',
+    durationLimitSec: 300,
     passScore: 70,
     briefing: {
       situation: 'Selamat datang di Ruang Kendali Instalasi Pengolahan Air (IPA). Hari ini Anda memulai shift orientasi pertama.',
@@ -662,10 +663,11 @@ export const MISSIONS_LIST: Mission[] = [
     levelName: 'Tingkat 2: Operasi Normal (Mudah · 1,0x XP)',
     track: ['ipa', 'terpadu'],
     trainingFocus: 'Menghidupkan pompa intake air baku dan mencapai debit target stabil.',
+    durationLimitSec: 300,
     passScore: 70,
     briefing: {
       situation: 'Instalasi baru selesai masa perawatan. Nyalakan pompa intake untuk memulai produksi air baku.',
-      objective: 'Hidupkan Pompa Intake 1, pastikan flash mixer aktif, dan jaga debit stabil di 70-100 L/s.',
+      objective: 'Hidupkan Pompa Intake 1, pastikan flash mixer aktif, dan jaga debit stabil di 75–100 L/s.',
       mentorQuote: '"Nyalakan pompa intake dengan tenang. Pastikan pengaduk cepat aktif agar siap menerima injeksi koagulan." — Pak Slamet',
     },
     debriefing: {
@@ -719,6 +721,7 @@ export const MISSIONS_LIST: Mission[] = [
     levelName: 'Tingkat 2: Operasi Normal (Sedang · 1,5x XP)',
     track: ['ipa', 'terpadu'],
     trainingFocus: 'Mengatur dosis koagulan PAC dan pengadukan sampai kekeruhan air olahan < 3 NTU.',
+    durationLimitSec: 300,
     passScore: 70,
     briefing: {
       situation: 'Air baku sungai memiliki kekeruhan 25 NTU. Anda bertugas mengoptimalkan dosis koagulan PAC dan menjaga pH tetap 6.8 - 7.5.',
@@ -776,6 +779,7 @@ export const MISSIONS_LIST: Mission[] = [
     levelName: 'Tingkat 2: Operasi Normal (Sedang · 1,5x XP)',
     track: ['ipa', 'terpadu'],
     trainingFocus: 'Membaca kenaikan headloss filter dan menjalankan backwash bergantian.',
+    durationLimitSec: 300,
     passScore: 70,
     briefing: {
       situation: 'Filter Pasir 1 telah beroperasi 36 jam. Indikator headloss naik mendekati 1.8 m.',
@@ -833,6 +837,7 @@ export const MISSIONS_LIST: Mission[] = [
     levelName: 'Tingkat 2: Operasi Normal (Sedang · 1,5x XP)',
     track: ['ipa', 'terpadu'],
     trainingFocus: 'Mengatur dosis klor hingga sisa klor bebas berada di rentang 0.2 - 0.5 mg/L sesuai Permenkes.',
+    durationLimitSec: 300,
     passScore: 70,
     briefing: {
       situation: 'Air olahan siap masuk ke reservoir penampungan. Pastikan sisa klorin bebas terukur stabil di 0.3 - 0.4 mg/L.',
@@ -849,27 +854,27 @@ export const MISSIONS_LIST: Mission[] = [
       {
         id: 'q1',
         question: 'Dua bentuk senyawa klorin aktif yang berperan sebagai desinfektan utama dalam air adalah...',
-        options: ['Asam hipoklorit (HOCl) dan ion hipoklorit (OCl-)', 'Natrium klorida dan asam klorida', 'Karbon monoksida', 'Klorofil'],
-        correctIndex: 0,
+        options: ['Natrium klorida dan asam klorida', 'Karbon monoksida', 'Asam hipoklorit (HOCl) dan ion hipoklorit (OCl-)', 'Klorofil'],
+        correctIndex: 2,
         explanation: 'HOCl dan OCl- merupakan sisa klor bebas aktif.',
       },
       {
         id: 'q2',
         question: 'Sisa klor bebas di titik terjauh jaringan distribusi disarankan minimal tetap sebesar...',
-        options: ['0,0 mg/L', '0,2 mg/L', '5,0 mg/L', '10 mg/L'],
-        correctIndex: 1,
-        explanation: 'Minimal 0.2 mg/L sisa klor mencegah rekontaminasi bakteri di pipa.',
+        options: ['0,2 mg/L', '0,0 mg/L', '5,0 mg/L', '10 mg/L'],
+        correctIndex: 0,
+        explanation: 'Minimal 0,2 mg/L sisa klor mencegah rekontaminasi bakteri di pipa.',
       },
       {
         id: 'q3',
         question: 'Waktu kontak minimum yang disyaratkan untuk desinfeksi klorin di reservoir adalah...',
-        options: ['1 detik', 'Minimal 30 menit', '24 jam', '5 hari'],
-        correctIndex: 1,
+        options: ['1 detik', '24 jam', '5 hari', 'Minimal 30 menit'],
+        correctIndex: 3,
         explanation: 'Waktu kontak 30 menit disyaratkan untuk membunuh mikroorganisme.',
       },
       {
         id: 'q4',
-        question: 'Jika pH air terlalu basa (>8.5), efektivitas desinfeksi klorin akan...',
+        question: 'Jika pH air terlalu basa (>8,5), efektivitas desinfeksi klorin akan...',
         options: ['Meningkat', 'Menurun, karena HOCl terdisosiasi menjadi ion OCl- yang lemah daya bunuhnya', 'Tidak berubah', 'Air jadi manis'],
         correctIndex: 1,
         explanation: 'Pada pH tinggi, klorin berubah menjadi OCl- yang kurang efektif membunuh kuman.',
@@ -877,8 +882,8 @@ export const MISSIONS_LIST: Mission[] = [
       {
         id: 'q5',
         question: 'Baku mutu rentang sisa klor bebas pada air reservoir adalah...',
-        options: ['0,0 - 0,1 mg/L', '0,2 - 0,5 mg/L', '1,0 - 2,0 mg/L', '3,0 - 5,0 mg/L'],
-        correctIndex: 1,
+        options: ['0,0 - 0,1 mg/L', '1,0 - 2,0 mg/L', '0,2 - 0,5 mg/L', '3,0 - 5,0 mg/L'],
+        correctIndex: 2,
         explanation: 'Rentang baku mutu Permenkes No. 2/2023 adalah 0,2 - 0,5 mg/L.',
       },
     ],
@@ -1066,10 +1071,10 @@ export const MISSIONS_LIST: Mission[] = [
       },
       {
         id: 'q2',
-        question: 'Prioritas alarm untuk kondisi sisa klorin < 0.2 mg/L adalah...',
+        question: 'Prioritas alarm untuk kondisi sisa klorin < 0,2 mg/L adalah...',
         options: ['Info', 'Sedang', 'Tinggi', 'Kritis'],
         correctIndex: 3,
-        explanation: 'Sesuai PRD §10, sisa klor < 0,2 mg/L berkategori KRITIS.',
+        explanation: 'Berdasarkan standar manajemen alarm proses, sisa klor < 0,2 mg/L berkategori KRITIS.',
       },
       {
         id: 'q3',
@@ -1115,11 +1120,19 @@ export const MISSIONS_LIST: Mission[] = [
     disturbances: [
       {
         id: 'dist-exam-ipa',
-        name: 'Ujian Komprehensif IPA',
+        name: 'Ujian Komprehensif IPA (Lonjakan Kekeruhan)',
         triggerTimeSec: 30,
         type: 'kekeruhan_lonjakan',
-        description: 'Lonjakan kekeruhan air baku disusul fluktuasi klorinasi.',
-        expectedActions: ['Atasi alarm sesuai SOP', 'Jaga mutu air stabil'],
+        description: 'Lonjakan kekeruhan air baku 185 NTU memicu alarm air olahan tinggi.',
+        expectedActions: ['Atasi alarm sesuai SOP', 'Naikkan PAC dan jaga mutu air stabil'],
+      },
+      {
+        id: 'dist-exam-ipa-cl',
+        name: 'Ujian Komprehensif IPA (Fluktuasi Klorin)',
+        triggerTimeSec: 90,
+        type: 'klor_salah',
+        description: 'Fluktuasi pompa dosing klor menyebabkan sisa klor turun di bawah 0,2 mg/L.',
+        expectedActions: ['Periksa pompa dosing klor', 'Naikkan setpoint dosis klor'],
       },
     ],
     hints: [],
@@ -1129,13 +1142,13 @@ export const MISSIONS_LIST: Mission[] = [
         question: 'Ambang skor minimal (KKM) kelulusan untuk Misi Kelulusan Ujian adalah...',
         options: ['50 poin', '60 poin', '70 poin', '80 poin'],
         correctIndex: 3,
-        explanation: 'Sesuai PRD §8, Misi Kelulusan mewajibkan skor minimal 80.',
+        explanation: 'Misi Kelulusan mewajibkan skor minimal 80.',
       },
       {
         id: 'q2',
         question: 'Pengali XP untuk Misi Kelulusan Tingkat 5 adalah...',
-        options: ['1,0x', '1,5x', '2,0x', '3,0x (Ujian)'],
-        correctIndex: 3,
+        options: ['3,0x (Ujian)', '1,0x', '1,5x', '2,0x'],
+        correctIndex: 0,
         explanation: 'Tingkat 5 memberikan pengali XP tertinggi sebesar 3,0x.',
       },
       {
@@ -1148,16 +1161,16 @@ export const MISSIONS_LIST: Mission[] = [
       {
         id: 'q4',
         question: 'Parameter mutu utama air minum yang wajib memenuhi standar Permenkes 2/2023 adalah...',
-        options: ['Kekeruhan < 3 NTU, pH 6.5 - 8.5, Sisa klor 0.2 - 0.5 mg/L', 'Warna hitam pekat', 'Rasa asin', 'Suhu mendidih'],
-        correctIndex: 0,
+        options: ['Warna hitam pekat', 'Rasa asin', 'Kekeruhan < 3 NTU, pH 6,5 - 8,5, Sisa klor 0,2 - 0,5 mg/L', 'Suhu mendidih'],
+        correctIndex: 2,
         explanation: 'Tiga parameter kunci fisika-kimia mutu air minum instalasi.',
       },
       {
         id: 'q5',
         question: 'Setelah lulus Misi Kelulusan dan Post-Test, piagam akan terbit setelah...',
-        options: ['Membayar biaya tambahan', 'Mendapat verifikasi dan persetujuan instruktur (bila kebijakan L13 aktif)', 'Menunggu 1 tahun', 'Otomatis gagal'],
+        options: ['Membayar biaya tambahan', 'Mendapat verifikasi dan persetujuan instruktur (bila kebijakan lembaga aktif)', 'Menunggu 1 tahun', 'Otomatis gagal'],
         correctIndex: 1,
-        explanation: 'Kebijakan dua tahap memerlukan persetujuan instruktur di L9 sebelum piagam terbit.',
+        explanation: 'Kebijakan verifikasi dua tahap memerlukan persetujuan instruktur sebelum piagam terbit.',
       },
     ],
   },
@@ -1170,6 +1183,7 @@ export const MISSIONS_LIST: Mission[] = [
     levelName: 'Tingkat 1: Pengenalan (Mudah · 1,0x XP)',
     track: ['distribusi', 'terpadu'],
     trainingFocus: 'Membuka narasi telemetri pipa, pompa distribusi, PRV, dan titik pantau zona.',
+    durationLimitSec: 300,
     passScore: 70,
     briefing: {
       situation: 'Shift orientasi Jaringan Distribusi. Pelajari pembagian zona pipa dan stasiun pompa pendorong kota.',
@@ -1186,36 +1200,36 @@ export const MISSIONS_LIST: Mission[] = [
       {
         id: 'q1',
         question: 'Tujuan utama pembagian area pelayanan menjadi District Metered Area (DMA) adalah...',
-        options: ['Mempersulit pemantauan', 'Memudahkan pemantauan kebocoran air (NRW) dan manajemen tekanan zona', 'Menghabiskan anggaran', 'Menutup pipa kota'],
-        correctIndex: 1,
+        options: ['Memudahkan pemantauan kebocoran air (NRW) dan manajemen tekanan zona', 'Mempersulit pemantauan', 'Menghabiskan anggaran', 'Menutup pipa kota'],
+        correctIndex: 0,
         explanation: 'DMA membagi jaringan menjadi zona terukur untuk pengendalian kehilangan air.',
       },
       {
         id: 'q2',
         question: 'Fungsi utama Pressure Reducing Valve (PRV) di jaringan distribusi adalah...',
-        options: ['Menaikkan tekanan setinggi mungkin', 'Mereduksi dan menstabilkan tekanan hilir agar pipa tidak pecah', 'Menyaring lumut', 'Menghitung tarif air'],
-        correctIndex: 1,
+        options: ['Menaikkan tekanan setinggi mungkin', 'Menyaring lumut', 'Mereduksi dan menstabilkan tekanan hilir agar pipa tidak pecah', 'Menghitung tarif air'],
+        correctIndex: 2,
         explanation: 'PRV menjaga tekanan hilir tetap stabil di batas aman.',
       },
       {
         id: 'q3',
-        question: 'Rentang tekanan layanan yang ideal pada pipa pelanggan adalah...',
-        options: ['0,1 - 0,5 bar', '2,0 - 3,0 bar', '10 - 20 bar', '50 bar'],
+        question: 'Rentang tekanan layanan yang ideal pada jaringan pipa distribusi pelanggan adalah...',
+        options: ['0,1 – 0,5 bar', '2,0 – 2,8 bar', '10 – 20 bar', '50 bar'],
         correctIndex: 1,
-        explanation: 'Tekanan 2 - 3 bar memadai untuk mengalirkan air hingga lantai 2-3 rumah.',
+        explanation: 'Tekanan layanan 2,0–2,8 bar memadai untuk mengalirkan air hingga lantai atas tanpa merusak pipa.',
       },
       {
         id: 'q4',
-        question: 'Tekanan di bawah 1.0 bar pada jaringan pipa dapat menyebabkan...',
-        options: ['Air menyembur tinggi', 'Aliran mati ke pelanggan dan risiko intrusi kontaminasi air tanah ke pipa', 'Pipa bertambah kuat', 'Klorin berlebih'],
-        correctIndex: 1,
+        question: 'Tekanan di bawah 1,0 bar pada jaringan pipa dapat menyebabkan...',
+        options: ['Air menyembur tinggi', 'Pipa bertambah kuat', 'Klorin berlebih', 'Aliran mati ke pelanggan dan risiko intrusi kontaminasi air tanah ke pipa'],
+        correctIndex: 3,
         explanation: 'Tekanan negatif/rendah mengundang hisapan air kotor luar pipa.',
       },
       {
         id: 'q5',
         question: 'Kehilangan air yang disebabkan pipa bocor fisik tergolong dalam...',
-        options: ['Kehilangan air non-fisik (komersial)', 'Kehilangan air fisik (kehilangan teknis / kebocoran pipa)', 'Pemakaian legal', 'Bukan urusan PDAM'],
-        correctIndex: 1,
+        options: ['Kehilangan air non-fisik (komersial)', 'Pemakaian legal', 'Kehilangan air fisik (kehilangan teknis / kebocoran pipa)', 'Bukan urusan PDAM'],
+        correctIndex: 2,
         explanation: 'Pipa pecah termasuk Real Loss (kehilangan fisik).',
       },
     ],
@@ -1227,6 +1241,7 @@ export const MISSIONS_LIST: Mission[] = [
     levelName: 'Tingkat 2: Operasi Normal (Mudah · 1,0x XP)',
     track: ['distribusi', 'terpadu'],
     trainingFocus: 'Menghidupkan pompa distribusi dan menjaga keseimbangan level reservoir.',
+    durationLimitSec: 300,
     passScore: 70,
     briefing: {
       situation: 'Pagi hari menjelang jam sibuk warga. Nyalakan pompa distribusi P-101 dan pantau tekanan pipa keluar.',
@@ -1284,6 +1299,7 @@ export const MISSIONS_LIST: Mission[] = [
     levelName: 'Tingkat 2: Operasi Normal (Sedang · 1,5x XP)',
     track: ['distribusi', 'terpadu'],
     trainingFocus: 'Mengatur 2 pompa distribusi jalan saat jam puncak pagi hari agar tekanan zona stabil.',
+    durationLimitSec: 300,
     passScore: 70,
     briefing: {
       situation: 'Pukul 06:30 pagi: pemakaian air melonjak tajam (jam puncak aktivitas mandi dan memasak).',
@@ -1307,8 +1323,8 @@ export const MISSIONS_LIST: Mission[] = [
       {
         id: 'q2',
         question: 'Bila dua pompa yang sama dioperasikan secara paralel, yang meningkat signifikan adalah...',
-        options: ['Debit aliran (kapasitas m3/h)', 'Tekanan menjadi 10 kali lipat', 'Kekeruhan air', 'Suhu air'],
-        correctIndex: 0,
+        options: ['Tekanan menjadi 10 kali lipat', 'Kekeruhan air', 'Debit aliran (kapasitas L/s)', 'Suhu air'],
+        correctIndex: 2,
         explanation: 'Operasi paralel melipatgandakan debit aliran pada head tekanan yang sama.',
       },
       {
@@ -1341,6 +1357,7 @@ export const MISSIONS_LIST: Mission[] = [
     levelName: 'Tingkat 2: Operasi Normal (Sedang · 1,5x XP)',
     track: ['distribusi', 'terpadu'],
     trainingFocus: 'Memastikan residu klorin di sambungan terjauh (dead-end) tidak habis.',
+    durationLimitSec: 300,
     passScore: 70,
     briefing: {
       situation: 'Laporan telemetri: Sisa klorin di ujung Zona 2 mendekati 0.12 mg/L. Risiko rekontaminasi!',
@@ -1424,37 +1441,37 @@ export const MISSIONS_LIST: Mission[] = [
       {
         id: 'q1',
         question: 'Pola data telemetri yang menandakan terjadinya pipa transmisi pecah secara mendadak adalah...',
-        options: ['Tekanan naik dan debit turun', 'Debit aliran melonjak drastis disertai tekanan drop secara serentak', 'Semua sensor mati', 'Suhu air naik drastis'],
-        correctIndex: 1,
+        options: ['Tekanan naik dan debit turun', 'Semua sensor mati', 'Debit aliran melonjak drastis disertai tekanan drop secara serentak', 'Suhu air naik drastis'],
+        correctIndex: 2,
         explanation: 'Pipa pecah menciptakan lubang besar: aliran keluar bebas (flow naik) tapi resistansi hilang (pressure jatuh).',
       },
       {
         id: 'q2',
         question: 'Tindakan tanggap darurat pertama operator saat pipa pecah terkonfirmasi adalah...',
-        options: ['Membeli pipa baru', 'Menutup katup isolasi pada ruas pipa yang bocor untuk membatasi wilayah pemadaman', 'Menyalakan semua pompa', 'Menunggu besok pagi'],
-        correctIndex: 1,
+        options: ['Menutup katup isolasi pada ruas pipa yang bocor untuk membatasi wilayah pemadaman', 'Membeli pipa baru', 'Menyalakan semua pompa', 'Menunggu besok pagi'],
+        correctIndex: 0,
         explanation: 'Isolasi sectional mematikan segmen bocor tanpa mengganggu zona lain.',
       },
       {
         id: 'q3',
         question: 'Berapa target waktu skenario penutupan katup isolasi pipa pecah untuk meraih lencana?',
-        options: ['60 detik', '2 hari', '30 menit', '1 jam'],
-        correctIndex: 0,
+        options: ['2 hari', '30 menit', '1 jam', '60 detik'],
+        correctIndex: 3,
         explanation: 'Target waktu skenario darurat adalah 60 detik.',
       },
       {
         id: 'q4',
         question: 'Dampak buruk jika kebocoran besar dibiarkan berlangsung berjam-jam adalah...',
-        options: ['Reservoir kering, jalan raya amblas, dan komplain pelanggan meluas', 'Air di reservoir makin penuh', 'Tekanan pipa naik', 'Bahan bakar hemat'],
-        correctIndex: 0,
+        options: ['Air di reservoir makin penuh', 'Reservoir kering, jalan raya amblas, dan komplain pelanggan meluas', 'Tekanan pipa naik', 'Bahan bakar hemat'],
+        correctIndex: 1,
         explanation: 'Kehilangan air masif mengosongkan tangki dan merusak infrastruktur sekitar.',
       },
       {
         id: 'q5',
         question: 'Setelah katup isolasi ditutup dan tekanan kembali normal, alarm akan...',
-        options: ['Ditekan paksa', 'Auto-clear otomatis setelah tekanan stabil normal selama 10 detik', 'Meledak', 'Mati selamanya'],
-        correctIndex: 1,
-        explanation: 'Sistem SCADA auto-clear saat parameter hidrolika pulih stabil.',
+        options: ['Ditekan paksa', 'Meledak', 'Auto-clear otomatis setelah tekanan stabil normal selama 10 detik', 'Mati selamanya'],
+        correctIndex: 2,
+        explanation: 'Sistem SCADA auto-clear saat parameter hidrolika pulih stabil selama 10 detik.',
       },
     ],
   },
@@ -1468,7 +1485,7 @@ export const MISSIONS_LIST: Mission[] = [
     durationLimitSec: 240,
     passScore: 70,
     briefing: {
-      situation: 'Alarm Tekanan Rendah: Katup PRV macet separuh menutup. Tekanan Zona 1 drop di bawah 1.5 bar!',
+      situation: 'Alarm Tekanan Rendah: Katup PRV macet separuh menutup. Tekanan Zona 1 drop di bawah 2,0 bar!',
       objective: 'Akui alarm, buka panel PRV, naikkan setpoint PRV kembali ke 2.5 bar, dan verifikasi tekanan layanan pulih.',
       mentorQuote: '"Periksa setpoint katup pengurang tekanan. Pulihkan bukaan pegas PRV agar tekanan pelanggan kembali normal!" — Pak Slamet',
     },
@@ -1497,16 +1514,16 @@ export const MISSIONS_LIST: Mission[] = [
       },
       {
         id: 'q2',
-        question: 'Batas minimal tekanan layanan standar PDAM di sambungan rumah adalah...',
-        options: ['0,1 bar', '0,7 - 1,0 bar (minimal air mengalir di keran lantai satu)', '10 bar', '50 bar'],
-        correctIndex: 1,
-        explanation: 'Standar pelayanan minimal menetapkan tekanan keran 0.7 - 1.0 bar.',
+        question: 'Rentang tekanan layanan standar jaringan distribusi yang aman di pelanggan adalah...',
+        options: ['0,1 – 0,5 bar', '10 – 20 bar', '2,0 – 2,8 bar', '50 bar'],
+        correctIndex: 2,
+        explanation: 'Standar tekanan layanan jaringan distribusi SimSCADA-Air adalah 2,0–2,8 bar.',
       },
       {
         id: 'q3',
-        question: 'Jika tekanan drop berlarut-larut pada jam aktivitas warga, sanksi yang diterima PDAM adalah...',
-        options: ['Piala penghargaan', 'Keluhan massal pelanggan dan potensi penalti kompensasi mutu pelayanan', 'Kenaikan tarif otomatis', 'Tidak ada sanksi'],
-        correctIndex: 1,
+        question: 'Jika tekanan drop berlarut-larut pada jam aktivitas warga, dampaknya bagi layanan PDAM adalah...',
+        options: ['Keluhan massal pelanggan dan potensi penalti kompensasi mutu pelayanan', 'Piala penghargaan', 'Kenaikan tarif otomatis', 'Tidak ada dampak'],
+        correctIndex: 0,
         explanation: 'Penurunan tekanan memicu komplain dan melanggar standar SPM.',
       },
       {
@@ -1514,13 +1531,13 @@ export const MISSIONS_LIST: Mission[] = [
         question: 'Pada panel kendali SCADA, besaran bukaan PRV dikendalikan dalam satuan...',
         options: ['Persen (%)', 'Bar (tekanan hidrolika pegas)', 'Liter', 'Voltase'],
         correctIndex: 1,
-        explanation: 'Sesuai PRD §9, setpoint PRV diatur dalam besaran bar.',
+        explanation: 'Pada panel kendali SCADA, setpoint PRV diatur dalam besaran bar.',
       },
       {
         id: 'q5',
         question: 'Untuk membersihkan kotoran yang menyumbat pilot valve PRV, teknisi melakukan...',
-        options: ['Flushing strainer saringan pilot PRV secara berkala', 'Mengetuk dengan palu godam', 'Menyiram air panas', 'Membakar pipa'],
-        correctIndex: 0,
+        options: ['Mengetuk dengan palu godam', 'Menyiram air panas', 'Membakar pipa', 'Flushing strainer saringan pilot PRV secara berkala'],
+        correctIndex: 3,
         explanation: 'Maintenance berkala mencakup pembersihan strainer pilot line.',
       },
     ],
@@ -1546,11 +1563,19 @@ export const MISSIONS_LIST: Mission[] = [
     disturbances: [
       {
         id: 'dist-exam-dst',
-        name: 'Ujian Praktik Distribusi',
+        name: 'Ujian Praktik Distribusi (Kebocoran Pipa)',
         triggerTimeSec: 25,
         type: 'pipa_bocor',
-        description: 'Kebocoran pipa pada jam sibuk.',
-        expectedActions: ['Isolasi pipa', 'Atur pompa'],
+        description: 'Kebocoran pipa pada jam sibuk menyebabkan debit melonjak dan tekanan drop.',
+        expectedActions: ['Tutup valve isolasi ruas bocor'],
+      },
+      {
+        id: 'dist-exam-dst-drop',
+        name: 'Ujian Praktik Distribusi (Tekanan Jam Puncak Drop)',
+        triggerTimeSec: 75,
+        type: 'tekanan_drop',
+        description: 'Penurunan tekanan layanan jaringan pada beban puncak.',
+        expectedActions: ['Tambah pompa distribusi P-102 atau naikkan setpoint PRV'],
       },
     ],
     hints: [],
@@ -1565,9 +1590,9 @@ export const MISSIONS_LIST: Mission[] = [
       {
         id: 'q2',
         question: 'Penalti skor untuk setiap pemakaian tombol petunjuk pada misi latihan adalah...',
-        options: ['-1 poin', '-5 poin', '-20 poin', '-50 poin'],
-        correctIndex: 1,
-        explanation: 'Sesuai PRD §8, penggunaan petunjuk mengurangi 5 poin per petunjuk.',
+        options: ['-5 poin', '-1 poin', '-20 poin', '-50 poin'],
+        correctIndex: 0,
+        explanation: 'Penggunaan petunjuk mengurangi 5 poin per petunjuk.',
       },
       {
         id: 'q3',
@@ -1580,13 +1605,13 @@ export const MISSIONS_LIST: Mission[] = [
         id: 'q4',
         question: 'Keberhasilan misi kelulusan diukur dari 4 komponen penilaian otomatis yaitu...',
         options: [
-          'Ketepatan Tindakan (40%), Waktu Respons (25%), Stabilitas Parameter (20%), Penanganan Alarm (15%)',
           'Kecepatan mengetik saja',
           'Banyaknya alarm yang dibiarkan',
+          'Ketepatan Tindakan (40%), Waktu Respons (25%), Stabilitas Parameter (20%), Penanganan Alarm (15%)',
           'Lamanya waktu simulasi',
         ],
-        correctIndex: 0,
-        explanation: 'Formula 4 komponen resmi PRD §8.',
+        correctIndex: 2,
+        explanation: 'Formula 4 komponen penilaian otomatis di SimSCADA-Air.',
       },
       {
         id: 'q5',
@@ -1639,23 +1664,23 @@ export const MISSIONS_LIST: Mission[] = [
       {
         id: 'q2',
         question: 'Pengali XP untuk skenario Tingkat 4 Gangguan Berantai adalah...',
-        options: ['1,0x', '1,5x', '2,0x', '2,5x (Sangat Sulit)'],
-        correctIndex: 3,
+        options: ['2,5x (Sangat Sulit)', '1,0x', '1,5x', '2,0x'],
+        correctIndex: 0,
         explanation: 'Tingkat 4 memiliki pengali XP 2,5x.',
       },
       {
         id: 'q3',
         question: 'Apakah ada syarat prasyarat untuk memilih Jalur Terpadu?',
-        options: ['Wajib lulus jalur IPA dulu', 'Tidak ada prasyarat; peserta bebas memilih langsung Jalur Terpadu (PRD §7)', 'Wajib punya ijazah S2', 'Harus bayar ekstra'],
+        options: ['Wajib lulus jalur IPA dulu', 'Tidak ada prasyarat; peserta bebas memilih langsung Jalur Terpadu', 'Wajib punya ijazah S2', 'Harus bayar ekstra'],
         correctIndex: 1,
-        explanation: 'Sesuai PRD §7, tidak ada prasyarat untuk memilih Jalur Terpadu.',
+        explanation: 'Peserta bebas memilih langsung Jalur Terpadu sejak awal pelatihan.',
       },
       {
         id: 'q4',
         question: 'Bila peserta yang telah lulus IPA-01 s/d IPA-07 pindah ke Jalur Terpadu, status misinya adalah...',
-        options: ['Direset dari awal', 'Dihitung otomatis sebagai misi yang sudah lulus (PRD §7)', 'Dihapus', 'Kena penalti'],
-        correctIndex: 1,
-        explanation: 'Misi yang sudah lulus di jalur lain dihitung otomatis.',
+        options: ['Direset dari awal', 'Dihapus', 'Kena penalti', 'Dihitung otomatis sebagai misi yang sudah lulus'],
+        correctIndex: 3,
+        explanation: 'Misi yang sudah lulus di jalur lain dihitung otomatis saat berpindah ke Jalur Terpadu.',
       },
       {
         id: 'q5',
@@ -1687,11 +1712,19 @@ export const MISSIONS_LIST: Mission[] = [
     disturbances: [
       {
         id: 'dist-exam-trp',
-        name: 'Evaluasi Final Terpadu',
+        name: 'Evaluasi Final Terpadu (Hulu-Hilir)',
         triggerTimeSec: 30,
         type: 'hulu_hilir',
-        description: 'Ujian simulasi komprehensif hulu-hilir.',
-        expectedActions: ['Kelola proses IPA', 'Kelola hidrolika distribusi'],
+        description: 'Ujian simulasi komprehensif hulu-hilir (lonjakan kekeruhan + kebocoran pipa).',
+        expectedActions: ['Kelola proses IPA', 'Isolasi kebocoran distribusi'],
+      },
+      {
+        id: 'dist-exam-trp-cl',
+        name: 'Evaluasi Final Terpadu (Klorinasi)',
+        triggerTimeSec: 90,
+        type: 'klor_salah',
+        description: 'Penurunan sisa klor bebas di reservoir saat beban puncak.',
+        expectedActions: ['Periksa pompa dosing klor', 'Naikkan setpoint dosis klor'],
       },
     ],
     hints: [],
@@ -1727,16 +1760,16 @@ export const MISSIONS_LIST: Mission[] = [
       {
         id: 'q5',
         question: 'Catatan hukum wajib yang harus tertulis pada setiap piagam simulator adalah...',
-        options: ['Berlaku seumur hidup', 'Piagam ini menyatakan penyelesaian pelatihan berbasis simulator dan bukan sertifikat kompetensi resmi', 'Dapat digadaikan', 'Bebas pajak'],
-        correctIndex: 1,
-        explanation: 'Klausul wajib PRD §13 untuk mencegah kebingungan dengan sertifikasi BNSP.',
+        options: ['Berlaku seumur hidup', 'Dapat digadaikan', 'Bebas pajak', 'Piagam ini menyatakan penyelesaian pelatihan berbasis simulator dan bukan sertifikat kompetensi resmi'],
+        correctIndex: 3,
+        explanation: 'Klausul wajib untuk mencegah kebingungan dengan sertifikasi kompetensi BNSP.',
       },
     ],
   },
 ];
 
 // ====================================================================
-// G. DATA HISTORIS PRE-SEED SESUAI PRD §5 & DOKUMEN HTML BAGIAN 5
+// G. DATA HISTORIS PRE-SEED
 // ====================================================================
 
 // Pre/Post-Test Results
@@ -1787,31 +1820,50 @@ export const INITIAL_TEST_RESULTS: PrePostTestResult[] = [
     score: 82,
     completedAt: '2026-10-28T10:00:00Z',
   },
+  // Eko Prasetyo (tertinggal, gagal IPA-07 3x): pre-test 52
+  {
+    userId: 'user-eko-prasetyo',
+    tenantId: 'nusantara',
+    type: 'pre',
+    score: 52,
+    completedAt: '2026-08-15T08:00:00Z',
+  },
 ];
 
-// Generate test results for other participants in Nusantara so that average Pre = 56.0, Post = 72.0 -> T1 = +28.6%
+// Generate Nusantara alumni & active participant test results (Pre avg ≈ 56.0, Post avg ≈ 72.0 -> T1 ≈ +28.6%)
+const NUSANTARA_ALUMNI_IDS: string[] = [
+  ...Array.from({ length: 17 }, (_, idx) => `user-nus-grp1-${idx + 1}`),
+  ...Array.from({ length: 14 }, (_, idx) => `user-nus-grp2-${idx + 1}`),
+];
+
 (function populateTestResults() {
-  // Pre-test average 56 across 42 active participants
-  // Post-test average 72 across 32 graduates
-  for (let i = 1; i <= 39; i++) {
-    const uid = i <= 18 ? `user-nus-grp1-${i}` : `user-nus-grp2-${i - 18}`;
+  // 31 certified alumni: pre & post (post 70..73 so avg with Andi 88 & Rian 82 = ~72.0)
+  NUSANTARA_ALUMNI_IDS.forEach((uid, idx) => {
     INITIAL_TEST_RESULTS.push({
       userId: uid,
       tenantId: 'nusantara',
       type: 'pre',
-      score: 52 + (i % 9), // values around 52-60
+      score: 52 + (idx % 9),
       completedAt: '2026-08-05T08:00:00Z',
     });
-    // For 30 graduates
-    if (i <= 30) {
-      INITIAL_TEST_RESULTS.push({
-        userId: uid,
-        tenantId: 'nusantara',
-        type: 'post',
-        score: 70 + (i % 12), // values around 70-82
-        completedAt: '2026-10-20T08:00:00Z',
-      });
-    }
+    INITIAL_TEST_RESULTS.push({
+      userId: uid,
+      tenantId: 'nusantara',
+      type: 'post',
+      score: 70 + (idx % 3), // 70, 71, 72 -> 31 alumni + Andi(88) + Rian(82) => avg ~71.8..72.0
+      completedAt: '2026-10-20T08:00:00Z',
+    });
+  });
+
+  // 5 active non-graduated grp2 trainees: pre-test only
+  for (let j = 15; j <= 19; j++) {
+    INITIAL_TEST_RESULTS.push({
+      userId: `user-nus-grp2-${j}`,
+      tenantId: 'nusantara',
+      type: 'pre',
+      score: 53 + (j % 6),
+      completedAt: '2026-09-16T08:00:00Z',
+    });
   }
 
   // Tirta Mandiri (TRM): 18 active participants Pre-Test avg = 55,0; 12 graduates Post-Test avg = 74,0 -> T1 = +34,5%
@@ -1842,6 +1894,90 @@ export const INITIAL_TEST_RESULTS: PrePostTestResult[] = [
       });
     }
   }
+})();
+
+// Pre-seeded results for Nusantara alumni & grp2 active participants so L9/L8/L14 match 100%
+export const NUSANTARA_ALUMNI_MISSION_RESULTS: Record<string, MissionResult[]> = (() => {
+  const map: Record<string, MissionResult[]> = {};
+  const ipaAll = ['IPA-01', 'IPA-02', 'IPA-03', 'IPA-04', 'IPA-05', 'IPA-06', 'IPA-07', 'IPA-08', 'IPA-09'];
+  const dstAll = ['DST-01', 'DST-02', 'DST-03', 'DST-04', 'DST-05', 'DST-06', 'DST-07'];
+  const trpAll = [
+    'IPA-01', 'IPA-02', 'IPA-03', 'IPA-04', 'IPA-05', 'IPA-06', 'IPA-07', 'IPA-08',
+    'DST-01', 'DST-02', 'DST-03', 'DST-04', 'DST-05', 'DST-06',
+    'TRP-01', 'TRP-02',
+  ];
+
+  NUSANTARA_ALUMNI_IDS.forEach((uid, alumniIdx) => {
+    const userObj = INITIAL_USERS.find((u) => u.id === uid);
+    const track = userObj?.track || 'ipa';
+    const codes = track === 'ipa' ? ipaAll : track === 'distribusi' ? dstAll : trpAll;
+    const baseScore = 84 + (alumniIdx % 12); // 84..95
+
+    map[uid] = codes.map((code, idx) => {
+      const isGrad = code === 'IPA-09' || code === 'DST-07' || code === 'TRP-02';
+      const passScore = isGrad ? 80 : 70;
+      const score = Math.min(98, Math.max(passScore + 2, baseScore + ((idx + alumniIdx) % 4) - 1));
+      const day = String(10 + (idx % 18)).padStart(2, '0');
+      return {
+        id: `res-${uid}-${code}`,
+        userId: uid,
+        tenantId: 'nusantara',
+        missionCode: code,
+        track,
+        completedAt: `2026-10-${day}T11:00:00Z`,
+        durationSec: 225,
+        scoreTindakan: Math.round(score * 0.4),
+        scoreWaktuRespons: Math.round(score * 0.25),
+        scoreStabilitas: Math.round(score * 0.2),
+        scoreAlarm: Math.max(0, score - Math.round(score * 0.4) - Math.round(score * 0.25) - Math.round(score * 0.2)),
+        scoreDeductions: idx === 0 && alumniIdx % 2 === 1 ? 5 : 0,
+        totalScore: score,
+        stars: computeStarsFromScore(score, passScore),
+        xpEarned: computeMissionXP(code, score, true),
+        hintsUsedCount: idx === 0 && alumniIdx % 2 === 1 ? 1 : 0,
+        isPassed: true,
+        actionLogs: [],
+        alarmLogs: [],
+        trendHistory: [],
+      };
+    });
+  });
+
+  // Active in-progress grp2 trainees (user-nus-grp2-15..19)
+  for (let j = 15; j <= 19; j++) {
+    const uid = `user-nus-grp2-${j}`;
+    const userObj = INITIAL_USERS.find((u) => u.id === uid);
+    const track = userObj?.track || 'ipa';
+    const pool = track === 'distribusi' ? dstAll : ipaAll;
+    const partialCodes = pool.slice(0, 4 + (j % 3));
+    map[uid] = partialCodes.map((code, idx) => {
+      const score = 76 + ((j + idx) % 12);
+      return {
+        id: `res-${uid}-${code}`,
+        userId: uid,
+        tenantId: 'nusantara',
+        missionCode: code,
+        track,
+        completedAt: `2026-10-${String(18 + idx).padStart(2, '0')}T14:00:00Z`,
+        durationSec: 250,
+        scoreTindakan: Math.round(score * 0.4),
+        scoreWaktuRespons: Math.round(score * 0.25),
+        scoreStabilitas: Math.round(score * 0.2),
+        scoreAlarm: Math.max(0, score - Math.round(score * 0.4) - Math.round(score * 0.25) - Math.round(score * 0.2)),
+        scoreDeductions: 0,
+        totalScore: score,
+        stars: computeStarsFromScore(score, 70),
+        xpEarned: computeMissionXP(code, score, true),
+        hintsUsedCount: 0,
+        isPassed: true,
+        actionLogs: [],
+        alarmLogs: [],
+        trendHistory: [],
+      };
+    });
+  }
+
+  return map;
 })();
 
 // Initial Certificates
@@ -1877,16 +2013,16 @@ export const INITIAL_CERTIFICATES: Certificate[] = [
     track: 'ipa',
     trackName: 'Jalur Operator IPA (9 Misi)',
     predicate: 'Lulus',
-    averageScore: 82,
-    starsCount: 18,
+    averageScore: 80,
+    starsCount: 9,
     operatorLevel: 'Operator Madya',
     issueDate: '28 Oktober 2026',
     status: 'valid',
-    instructorApproved: false, // Menunggu persetujuan instruktur di L8b & L9!
+    instructorApproved: false, // Menunggu persetujuan instruktur sebelum terbit
     leaderSigned: false,
     qrVerificationUrl: 'https://simscada.id/verifikasi/SSA-NUS-2026-0002',
   },
-  // 3. Revoked certificate example for L16 demonstration
+  // 3. Revoked certificate example for verification demonstration
   {
     id: 'cert-revoked-0007',
     certificateNumber: 'SSA/NUS/2026/0007',
@@ -1910,30 +2046,44 @@ export const INITIAL_CERTIFICATES: Certificate[] = [
   },
 ];
 
-// Add mock certificates to reach 32 issued certificates in Nusantara
+// Add 31 valid certificates mapped to real Nusantara alumni (total valid = 32 including Andi)
 (function populateNusantaraCertificates() {
-  for (let i = 3; i <= 32; i++) {
-    const certNo = `SSA/NUS/2026/${String(i).padStart(4, '0')}`;
+  let serial = 3;
+  NUSANTARA_ALUMNI_IDS.forEach((uid) => {
+    if (serial === 7) serial += 1; // 0007 is reserved for the revoked demo cert
+    const userObj = INITIAL_USERS.find((u) => u.id === uid);
+    const results = NUSANTARA_ALUMNI_MISSION_RESULTS[uid] || [];
+    const avgScore = results.length > 0 ? Math.round(results.reduce((s, r) => s + r.totalScore, 0) / results.length) : 86;
+    const totalStars = results.reduce((s, r) => s + r.stars, 0);
+    const track = userObj?.track || 'ipa';
+    const certNo = `SSA/NUS/2026/${String(serial).padStart(4, '0')}`;
+
     INITIAL_CERTIFICATES.push({
-      id: `cert-nus-${i}`,
+      id: `cert-nus-${serial}`,
       certificateNumber: certNo,
-      userId: `user-nus-grp1-${i}`,
-      userName: `Alumni Nusantara ${i}`,
+      userId: uid,
+      userName: userObj?.fullName || uid,
       tenantId: 'nusantara',
       tenantName: 'Balai Diklat Air Minum Nusantara',
-      track: i % 2 === 0 ? 'ipa' : 'terpadu',
-      trackName: i % 2 === 0 ? 'Jalur Operator IPA' : 'Jalur Operator Air Minum Terpadu',
-      predicate: i % 3 === 0 ? 'Lulus dengan Pujian' : 'Lulus dengan Baik',
-      averageScore: 84 + (i % 12),
-      starsCount: 24 + (i % 15),
-      operatorLevel: i % 3 === 0 ? 'Operator Ahli' : 'Operator Madya',
+      track,
+      trackName:
+        track === 'ipa'
+          ? 'Jalur Operator IPA'
+          : track === 'distribusi'
+          ? 'Jalur Operator Distribusi'
+          : 'Jalur Operator Air Minum Terpadu',
+      predicate: avgScore >= 95 ? 'Lulus dengan Pujian' : avgScore >= 85 ? 'Lulus dengan Baik' : 'Lulus',
+      averageScore: avgScore,
+      starsCount: totalStars,
+      operatorLevel: track === 'terpadu' ? 'Operator Ahli' : 'Operator Madya',
       issueDate: '15 Oktober 2026',
       status: 'valid',
       instructorApproved: true,
       leaderSigned: true,
-      qrVerificationUrl: `https://simscada.id/verifikasi/SSA-NUS-2026-${String(i).padStart(4, '0')}`,
+      qrVerificationUrl: `https://simscada.id/verifikasi/SSA-NUS-2026-${String(serial).padStart(4, '0')}`,
     });
-  }
+    serial += 1;
+  });
 
   // 12 certificates for Tirta Mandiri (TRM)
   for (let i = 1; i <= 12; i++) {
@@ -1949,7 +2099,7 @@ export const INITIAL_CERTIFICATES: Certificate[] = [
       trackName: 'Jalur Operator IPA (9 Misi)',
       predicate: i % 3 === 0 ? 'Lulus dengan Pujian' : 'Lulus dengan Baik',
       averageScore: 86 + (i % 6),
-      starsCount: 20 + (i % 5),
+      starsCount: 18 + (i % 5),
       operatorLevel: 'Operator Madya',
       issueDate: '24 Oktober 2026',
       status: 'valid',
@@ -2484,272 +2634,562 @@ export const TIRTA_ALUMNI_MISSION_RESULTS: Record<string, MissionResult[]> = (()
 })();
 
 // ====================================================================
-// I. BANK 20 SOAL PRE-TEST & POST-TEST KOMPETENSI (L4a · PRD §3 & §11)
+// I. DUA SET SOAL PARALEL PRE-TEST (SET A) & POST-TEST (SET B)
+//    Kisi-kisi identik: 4 soal x 5 kompetensi = 20 soal per set
 // ====================================================================
 export interface PrePostQuestion extends QuizQuestion {
-  category: string;
+  category:
+    | 'Operasi normal IPA'
+    | 'Mutu air'
+    | 'Respons gangguan'
+    | 'Penanganan alarm'
+    | 'Hidrolika distribusi';
 }
 
-export const PRE_POST_TEST_QUESTIONS: PrePostQuestion[] = [
+export const PRE_TEST_QUESTIONS_SET_A: PrePostQuestion[] = [
+  // --- 1. Operasi normal IPA (4 soal) ---
   {
-    id: 'ppt-1',
-    category: 'OPERASI NORMAL IPA',
+    id: 'pre-1',
+    category: 'Operasi normal IPA',
     question: 'Urutan tahapan pengolahan konvensional pada Instalasi Pengolahan Air (IPA) yang benar adalah...',
     options: [
-      'A. Filtrasi -> Koagulasi -> Flokulasi -> Sedimentasi -> Desinfeksi',
-      'B. Intake -> Koagulasi -> Flokulasi -> Sedimentasi -> Filtrasi -> Desinfeksi',
-      'C. Intake -> Desinfeksi -> Sedimentasi -> Flokulasi -> Filtrasi',
-      'D. Koagulasi -> Intake -> Sedimentasi -> Filtrasi -> Reservoir',
+      'Filtrasi → Koagulasi → Flokulasi → Sedimentasi → Desinfeksi',
+      'Intake → Koagulasi → Flokulasi → Sedimentasi → Filtrasi → Desinfeksi',
+      'Intake → Desinfeksi → Sedimentasi → Flokulasi → Filtrasi',
+      'Koagulasi → Intake → Sedimentasi → Filtrasi → Reservoir',
     ],
     correctIndex: 1,
-    explanation: 'Aliran pengolahan IPA standar dimulai dari Intake, Koagulasi (pengadukan cepat), Flokulasi (pengadukan lambat), Sedimentasi, Filtrasi, hingga Desinfeksi sebelum masuk reservoir.',
+    explanation: 'Aliran pengolahan IPA standar dimulai dari Intake, Koagulasi, Flokulasi, Sedimentasi, Filtrasi, hingga Desinfeksi sebelum masuk reservoir.',
   },
   {
-    id: 'ppt-2',
-    category: 'OPERASI NORMAL IPA',
-    question: 'Tujuan utama pengadukan cepat (flash mixing) pada bak koagulasi adalah...',
-    options: [
-      'A. Mengendapkan lumpur berat secara gravitasi',
-      'B. Mendispersikan bahan koagulan (PAC/Tawas) secara merata dalam waktu singkat untuk destabilisasi koloid',
-      'C. Membunuh seluruh bakteri patogen dengan gas klorin',
-      'D. Menghilangkan kesadahan permanen air baku',
-    ],
-    correctIndex: 1,
-    explanation: 'Flash mixer mendispersikan koagulan secepat mungkin agar muatan partikel koloid ternetralkan sebelum memasuki bak flokulasi.',
-  },
-  {
-    id: 'ppt-3',
-    category: 'OPERASI NORMAL IPA',
+    id: 'pre-2',
+    category: 'Operasi normal IPA',
     question: 'Jika kecepatan putaran (RPM) pengaduk lambat di bak flokulasi terlalu tinggi, dampak yang terjadi adalah...',
     options: [
-      'A. Flok yang sudah terbentuk akan pecah kembali (floc breakup) sehingga sulit mengendap di sedimentasi',
-      'B. Sisa klorin bebas meningkat drastis di jaringan distribusi',
-      'C. Tekanan pompa intake naik melebihi batas aman',
-      'D. Headloss pada saringan pasir cepat turun menjadi nol',
+      'Flok yang sudah terbentuk pecah kembali sehingga sulit mengendap di bak sedimentasi',
+      'Sisa klorin bebas meningkat drastis di jaringan distribusi',
+      'Tekanan pompa intake naik melampaui kapasitas nominal',
+      'Headloss pada saringan pasir cepat turun menjadi nol',
     ],
     correctIndex: 0,
     explanation: 'Gradien kecepatan berlebih di flokulator menimbulkan gaya geser tinggi yang memecah makroflok.',
   },
   {
-    id: 'ppt-4',
-    category: 'OPERASI NORMAL IPA',
-    question: 'Indikator utama bahwa unit Saringan Pasir Cepat (Dual Sand Filter) perlu segera dilakukan pencucian balik (backwash) adalah...',
+    id: 'pre-3',
+    category: 'Operasi normal IPA',
+    question: 'Indikator utama bahwa unit Saringan Pasir Cepat perlu segera dilakukan pencucian balik (backwash) adalah...',
     options: [
-      'A. pH air olahan berada di angka 7,2',
-      'B. Headloss filter mencapai ≥ 2,0 mH2O atau kekeruhan efluen filter mulai meningkat',
-      'C. Level reservoir air bersih penuh 90%',
-      'D. Debit pompa air baku stabil di 100 L/s',
+      'pH air olahan berada di angka 7,20',
+      'Level reservoir air bersih penuh 90%',
+      'Headloss filter mencapai ≥ 2,0 mH2O atau kekeruhan efluen mulai meningkat',
+      'Debit pompa air baku stabil di 85 L/s',
     ],
-    correctIndex: 1,
+    correctIndex: 2,
     explanation: 'Kenaikan headloss (> 2,0 mH2O) menunjukkan pori media pasir tersumbat kotoran dan memerlukan backwash.',
   },
   {
-    id: 'ppt-5',
-    category: 'OPERASI NORMAL IPA',
-    question: 'Pada pengoperasian pompa sentrifugal paralel di stasiun pompa intake, prosedur aman untuk pergantian pompa duty ke standby adalah...',
+    id: 'pre-4',
+    category: 'Operasi normal IPA',
+    question: 'Prosedur aman pergantian pompa intake duty ke pompa cadangan (standby) secara paralel adalah...',
     options: [
-      'A. Matikan pompa duty terlebih dahulu selama 10 menit baru nyalakan pompa standby',
-      'B. Pastikan katup hisap terbuka, nyalakan pompa standby hingga aliran stabil, lalu matikan pompa duty',
-      'C. Tutup seluruh valve outlet sebelum menghidupkan pompa cadangan',
-      'D. Biarkan pompa yang mengalami trip tetap menyala agar pulih sendiri',
+      'Matikan pompa duty terlebih dahulu selama 10 menit baru nyalakan pompa cadangan',
+      'Tutup seluruh katup buang sebelum menghidupkan pompa cadangan',
+      'Biarkan pompa yang bermasalah tetap menyala sambil memutus aliran air baku',
+      'Pastikan katup hisap terbuka, nyalakan pompa standby hingga aliran stabil, lalu matikan pompa duty',
     ],
-    correctIndex: 1,
-    explanation: 'Menyalakan pompa standby terlebih dahulu mencegah kekosongan aliran (water hammer / kehilangan debit mendadak) sebelum pompa duty dimatikan.',
+    correctIndex: 3,
+    explanation: 'Menyalakan pompa standby terlebih dahulu mencegah terputusnya debit aliran secara mendadak sebelum pompa duty dimatikan.',
   },
+
+  // --- 2. Mutu air (4 soal) ---
   {
-    id: 'ppt-6',
-    category: 'MUTU AIR & PERMENKES 2/2023',
-    question: 'Berdasarkan standar baku mutu air minum Permenkes No. 2 Tahun 2023, batas maksimum kekeruhan air olahan siap minum adalah...',
+    id: 'pre-5',
+    category: 'Mutu air',
+    question: 'Berdasarkan standar baku mutu air minum Permenkes No. 2 Tahun 2023, batas maksimum kekeruhan air olahan adalah...',
     options: [
-      'A. < 10,0 NTU',
-      'B. < 5,0 NTU',
-      'C. < 3,0 NTU',
-      'D. < 15,0 NTU',
+      '< 10,0 NTU',
+      '< 5,0 NTU',
+      '< 3,0 NTU',
+      '< 15,0 NTU',
     ],
     correctIndex: 2,
-    explanation: 'Permenkes No. 2/2023 menetapkan batas kekeruhan air minum maksimum adalah di bawah 3,0 NTU.',
+    explanation: 'Permenkes No. 2/2023 menetapkan batas maksimum kekeruhan air minum adalah kurang dari 3,0 NTU.',
   },
   {
-    id: 'ppt-7',
-    category: 'MUTU AIR & PERMENKES 2/2023',
-    question: 'Rentang kadar sisa klorin bebas (free residual chlorine) yang aman dan efektif pada outlet reservoir IPA adalah...',
+    id: 'pre-6',
+    category: 'Mutu air',
+    question: 'Rentang kadar sisa klorin bebas yang aman dan efektif pada outlet reservoir IPA adalah...',
     options: [
-      'A. 0,01 – 0,05 mg/L',
-      'B. 0,20 – 0,50 mg/L',
-      'C. 1,50 – 2,50 mg/L',
-      'D. > 5,00 mg/L',
+      '0,01 – 0,05 mg/L',
+      '0,20 – 0,50 mg/L',
+      '1,50 – 2,50 mg/L',
+      '> 5,00 mg/L',
     ],
     correctIndex: 1,
-    explanation: 'Sisa klorin 0,2–0,5 mg/L menjamin air tetap terlindungi dari kontaminasi ulang di jaringan tanpa menimbulkan bau menyengat berlebih.',
+    explanation: 'Sisa klorin 0,20–0,50 mg/L melindungi air dari rekontaminasi bakteri di pipa tanpa menimbulkan bau menyengat berlebih.',
   },
   {
-    id: 'ppt-8',
-    category: 'MUTU AIR & PERMENKES 2/2023',
-    question: 'Rentang pH air minum yang dipersyaratkan agar proses koagulasi PAC optimal dan aman dikonsumsi pelanggan adalah...',
+    id: 'pre-7',
+    category: 'Mutu air',
+    question: 'Rentang pH air minum yang dipersyaratkan agar koagulasi PAC optimal dan air aman dikonsumsi pelanggan adalah...',
     options: [
-      'A. 4,5 – 5,5',
-      'B. 6,5 – 8,5',
-      'C. 9,0 – 10,5',
-      'D. 3,0 – 6,0',
-    ],
-    correctIndex: 1,
-    explanation: 'Rentang pH aman air minum sesuai standar nasional adalah 6,5 – 8,5, sekaligus rentang efektif pembentukan flok PAC.',
-  },
-  {
-    id: 'ppt-9',
-    category: 'MUTU AIR & PERMENKES 2/2023',
-    question: 'Mengapa penambahan dosis koagulan PAC dalam jumlah besar sering menurunkan pH air secara signifikan?',
-    options: [
-      'A. Reaksi hidrolisis koagulan melepaskan ion H+ yang mengonsumsi alkalinitas air sehingga pH turun dan perlu koreksi kapur/soda ash',
-      'B. PAC mengandung gas oksigen murni bertekanan tinggi',
-      'C. PAC mengendapkan ion natrium di dalam reservoir',
-      'D. Dosis PAC tinggi memanaskan suhu air hingga mendidih',
+      '6,5 – 8,5',
+      '4,5 – 5,5',
+      '9,0 – 10,5',
+      '3,0 – 6,0',
     ],
     correctIndex: 0,
-    explanation: 'Hidrolisis garam aluminium/PAC mengonsumsi alkalinitas alami air, sehingga diperlukan injeksi penyesuai pH (kapur/NaOH) saat dosis koagulan naik tinggi.',
+    explanation: 'Rentang pH aman air minum sesuai baku mutu adalah 6,5–8,5 sekaligus rentang kerja efektif koagulan PAC.',
   },
   {
-    id: 'ppt-10',
-    category: 'MUTU AIR & PERMENKES 2/2023',
-    question: 'Pada ujung jaringan distribusi terjauh, sisa klorin bebas terukur 0,08 mg/L (di bawah batas aman). Langkah koreksi yang tepat adalah...',
+    id: 'pre-8',
+    category: 'Mutu air',
+    question: 'Pada ujung jaringan distribusi terjauh, sisa klorin bebas terukur 0,08 mg/L. Langkah koreksi yang tepat adalah...',
     options: [
-      'A. Menutup valve zona pelanggan agar air tidak mengalir',
-      'B. Menaikkan sedikit setpoint injeksi klorin di desinfeksi/booster sambil memantau nilai residu tidak melewati 0,5 mg/L di reservoir',
-      'C. Menurunkan pH air menjadi 5,0',
-      'D. Melakukan blowdown total pada bak sedimentasi',
+      'Menutup katup zona pelanggan agar air tidak mengalir',
+      'Menurunkan pH air olahan menjadi 5,0',
+      'Melakukan blowdown total pada bak sedimentasi',
+      'Menaikkan setpoint injeksi klorin secara terukur sambil menjaga residu reservoir tetap ≤ 0,50 mg/L',
+    ],
+    correctIndex: 3,
+    explanation: 'Penurunan residu di ujung pipa menandakan peluruhan klor; injeksi klorin perlu dinaikkan secara terkendali dalam batas aman.',
+  },
+
+  // --- 3. Respons gangguan (4 soal) ---
+  {
+    id: 'pre-9',
+    category: 'Respons gangguan',
+    question: 'Saat kekeruhan air baku naik tiba-tiba dari 20 NTU menjadi 185 NTU akibat banjir hulu, tindakan awal terpenting adalah...',
+    options: [
+      'Akui alarm, naikkan dosis koagulan PAC, koreksi pH, dan turunkan debit intake bila diperlukan',
+      'Segera menghentikan seluruh pompa intake agar tidak ada air masuk',
+      'Membuka penuh katup penguras lumpur hingga bak sedimentasi kering',
+      'Mematikan motor flash mixer agar energi listrik lebih hemat',
+    ],
+    correctIndex: 0,
+    explanation: 'Lonjakan kekeruhan membutuhkan penambahan koagulan sesuai kebutuhan flokulasi, penjagaan pH, dan waktu detensi pengendapan yang cukup.',
+  },
+  {
+    id: 'pre-10',
+    category: 'Respons gangguan',
+    question: 'Mengapa penambahan dosis koagulan PAC dalam jumlah besar sering diikuti oleh penurunan pH air?',
+    options: [
+      'PAC mengandung gas oksigen bertekanan tinggi yang menaikkan suhu air',
+      'PAC mengendapkan seluruh mineral natrium di dalam reservoir',
+      'Dosis PAC tinggi selalu membuat suhu air meningkat tajam',
+      'Reaksi hidrolisis koagulan mengonsumsi alkalinitas air sehingga perlu koreksi kapur penyesuai pH',
+    ],
+    correctIndex: 3,
+    explanation: 'Hidrolisis koagulan melepaskan ion H+ yang menurunkan alkalinitas; penyesuai pH menjaga pH tetap di rentang 6,5–8,5.',
+  },
+  {
+    id: 'pre-11',
+    category: 'Respons gangguan',
+    question: 'Ketika terjadi gangguan berantai Hulu-Hilir (banjir lumpur di IPA sekaligus pipa pecah di distribusi), urutan prioritas yang tepat adalah...',
+    options: [
+      'Mematikan seluruh pompa distribusi agar pipa kota kosong total',
+      'Mengisolasi ruas pipa bocor untuk menahan terkurasnya reservoir sekaligus menaikkan dosis koagulan di IPA',
+      'Membiarkan kebocoran pipa hingga proses di IPA selesai 2 jam kemudian',
+      'Membuka katup PRV ke tekanan maksimum agar air mengalir lebih deras',
     ],
     correctIndex: 1,
-    explanation: 'Sisa klor ujung jaringan yang terlalu rendah menandakan peluruhan klor di pipa; setpoint klorin perlu disesuaikan secara terukur.',
+    explanation: 'Isolasi kebocoran menyelamatkan cadangan air bersih di reservoir sementara pengaturan PAC menjaga mutu air olahan IPA.',
   },
   {
-    id: 'ppt-11',
-    category: 'TANGGAP DARURAT & ALARM ISA-18.2',
-    question: 'Dalam standar manajemen alarm HMI ISA-18.2, perbedaan status "Diakui (ACK)" dan "Clear" adalah...',
+    id: 'pre-12',
+    category: 'Respons gangguan',
+    question: 'Bila sisa klorin bebas di unit desinfeksi anjlok di bawah 0,20 mg/L akibat gangguan pompa dosing, langkah pemulihan adalah...',
     options: [
-      'A. ACK langsung menghapus masalah di lapangan tanpa tindakan koreksi',
-      'B. ACK menandakan operator telah melihat alarm dan menghentikan sirine, sedangkan Clear menandakan kondisi parameter proses telah pulih ke rentang aman',
-      'C. Clear harus ditekan sebelum ACK agar pompa menyala otomatis',
-      'D. Tidak ada perbedaan; keduanya identik dalam sistem SCADA',
+      'Mengurangi debit air baku menjadi nol',
+      'Menjalankan backwash pada kedua unit filter sekaligus',
+      'Mengakui alarm kritis, memeriksa pompa dosing klor, dan menaikkan setpoint dosing ke kisaran 1,5–1,8 mg/L',
+      'Menambahkan kapur ke bak koagulasi hingga pH mencapai 9,5',
+    ],
+    correctIndex: 2,
+    explanation: 'Penyesuaian setpoint dosing klor memulihkan sisa klor bebas kembali ke rentang aman 0,20–0,50 mg/L.',
+  },
+
+  // --- 4. Penanganan alarm (4 soal) ---
+  {
+    id: 'pre-13',
+    category: 'Penanganan alarm',
+    question: 'Perbedaan fungsi antara status "Diakui (ACK)" dan "Clear" pada daftar alarm ruang kendali SCADA adalah...',
+    options: [
+      'ACK langsung memperbaiki kerusakan pompa tanpa intervensi operator',
+      'Clear harus ditekan sebelum ACK agar sirine berhenti berbunyi',
+      'Tidak ada perbedaan antara ACK dan Clear pada panel SCADA',
+      'ACK menandakan operator telah melihat alarm dan menghentikan bunyi peringatan, sedangkan Clear berarti parameter telah pulih ke batas aman',
+    ],
+    correctIndex: 3,
+    explanation: 'ACK mengonfirmasi kesadaran operator; Clear hanya terjadi setelah akar gangguan selesai ditangani.',
+  },
+  {
+    id: 'pre-14',
+    category: 'Penanganan alarm',
+    question: 'Apa yang terjadi jika operator menekan tombol "Clear" manual saat kekeruhan air olahan masih 3,4 NTU (belum ditangani)?',
+    options: [
+      'Alarm langsung terhapus dan operator mendapat nilai penuh',
+      'Semua pompa distribusi berpindah otomatis ke kecepatan puncak',
+      'Sistem menolak penghapusan alarm dengan peringatan penyebab belum ditangani dan mencatat pelanggaran SOP',
+      'Sistem SCADA otomatis mereset waktu simulasi ke 00:00',
+    ],
+    correctIndex: 2,
+    explanation: 'Clear bersyarat mencegah penghapusan alarm palsu ketika kondisi proses masih berada di luar batas aman.',
+  },
+  {
+    id: 'pre-15',
+    category: 'Penanganan alarm',
+    question: 'Langkah wajib sebelum alarm "Pompa Trip" yang bersifat terkunci (latched) dapat di-clear secara manual adalah...',
+    options: [
+      'Menunggu 10 detik hingga alarm hilang otomatis tanpa menyentuh panel',
+      'Menghidupkan pompa cadangan, memverifikasi panel proteksi, dan menekan tombol Reset Trip Pompa',
+      'Menurunkan setpoint dosis klorin hingga 0 mg/L',
+      'Membuka penuh katup penguras clarifier selama 5 menit',
     ],
     correctIndex: 1,
-    explanation: 'ACK mengonfirmasi kesadaran operator; alarm hanya boleh Clear setelah akar masalah teratasi dan parameter kembali normal.',
+    explanation: 'Alarm latched membutuhkan Reset Trip eksplisit setelah aliran diamankan dengan pompa cadangan.',
   },
   {
-    id: 'ppt-12',
-    category: 'TANGGAP DARURAT & ALARM ISA-18.2',
-    question: 'Apa konsekuensi jika operator menekan tombol "Clear" manual pada saat kondisi gangguan (misalnya kekeruhan > 3,0 NTU) belum tertangani?',
-    options: [
-      'A. Gangguan langsung hilang dan nilai skor menjadi 100',
-      'B. Sistem menolak Clear dengan pesan "Penyebab belum ditangani" dan mencatat pelanggaran SOP',
-      'C. SCADA otomatis melakukan restart server pusat',
-      'D. Seluruh pompa distribusi berubah ke mode darurat penuh',
-    ],
-    correctIndex: 1,
-    explanation: 'Sesuai aturan clear bersyarat ISA-18.2 di SimSCADA-Air, alarm tidak dapat di-clear selama penyebab proses masih abnormal.',
-  },
-  {
-    id: 'ppt-13',
-    category: 'TANGGAP DARURAT & ALARM ISA-18.2',
-    question: 'Alarm "Pompa Intake Trip" bersifat terkunci (latched). Langkah wajib sebelum alarm ini dapat di-clear adalah...',
-    options: [
-      'A. Menunggu 10 detik hingga clear otomatis tanpa menyentuh panel',
-      'B. Mengalihkan aliran ke pompa cadangan (standby), menekan tombol Reset Trip Pompa, lalu melakukan Clear manual',
-      'C. Menurunkan dosis klorin hingga 0 mg/L',
-      'D. Membuka penuh katup blowdown clarifier',
-    ],
-    correctIndex: 1,
-    explanation: 'Alarm kerusakan mekanis/elektrik bersifat latched sehingga membutuhkan Reset Trip eksplisit setelah mitigasi pompa cadangan.',
-  },
-  {
-    id: 'ppt-14',
-    category: 'STUDI KASUS PROSES IPA',
-    question: 'Jika kekeruhan air baku naik dari 20 NTU menjadi 185 NTU dalam waktu 10 menit, tindakan awal manakah yang paling tepat sesuai SOP?',
-    options: [
-      'A. Segera menguras bak sedimentasi dengan blowdown penuh',
-      'B. Akui alarm, naikkan dosis koagulan & koreksi pH, serta turunkan debit intake jika diperlukan',
-      'C. Menutup valve masuk filter dan mematikan seluruh pompa',
-      'D. Menunggu air baku jernih kembali secara alami',
-    ],
-    correctIndex: 1,
-    explanation: 'Lonjakan kekeruhan air baku membutuhkan peningkatan dosis koagulan sesuai jar-test, penjagaan pH, dan penyesuaian waktu detensi.',
-  },
-  {
-    id: 'ppt-15',
-    category: 'TANGGAP DARURAT & ALARM ISA-18.2',
+    id: 'pre-16',
+    category: 'Penanganan alarm',
     question: 'Urutan prioritas penanganan apabila muncul alarm KRITIS (merah), TINGGI (oranye), dan SEDANG (kuning) secara bersamaan adalah...',
     options: [
-      'A. Tangani SEDANG terlebih dahulu karena paling mudah',
-      'B. Prioritaskan alarm KRITIS (ancaman keselamatan/kontinuitas total), disusul TINGGI, kemudian SEDANG',
-      'C. Abaikan alarm merah dan fokus pada laporan akhir bulan',
-      'D. Matikan speaker komputer agar tidak mengganggu konsentrasi',
-    ],
-    correctIndex: 1,
-    explanation: 'Hirarki prioritas ISA-18.2 mewajibkan operator merespons prioritas Kritis terlebih dahulu guna mencegah kegagalan sistem total.',
-  },
-  {
-    id: 'ppt-16',
-    category: 'HIDROLIKA DISTRIBUSI',
-    question: 'Tekanan pelayanan minimum yang perlu dipertahankan pada jaringan distribusi pelanggan selama jam puncak adalah...',
-    options: [
-      'A. 0,2 – 0,5 bar',
-      'B. 1,8 – 2,5 bar (atau minimal ≥ 1,5 – 2,0 bar pada titik kritis zona)',
-      'C. 8,0 – 10,0 bar',
-      'D. 0,0 bar agar hemat energi pompa',
-    ],
-    correctIndex: 1,
-    explanation: 'Tekanan 1,8–2,5 bar memastikan air sampai ke pelanggan bertingkat sekaligus mencegah intrusi air tanah ke dalam pipa.',
-  },
-  {
-    id: 'ppt-17',
-    category: 'HIDROLIKA DISTRIBUSI',
-    question: 'Fungsi utama katup pengurang tekanan (PRV / Pressure Reducing Valve) pada zona jaringan distribusi berkontur rendah adalah...',
-    options: [
-      'A. Menaikkan kekeruhan air sebelum masuk rumah warga',
-      'B. Menurunkan dan menstabilkan tekanan hilir agar pipa tidak pecah dan kebocoran (NRW) terkendali',
-      'C. Menghentikan aliran air ke seluruh kota secara permanen',
-      'D. Mengukur kadar sisa klorin bebas secara kimia',
-    ],
-    correctIndex: 1,
-    explanation: 'PRV menjaga tekanan hilir pada setpoint aman sehingga menekan angka kehilangan air (Non-Revenue Water) dan risiko pecah pipa.',
-  },
-  {
-    id: 'ppt-18',
-    category: 'HIDROLIKA DISTRIBUSI',
-    question: 'Tanda khas pada monitor SCADA apabila terjadi kebocoran pipa besar (pipe burst) pada Zona 2 adalah...',
-    options: [
-      'A. Debit aliran ke Zona 2 melonjak drastis disertai penurunan tajam tekanan Zona 2 dan penurunan cepat level reservoir',
-      'B. Debit aliran turun menjadi nol dan tekanan naik hingga 8 bar',
-      'C. Kekeruhan air baku di intake turun di bawah 5 NTU',
-      'D. pH air di flokulator meningkat menjadi 9,5',
+      'Tangani KRITIS terlebih dahulu, diikuti TINGGI, kemudian SEDANG',
+      'Tangani SEDANG terlebih dahulu karena paling cepat selesai',
+      'Abaikan alarm merah hingga pergantian shift berikutnya',
+      'Matikan audio peringatan agar operator lebih tenang',
     ],
     correctIndex: 0,
-    explanation: 'Kebocoran besar menurunkan tahanan hidrolik sehingga debit keluar melonjak sementara tekanan zona anjlok drastis.',
+    explanation: 'Prioritas Kritis mengancam keselamatan mutu air atau kontinuitas pasokan total sehingga wajib ditangani paling awal.',
   },
+
+  // --- 5. Hidrolika distribusi (4 soal) ---
   {
-    id: 'ppt-19',
-    category: 'HIDROLIKA DISTRIBUSI',
-    question: 'Langkah penanganan paling tepat ketika terjadi gangguan berantai Hulu-Hilir (lonjakan lumpur di IPA sekaligus pipa bocor di Zona Distribusi) adalah...',
+    id: 'pre-17',
+    category: 'Hidrolika distribusi',
+    question: 'Rentang tekanan layanan standar yang perlu dipertahankan pada zona jaringan distribusi pelanggan adalah...',
     options: [
-      'A. Biarkan pipa bocor hingga air reservoir habis total',
-      'B. Isolasi katup segmen pipa bocor untuk menyelamatkan level reservoir, sekaligus kendalikan dosis koagulan di unit IPA',
-      'C. Matikan semua pompa distribusi sehingga seluruh zona pelanggan tidak mendapat air',
-      'D. Buka penuh PRV ke tekanan maksimum 4,5 bar',
+      '0,2 – 0,5 bar',
+      '2,0 – 2,8 bar',
+      '8,0 – 10,0 bar',
+      '0,0 – 0,1 bar',
     ],
     correctIndex: 1,
-    explanation: 'Mengisolasi segmen bocor menahan terkurasnya reservoir sementara pengendalian IPA menjaga suplai air olahan tetap memenuhi baku mutu.',
+    explanation: 'Tekanan 2,0–2,8 bar menjamin air mengalir memadai hingga lantai atas sekaligus mencegah intrusi air tanah dan pecah pipa.',
   },
   {
-    id: 'ppt-20',
-    category: 'HIDROLIKA DISTRIBUSI',
-    question: 'Pada operasi jam puncak pagi (06.00–08.00) dan sore (17.00–19.00), bagaimana operator menjaga tekanan distribusi tetap stabil?',
+    id: 'pre-18',
+    category: 'Hidrolika distribusi',
+    question: 'Tanda khas pada monitor SCADA apabila terjadi kebocoran besar pipa pecah di Zona 1 adalah...',
     options: [
-      'A. Mengoperasikan pompa distribusi paralel / menyesuaikan bukaan PRV agar tekanan zona tetap pada rentang 2,0–2,8 bar dan memantau level reservoir',
-      'B. Menutup katup outlet reservoir agar cadangan air tidak berkurang',
-      'C. Menghentikan proses filtrasi di IPA selama jam puncak',
-      'D. Mematikan seluruh sistem alarm agar operator tidak terganggu',
+      'Debit zona melonjak drastis disertai penurunan tajam tekanan zona dan menyusutnya level reservoir',
+      'Debit aliran turun ke nol sementara tekanan pipa naik ke 8 bar',
+      'Kekeruhan air baku di intake turun di bawah 5 NTU',
+      'pH air olahan di filter naik ke angka 9,5',
     ],
     correctIndex: 0,
-    explanation: 'Penambahan kapasitas pompa paralel dan pengaturan PRV mengimbangi lonjakan kebutuhan jam puncak tanpa mengorbankan tekanan pelanggan.',
+    explanation: 'Pipa pecah menghilangkan tahanan hidrolik pipa sehingga debit keluar melonjak sementara tekanan zona anjlok.',
+  },
+  {
+    id: 'pre-19',
+    category: 'Hidrolika distribusi',
+    question: 'Fungsi utama katup pengurang tekanan (PRV / Pressure Reducing Valve) pada zona jaringan berkontur rendah adalah...',
+    options: [
+      'Menaikkan kekeruhan air sebelum masuk sambungan rumah',
+      'Menghentikan pasokan air ke seluruh wilayah kota secara permanen',
+      'Mengukur kadar residu klorin bebas secara otomatis',
+      'Menurunkan dan menstabilkan tekanan hilir agar pipa tidak pecah dan kebocoran fisik terkendali',
+    ],
+    correctIndex: 3,
+    explanation: 'PRV menahan tekanan berlebih di hilir pada setpoint aman sehingga menekan risiko pipa pecah.',
+  },
+  {
+    id: 'pre-20',
+    category: 'Hidrolika distribusi',
+    question: 'Pada jam puncak pagi (06.00–08.00), bagaimana operator menjaga debit dan tekanan distribusi agar tidak drop di bawah 2,0 bar?',
+    options: [
+      'Menutup katup keluar reservoir agar cadangan air tetap penuh',
+      'Menghentikan sementara proses filtrasi di IPA',
+      'Menjalankan pompa distribusi secara paralel dan menyesuaikan setpoint PRV sambil memantau level reservoir',
+      'Menutup seluruh katup zona komersial tanpa pemberitahuan',
+    ],
+    correctIndex: 2,
+    explanation: 'Operasi paralel menambah kapasitas debit aliran (L/s) dan pengaturan PRV menjaga tekanan layanan 2,0–2,8 bar.',
   },
 ];
+
+export const POST_TEST_QUESTIONS_SET_B: PrePostQuestion[] = [
+  // --- 1. Operasi normal IPA (4 soal — berbeda isi, setara kisi-kisi) ---
+  {
+    id: 'post-1',
+    category: 'Operasi normal IPA',
+    question: 'Fungsi utama pencampuran berkecepatan tinggi (flash mixer) segera setelah titik pembubuhan koagulan PAC adalah...',
+    options: [
+      'Mengendapkan seluruh padatan tersuspensi langsung di bak koagulasi',
+      'Menguapkan sisa klorin bebas sebelum masuk ke bak sedimentasi',
+      'Meratakan molekul koagulan dalam hitungan detik agar muatan koloid cepat terdestabilisasi',
+      'Menurunkan headloss saringan pasir tanpa proses backwash',
+    ],
+    correctIndex: 2,
+    explanation: 'Reaksi destabilisasi koloid berlangsung sangat cepat sehingga memerlukan pengadukan berenergi tinggi yang merata.',
+  },
+  {
+    id: 'post-2',
+    category: 'Operasi normal IPA',
+    question: 'Mengapa pada unit saringan pasir ganda (dual sand filter) pencucian balik (backwash) tidak boleh dilakukan serentak pada semua bak filter?',
+    options: [
+      'Agar warna air baku di sungai langsung berubah menjadi jernih',
+      'Supaya konsumsi bahan kimia kapur meningkat dua kali lipat',
+      'Karena tekanan bar screen di intake akan meningkat drastis',
+      'Untuk menjaga kontinuitas aliran air terolah ke reservoir tanpa menghentikan produksi IPA',
+    ],
+    correctIndex: 3,
+    explanation: 'Backwash bergantian (staggered) memastikan minimal satu unit filter tetap menyaring air ke reservoir.',
+  },
+  {
+    id: 'post-3',
+    category: 'Operasi normal IPA',
+    question: 'Tujuan membuka katup penguras lumpur (blowdown) secara berkala pada bak sedimentasi adalah...',
+    options: [
+      'Mencegah akumulasi selimut lumpur berlebih agar flok tidak terbawa lolos ke unit filtrasi',
+      'Menaikkan dosis koagulan PAC secara otomatis saat hujan deras',
+      'Menambah tekanan keluar pada stasiun pompa distribusi kota',
+      'Meningkatkan kecepatan putar pengaduk cepat menjadi dua kali lipat',
+    ],
+    correctIndex: 0,
+    explanation: 'Penumpukan selimut lumpur (> 2 meter) memicu carryover yang menyumbat media pasir filter.',
+  },
+  {
+    id: 'post-4',
+    category: 'Operasi normal IPA',
+    question: 'Debit desain operasi normal pada aliran air baku instalasi SimSCADA-Air berada pada kisaran...',
+    options: [
+      '10 – 25 L/s',
+      '75 – 100 L/s',
+      '250 – 350 L/s',
+      '500 – 750 L/s',
+    ],
+    correctIndex: 1,
+    explanation: 'Rentang debit operasi normal air baku instalasi berada pada 75–100 L/s agar waktu detensi bak pengolahan terjaga.',
+  },
+
+  // --- 2. Mutu air (4 soal — berbeda isi, setara kisi-kisi) ---
+  {
+    id: 'post-5',
+    category: 'Mutu air',
+    question: 'Jika hasil pembacaan sensor kekeruhan air olahan keluar filter menunjukkan 3,3 NTU, status kelayakan air terhadap baku mutu Permenkes No. 2/2023 adalah...',
+    options: [
+      'Melebihi ambang batas (< 3,0 NTU), tidak layak dialirkan sebelum diturunkan kembali',
+      'Masih aman selama kadar sisa klorin melebihi 1,5 mg/L',
+      'Memenuhi standar selama pH air dijaga di angka 9,2',
+      'Dianggap normal apabila debit intake ditingkatkan di atas 120 L/s',
+    ],
+    correctIndex: 0,
+    explanation: 'Kekeruhan ≥ 3,0 NTU melanggar batas baku mutu dan memicu alarm Tinggi di sistem SCADA.',
+  },
+  {
+    id: 'post-6',
+    category: 'Mutu air',
+    question: 'Dampak langsung apabila pH air olahan berada di atas 8,5 terhadap efektivitas klorinasi adalah...',
+    options: [
+      'Daya bunuh klorin meningkat sepuluh kali lipat terhadap patogen',
+      'Kekeruhan air baku di sungai langsung turun menjadi 1,0 NTU',
+      'Efektivitas desinfeksi menurun karena asam hipoklorit (HOCl) banyak berubah menjadi ion OCl- yang lebih lemah',
+      'Headloss di saringan pasir langsung turun ke kondisi bersih',
+    ],
+    correctIndex: 2,
+    explanation: 'Pada pH basa (> 8,5), kesetimbangan klor bergeser ke ion hipoklorit (OCl-) yang daya desinfeksinya jauh lebih rendah.',
+  },
+  {
+    id: 'post-7',
+    category: 'Mutu air',
+    question: 'Risiko utama bagi pelanggan jika kadar sisa klorin di reservoir terlalu tinggi (> 1,5 mg/L) atau terlalu rendah (< 0,20 mg/L) berturut-turut adalah...',
+    options: [
+      'Air menjadi manis dan tekanan zona naik di atas 4 bar',
+      'Pompa intake mengalami trip dan headloss menjadi nol',
+      'Pipa distribusi membeku dan pH naik ke angka 11',
+      'Bau/rasa kaporit menyengat bila berlebih, serta risiko pertumbuhan bakteri patogen bila di bawah 0,20 mg/L',
+    ],
+    correctIndex: 3,
+    explanation: 'Rentang 0,20–0,50 mg/L menyeimbangkan sterilitas mikrobiologis tanpa mengganggu kenyamanan rasa/bau air.',
+  },
+  {
+    id: 'post-8',
+    category: 'Mutu air',
+    question: 'Metode pengujian laboratorium yang dijadikan acuan menentukan dosis optimum koagulan PAC saat karakteristik air baku berubah adalah...',
+    options: [
+      'Uji tekanan hidrostatis pipa',
+      'Jar test (uji koagulasi-flokulasi skala laboratorium)',
+      'Kalibrasi katup pengurang tekanan (PRV)',
+      'Pengukuran debit aliran menggunakan venturi meter',
+    ],
+    correctIndex: 1,
+    explanation: 'Jar test mensimulasikan dosis koagulan dan kecepatan pengadukan pada sampel air baku untuk menemukan dosis teroptimal.',
+  },
+
+  // --- 3. Respons gangguan (4 soal — berbeda isi, setara kisi-kisi) ---
+  {
+    id: 'post-9',
+    category: 'Respons gangguan',
+    question: 'Saat banjir lumpur menyebabkan kekeruhan air baku mencapai 185 NTU, mengapa menurunkan debit intake dari 100 L/s ke 75 L/s membantu pemulihan?',
+    options: [
+      'Karena dapat menghentikan kebutuhan klorinasi di reservoir sepenuhnya',
+      'Karena memperpanjang waktu tinggal hidrolik di sedimentasi sehingga flok sempat mengendap sempurna',
+      'Karena menaikkan tekanan pompa distribusi ke 6,0 bar',
+      'Karena langsung menghilangkan keperluan penambahan koagulan PAC',
+    ],
+    correctIndex: 1,
+    explanation: 'Mengurangi laju aliran memperbesar waktu detensi pengendapan sehingga beban partikel menuju filter berkurang.',
+  },
+  {
+    id: 'post-10',
+    category: 'Respons gangguan',
+    question: 'Langkah penanganan paling efektif ketika pipa distribusi Zona 1 pecah terkonfirmasi pada monitor SCADA adalah...',
+    options: [
+      'Segera menutup katup isolasi ruas pipa bocor untuk melokalisir kebocoran dan memulihkan tekanan zona',
+      'Menyalakan seluruh pompa intake dengan kapasitas maksimal',
+      'Menurunkan dosis koagulan PAC di bak pengaduk cepat hingga 5 mg/L',
+      'Membiarkan katup zona terbuka penuh selama 30 menit sebelum bertindak',
+    ],
+    correctIndex: 0,
+    explanation: 'Penutupan katup isolasi memutus kebocoran fisik seketika sehingga tekanan layanan segera pulih dan level reservoir terselamatkan.',
+  },
+  {
+    id: 'post-11',
+    category: 'Respons gangguan',
+    question: 'Jika katup PRV mengalami gangguan macet separuh menutup sehingga tekanan Zona 1 jatuh di bawah 2,0 bar, tindakan koreksi di panel SCADA adalah...',
+    options: [
+      'Menutup katup masuk reservoir agar air tidak terus mengalir',
+      'Menjalankan siklus backwash filter pasir di unit IPA',
+      'Mematikan pompa distribusi P-101 tanpa menyalakan pompa cadangan',
+      'Mengakui alarm tekanan rendah lalu mengembalikan setpoint PRV ke kisaran 2,5 bar hingga tekanan layanan pulih 2,0–2,8 bar',
+    ],
+    correctIndex: 3,
+    explanation: 'Memulihkan setpoint PRV ke 2,5 bar mengembalikan bukaan hidrolis agar tekanan layanan kembali ke rentang aman 2,0–2,8 bar.',
+  },
+  {
+    id: 'post-12',
+    category: 'Respons gangguan',
+    question: 'Bahaya kerusakan mekanis apabila operator menyalakan pompa sentrifugal saat level air reservoir sangat rendah (< 15%) atau katup hisap tertutup adalah...',
+    options: [
+      'Kekeruhan air olahan turun di bawah 0,5 NTU',
+      'Sisa klorin di ujung pipa meningkat drastis ke 2,0 mg/L',
+      'Terjadi kavitasi dan dry running yang merusak impeler serta mechanical seal pompa',
+      'pH air baku otomatis kembali ke angka netral 7,0',
+    ],
+    correctIndex: 2,
+    explanation: 'Kekurangan air di sisi hisap menimbulkan gelembung uap (kavitasi) dan panas berlebih pada seal pompa.',
+  },
+
+  // --- 4. Penanganan alarm (4 soal — berbeda isi, setara kisi-kisi) ---
+  {
+    id: 'post-13',
+    category: 'Penanganan alarm',
+    question: 'Agar alarm gangguan proses seperti kekeruhan air olahan, sisa klor rendah, atau tekanan drop mengalami Auto-Clear, syarat yang harus terpenuhi adalah...',
+    options: [
+      'Operator menekan tombol ACK berulang kali sebanyak lima kali',
+      'Nilai parameter menyentuh rentang aman selama tepat 1 detik saja',
+      'Parameter proses kembali ke rentang normal dan bertahan stabil selama 10 detik berturut-turut',
+      'Seluruh pompa di instalasi dimatikan sementara selama 2 detik',
+    ],
+    correctIndex: 2,
+    explanation: 'Waktu tunda stabilisasi 10 detik mencegah alarm berkedip (chattering) saat nilai baru pulih sesaat.',
+  },
+  {
+    id: 'post-14',
+    category: 'Penanganan alarm',
+    question: 'Nilai deadband pemulihan otomatis (auto-clear) untuk alarm kekeruhan air olahan Tinggi (ambang ≥ 3,0 NTU) adalah...',
+    options: [
+      '≤ 4,5 NTU selama 3 detik',
+      '≤ 2,7 NTU dan bertahan stabil selama 10 detik',
+      '≤ 10,0 NTU selama 60 detik',
+      'Harus mencapai tepat 0,0 NTU sebelum dapat clear',
+    ],
+    correctIndex: 1,
+    explanation: 'Deadband ≤ 2,7 NTU selama 10 detik memastikan air olahan benar-benar stabil di bawah ambang 3,0 NTU sebelum alarm clear.',
+  },
+  {
+    id: 'post-15',
+    category: 'Penanganan alarm',
+    question: 'Mengapa alarm Pompa Trip dikategorikan sebagai alarm terkunci (latched) dengan prioritas KRITIS?',
+    options: [
+      'Agar operator wajib memindahkan beban ke pompa cadangan, mengecek proteksi, dan menekan Reset sebelum sistem dianggap aman',
+      'Karena sensor kekeruhan membutuhkan waktu 30 menit untuk kalibrasi ulang',
+      'Supaya operator dapat langsung menekan Clear tanpa menyalakan pompa cadangan',
+      'Karena warna lampu panel hanya menyala pada malam hari',
+    ],
+    correctIndex: 0,
+    explanation: 'Alarm latched mencegah peralatan yang mengalami gangguan kelistrikan/mekanis dianggap pulih tanpa tindakan reset eksplisit.',
+  },
+  {
+    id: 'post-16',
+    category: 'Penanganan alarm',
+    question: 'Status alarm "Pulih, Belum Clear" pada daftar alarm menandakan kondisi berikut:',
+    options: [
+      'Operator sudah melakukan Clear, tetapi gangguan di lapangan masih berlangsung parah',
+      'Alarm baru saja muncul pertama kali dan belum dilihat oleh operator',
+      'Kekeruhan air olahan kembali naik di atas 5,0 NTU',
+      'Penyebab proses atau reset proteksi sudah diselesaikan, namun alarm masih menunggu konfirmasi tombol Clear manual',
+    ],
+    correctIndex: 3,
+    explanation: 'Status Pulih, Belum Clear umumnya muncul pada alarm terkunci setelah tombol Reset ditekan sebelum Clear manual dilakukan.',
+  },
+
+  // --- 5. Hidrolika distribusi (4 soal — berbeda isi, setara kisi-kisi) ---
+  {
+    id: 'post-17',
+    category: 'Hidrolika distribusi',
+    question: 'Apa akibat utama jika tekanan jaringan pipa distribusi turun jauh di bawah 1,0–2,0 bar dalam waktu lama?',
+    options: [
+      'Debit pompa distribusi otomatis bertambah menjadi 3 kali lipat',
+      'Kekeruhan di bak flokulator menurun secara seketika',
+      'Umur katup PRV bertambah dua kali lebih panjang',
+      'Air gagal menjangkau pelanggan bertingkat dan berisiko terjadi intrusi air tanah kotor ke dalam pipa',
+    ],
+    correctIndex: 3,
+    explanation: 'Tekanan layanan rendah (≥ 2,0 bar idealnya) mencegah aliran balik/intrusi patogen dari sekitar pipa bawah tanah.',
+  },
+  {
+    id: 'post-18',
+    category: 'Hidrolika distribusi',
+    question: 'Ketika operator mengaktifkan dua pompa distribusi identik secara paralel di stasiun pompa, perubahan hidrolika utama yang dihasilkan adalah...',
+    options: [
+      'Kadar sisa klorin di reservoir berubah menjadi 0,0 mg/L',
+      'Kekeruhan air baku di intake turun drastis',
+      'Kapasitas total debit aliran (L/s) meningkat untuk mengimbangi kebutuhan jam puncak',
+      'Tekanan pipa buang langsung turun menjadi 0,5 bar',
+    ],
+    correctIndex: 2,
+    explanation: 'Operasi paralel dua pompa menggabungkan kapasitas aliran (L/s) guna memenuhi lonjakan permintaan pelanggan.',
+  },
+  {
+    id: 'post-19',
+    category: 'Hidrolika distribusi',
+    question: 'Mengapa tekanan jaringan distribusi tidak boleh dibiarkan terlalu tinggi (misal > 2,8–3,5 bar) pada jam malam berkebutuhan rendah?',
+    options: [
+      'Membuat meteran air pelanggan berhenti berputar',
+      'Meningkatkan laju kebocoran fisik (kehilangan air) dan risiko pipa atau sambungan rumah pecah',
+      'Mengurangi waktu tinggal air di pipa buntu',
+      'Menurunkan konsumsi daya listrik stasiun pompa',
+    ],
+    correctIndex: 1,
+    explanation: 'Tekanan berlebih memperbesar debit kebocoran di titik lemah jaringan; pengendalian PRV menekan angka NRW.',
+  },
+  {
+    id: 'post-20',
+    category: 'Hidrolika distribusi',
+    question: 'Gejala lonjakan gelombang tekanan sesaat (water hammer) pada pipa distribusi umumnya dipicu oleh...',
+    options: [
+      'Penutupan katup pipa berukuran besar secara mendadak atau berhentinya pompa tiba-tiba',
+      'Peningkatan dosis kapur sebesar 2 mg/L di bak koagulasi',
+      'Pembacaan telemetri sisa klorin ujung pipa sebesar 0,30 mg/L',
+      'Pembukaan katup penguras lumpur pada bak sedimentasi selama 1 menit',
+    ],
+    correctIndex: 0,
+    explanation: 'Perubahan momentum fluida secara tiba-tiba menimbulkan gelombang kejut tekanan tinggi di sepanjang pipa.',
+  },
+];
+
+// Backward-compatible alias pointing to Set A
+export const PRE_POST_TEST_QUESTIONS: PrePostQuestion[] = PRE_TEST_QUESTIONS_SET_A;
 

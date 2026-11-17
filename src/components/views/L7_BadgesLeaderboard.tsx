@@ -36,6 +36,7 @@ export const L7_BadgesLeaderboard: React.FC = () => {
     getUserOperatorLevel,
     userBadges,
     userMissionResults,
+    showTechnicalRefs,
   } = useApp();
   const [scopeTab, setScopeTab] = useState<'kelompok' | 'lembaga'>('kelompok');
   const [timeTab, setTimeTab] = useState<'all_time' | 'weekly'>('all_time');
@@ -107,18 +108,18 @@ export const L7_BadgesLeaderboard: React.FC = () => {
           Galeri Lencana &amp; Papan Peringkat Kompetensi
         </h1>
         <p className="text-xs text-slate-400 mt-0.5">
-          8 Lencana PRD SimSCADA-Air §8 · Papan Peringkat Terisolasi Antar-Lembaga (FR-21)
+          8 Lencana Kompetensi Operator{showTechnicalRefs ? ' (PRD SimSCADA-Air §8)' : ''} · Papan Peringkat Terisolasi Antar-Lembaga{showTechnicalRefs ? ' (FR-21)' : ''}
         </p>
       </div>
 
       {/* Main Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
         
-        {/* LEFT COLUMN: 8 LENCANA RESMI PRD §8 */}
+        {/* LEFT COLUMN: 8 LENCANA RESMI */}
         <div className="lg:col-span-7 bg-[#0f172a] rounded-2xl border border-[#24324d] p-6 space-y-5 shadow-lg">
           <div>
             <h2 className="text-base font-bold text-white">
-              8 Lencana Prestasi Operator (PRD SimSCADA-Air v1.1 §8)
+              8 Lencana Prestasi Operator{showTechnicalRefs ? ' (PRD SimSCADA-Air v1.2 §8)' : ''}
             </h2>
             <p className="text-xs text-slate-400">
               Koleksi pencapaian {currentUser.fullName} · {unlockedCount} Lencana Terbuka, {lockedCount} Terkunci
@@ -149,7 +150,9 @@ export const L7_BadgesLeaderboard: React.FC = () => {
                         <div className="text-xs font-bold text-white leading-tight">
                           {badge.name}
                         </div>
-                        <div className="text-[10px] text-sky-400 font-medium">Syarat PRD §8:</div>
+                        <div className="text-[10px] text-sky-400 font-medium">
+                          Syarat{showTechnicalRefs ? ' PRD §8' : ' Pencapaian'}:
+                        </div>
                       </div>
                     </div>
 
@@ -181,20 +184,20 @@ export const L7_BadgesLeaderboard: React.FC = () => {
         <div className="lg:col-span-5 bg-[#0f172a] rounded-2xl border border-[#24324d] p-6 space-y-5 shadow-lg">
           <div>
             <h2 className="text-base font-bold text-white">
-              Papan Peringkat Kompetensi (PRD §8)
+              Papan Peringkat Kompetensi{showTechnicalRefs ? ' (PRD §8)' : ''}
             </h2>
             <p className="text-xs text-slate-400">
               Terisolasi dalam {currentTenant.name}
             </p>
           </div>
 
-          {/* Toggle Check: if leaderboard is disabled by admin in L13 */}
+          {/* Toggle Check: if leaderboard is disabled by admin */}
           {!currentTenant.config.leaderboardEnabled ? (
             <div className="p-6 rounded-xl bg-slate-900 border border-slate-800 text-center space-y-2">
               <Info className="w-8 h-8 text-slate-500 mx-auto" />
               <div className="text-xs font-bold text-slate-300">Papan Peringkat Dinonaktifkan</div>
               <p className="text-[11px] text-slate-500">
-                Admin Lembaga menonaktifkan fitur papan peringkat demi menjaga fokus pembelajaran mandiri (FR-21).
+                Admin Lembaga menonaktifkan fitur papan peringkat demi menjaga fokus pembelajaran mandiri{showTechnicalRefs ? ' (FR-21)' : ''}.
               </p>
             </div>
           ) : (
@@ -313,10 +316,10 @@ export const L7_BadgesLeaderboard: React.FC = () => {
               <div className="p-3 rounded-xl bg-[#0b1120] border border-[#1e293b] text-[10px] text-slate-400 space-y-1">
                 <div className="font-bold text-sky-400 flex items-center gap-1">
                   <ShieldCheck className="w-3.5 h-3.5 text-sky-400" />
-                  <span>KEAMANAN & ISOLASI DATA (PRD §8):</span>
+                  <span>KEAMANAN &amp; ISOLASI DATA{showTechnicalRefs ? ' (PRD §8)' : ''}:</span>
                 </div>
                 <p>
-                  Peserta hanya dapat melihat peringkat dalam lembaganya sendiri ({currentTenant.name}). Admin Lembaga dapat mengaktifkan/menonaktifkan papan peringkat ini kapan saja di menu L13.
+                  Peserta hanya dapat melihat peringkat dalam lembaganya sendiri ({currentTenant.name}). Admin Lembaga dapat mengaktifkan/menonaktifkan papan peringkat ini kapan saja di menu Pengaturan Lembaga{showTechnicalRefs ? ' (L13)' : ''}.
                 </p>
               </div>
             </>

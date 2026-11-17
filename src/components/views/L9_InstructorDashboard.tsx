@@ -71,6 +71,7 @@ export const L9_InstructorDashboard: React.FC<InstructorDashboardProps> = ({
     getUserOperatorLevel,
     getBestMissionResult,
     isMissionUnlocked,
+    showTechnicalRefs,
   } = useApp();
 
   const visibleGroups = getVisibleGroups();
@@ -176,7 +177,7 @@ export const L9_InstructorDashboard: React.FC<InstructorDashboardProps> = ({
           Dasbor Pengawasan Kelas Instruktur
         </h1>
         <p className="text-xs text-slate-400 mt-0.5">
-          Matriks Kemajuan Peserta × Misi · Deteksi Otomatis Peserta Tertinggal (Lagging Alerts) (PRD §12)
+          Matriks Kemajuan Peserta × Misi · Deteksi Otomatis Peserta Tertinggal (Lagging Alerts){showTechnicalRefs ? ' (PRD §12)' : ''}
         </p>
       </div>
 
@@ -260,7 +261,7 @@ export const L9_InstructorDashboard: React.FC<InstructorDashboardProps> = ({
             className="px-3 py-1.5 rounded-xl bg-amber-700 hover:bg-amber-600 text-white font-bold text-xs transition-all flex items-center gap-1.5 cursor-pointer"
           >
             <History className="w-3.5 h-3.5" />
-            <span>Putar Ulang (L11)</span>
+            <span>Putar Ulang{showTechnicalRefs ? ' (L11)' : ''}</span>
           </button>
 
           <button
@@ -296,7 +297,7 @@ export const L9_InstructorDashboard: React.FC<InstructorDashboardProps> = ({
           <AlertTriangle className="w-4 h-4 text-rose-400 shrink-0" />
           <div className="leading-snug">
             <strong className="text-rose-300 uppercase tracking-wider">
-              PERINGATAN PESERTA TERTINGGAL (PRD §12):
+              PERINGATAN PESERTA TERTINGGAL{showTechnicalRefs ? ' (PRD §12)' : ''}:
             </strong>{' '}
             Eko Prasetyo (eko.prasetyo) tidak lulus IPA-07 (Pompa Trip) 3 kali berturut-turut.
             Disarankan bimbingan atau buka kunci.
@@ -620,10 +621,12 @@ export const L9_InstructorDashboard: React.FC<InstructorDashboardProps> = ({
                           onClick={() => onViewReplay(participant.id)}
                           className="px-2.5 py-1 rounded-lg bg-sky-600 hover:bg-sky-500 text-white font-bold text-[11px] transition-all cursor-pointer"
                         >
-                          Replay (L11)
+                          Replay{showTechnicalRefs ? ' (L11)' : ''}
                         </button>
                       ) : (
-                        <span className="text-[11px] text-slate-500">Menunggu Pre-Test</span>
+                        <span className="text-[11px] text-slate-500">
+                          {hasPreTest ? 'Siap Misi Pertama' : 'Menunggu Pre-Test'}
+                        </span>
                       )}
                     </td>
                   </tr>

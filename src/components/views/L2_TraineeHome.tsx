@@ -112,6 +112,7 @@ export const L2_TraineeHome: React.FC<TraineeHomeProps> = ({
     userBadges,
     userPrePostTests,
     certificates,
+    showTechnicalRefs,
   } = useApp();
 
   if (!currentUser) return null;
@@ -386,7 +387,8 @@ export const L2_TraineeHome: React.FC<TraineeHomeProps> = ({
             <span className="text-sky-400 font-semibold">
               {trackLabel} ({trackMissions.length} Misi)
             </span>{' '}
-            · {passedCount} Misi Lulus · {totalStars} Bintang · {xp.toLocaleString('id-ID')} XP (PRD §7, §8, §11)
+            · {passedCount} Misi Lulus · {totalStars} Bintang · {xp.toLocaleString('id-ID')} XP
+            {showTechnicalRefs ? ' (PRD §7, §8, §11)' : ''}
           </p>
         </div>
         <div className="flex items-center gap-2 flex-wrap">
@@ -408,11 +410,11 @@ export const L2_TraineeHome: React.FC<TraineeHomeProps> = ({
             </div>
             <div className="space-y-1">
               <div className="text-xs font-bold text-amber-300 uppercase tracking-wider">
-                Langkah Pertama Wajib · Pre-Test Diagnostik (FR-09)
+                Langkah Pertama Wajib · Pre-Test Diagnostik{showTechnicalRefs ? ' (FR-09)' : ''}
               </div>
               <p className="text-xs text-slate-200 leading-relaxed">
                 Halo <strong>{currentUser.fullName}</strong>, Anda belum mengerjakan{' '}
-                <strong>Pre-Test</strong>. Kerjakan Pre-Test (20 soal pilihan ganda, 30 menit) terlebih dahulu untuk mencatat nilai awal kompetensi (Metrik T1) dan membuka misi pertama{' '}
+                <strong>Pre-Test</strong>. Kerjakan Pre-Test (20 soal pilihan ganda, 30 menit) terlebih dahulu untuk mencatat nilai awal kompetensi{showTechnicalRefs ? ' (Metrik T1)' : ''} dan membuka misi pertama{' '}
                 <strong className="text-sky-300">{trackMissions[0]?.code || 'IPA-01'}</strong>.
               </p>
             </div>
@@ -421,7 +423,7 @@ export const L2_TraineeHome: React.FC<TraineeHomeProps> = ({
             onClick={onOpenPreTest}
             className="px-4 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-extrabold text-xs uppercase tracking-wider transition-all shrink-0 shadow-md cursor-pointer"
           >
-            Kerjakan Pre-Test Sekarang (L4a) →
+            Kerjakan Pre-Test Sekarang{showTechnicalRefs ? ' (L4a)' : ''} →
           </button>
         </div>
       )}
@@ -451,7 +453,7 @@ export const L2_TraineeHome: React.FC<TraineeHomeProps> = ({
             <div className="p-3.5 rounded-xl bg-[#0b1120] border border-[#1e293b] space-y-2">
               <div className="flex items-center justify-between text-xs font-semibold">
                 <span className="text-slate-400 text-[11px] uppercase tracking-wider">
-                  Level Operator (PRD §8):
+                  Level Operator{showTechnicalRefs ? ' (PRD §8)' : ''}:
                 </span>
                 <span className="text-sky-400 font-bold font-mono">
                   TOTAL XP: {xp.toLocaleString('id-ID')} XP
@@ -510,7 +512,7 @@ export const L2_TraineeHome: React.FC<TraineeHomeProps> = ({
             {/* Pre-Test & Post-Test Summary Badge */}
             <div className="grid grid-cols-2 gap-2 text-xs">
               <div className="p-2.5 rounded-xl bg-[#0b1120] border border-[#1e293b]">
-                <div className="text-[10px] text-slate-400">Nilai Pre-Test (T1)</div>
+                <div className="text-[10px] text-slate-400">Nilai Pre-Test{showTechnicalRefs ? ' (T1)' : ''}</div>
                 <div className="text-sm font-extrabold mt-0.5 font-mono">
                   {preTest ? (
                     <span className="text-sky-400">{preTest.score} / 100</span>
@@ -596,7 +598,7 @@ export const L2_TraineeHome: React.FC<TraineeHomeProps> = ({
           <div className="bg-[#0f172a] rounded-2xl border border-[#24324d] p-5 space-y-4 shadow-lg">
             <div className="flex items-center justify-between">
               <h3 className="text-xs font-bold uppercase tracking-wider text-slate-200">
-                Peta Kompetensi (5 Kompetensi PRD §11)
+                Peta Kompetensi{showTechnicalRefs ? ' (5 Kompetensi PRD §11)' : ' Operator (5 Bidang)'}
               </h3>
               <span className="text-[10px] text-slate-500">Evaluasi Mesin</span>
             </div>
@@ -653,7 +655,7 @@ export const L2_TraineeHome: React.FC<TraineeHomeProps> = ({
 
               <div>
                 <div className="flex justify-between text-slate-300 mb-1">
-                  <span>4. Penanganan Alarm ISA-18.2</span>
+                  <span>4. Penanganan Alarm{showTechnicalRefs ? ' ISA-18.2' : ' SCADA'}</span>
                   <span className="font-bold text-cyan-400">
                     {comp4Alarm !== null ? `${comp4Alarm}%` : '0%'}
                   </span>
@@ -755,7 +757,7 @@ export const L2_TraineeHome: React.FC<TraineeHomeProps> = ({
           <div className="p-4 rounded-2xl bg-sky-950/30 border border-sky-500/40 text-xs space-y-2.5 shadow-md">
             <div className="flex items-center gap-2 text-sky-400 font-bold">
               <Sparkles className="w-4 h-4 text-sky-400" />
-              <span>Saran Belajar Otomatis (PRD §11):</span>
+              <span>Saran Belajar Otomatis{showTechnicalRefs ? ' (PRD §11)' : ''}:</span>
             </div>
 
             {!preTest ? (
@@ -767,7 +769,7 @@ export const L2_TraineeHome: React.FC<TraineeHomeProps> = ({
                   onClick={onOpenPreTest}
                   className="w-full py-2 px-3 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs transition-all flex items-center justify-center gap-1.5 shadow-sm cursor-pointer"
                 >
-                  <span>Mulai Pre-Test (L4a) →</span>
+                  <span>Mulai Pre-Test{showTechnicalRefs ? ' (L4a)' : ''} →</span>
                 </button>
               </>
             ) : allMissionsPassed && !postTest ? (
@@ -791,7 +793,7 @@ export const L2_TraineeHome: React.FC<TraineeHomeProps> = ({
                   onClick={onViewCertificates}
                   className="w-full py-2 px-3 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs transition-all flex items-center justify-center gap-1.5 shadow-sm cursor-pointer"
                 >
-                  <span>Lihat Piagam Saya (L8) →</span>
+                  <span>Lihat Piagam Saya{showTechnicalRefs ? ' (L8)' : ''} →</span>
                 </button>
               </>
             ) : lowestResult && lowestResult.totalScore < 80 ? (
@@ -848,7 +850,7 @@ export const L2_TraineeHome: React.FC<TraineeHomeProps> = ({
                     {preTest ? 'Pre-Test Selesai ✓' : 'Wajib Sebelum Misi 1'}
                   </span>
                   <h3 className="text-sm font-bold text-white mt-1.5">
-                    Pre-Test Diagnostik Awal (T1)
+                    Pre-Test Diagnostik Awal{showTechnicalRefs ? ' (T1)' : ''}
                   </h3>
                   <p className="text-[11px] text-slate-400 mt-0.5">
                     {preTest
@@ -875,7 +877,11 @@ export const L2_TraineeHome: React.FC<TraineeHomeProps> = ({
                 }`}
               >
                 <ClipboardCheck className="w-3.5 h-3.5" />
-                <span>{preTest ? 'Lihat Hasil Pre-Test (L4a)' : 'Mulai Pre-Test Sekarang →'}</span>
+                <span>
+                  {preTest
+                    ? `Lihat Hasil Pre-Test${showTechnicalRefs ? ' (L4a)' : ''}`
+                    : 'Mulai Pre-Test Sekarang →'}
+                </span>
               </button>
             </div>
 
@@ -945,7 +951,7 @@ export const L2_TraineeHome: React.FC<TraineeHomeProps> = ({
                 <FileCheck2 className="w-3.5 h-3.5" />
                 <span>
                   {postTest
-                    ? 'Lihat Perbandingan Pre vs Post (L4a)'
+                    ? `Lihat Perbandingan Pre vs Post${showTechnicalRefs ? ' (L4a)' : ''}`
                     : canTakePostTest
                     ? 'Kerjakan Post-Test Sekarang →'
                     : `Selesaikan ${trackMissions.length} Misi untuk Membuka`}
@@ -965,9 +971,11 @@ export const L2_TraineeHome: React.FC<TraineeHomeProps> = ({
                   Aturan Bintang: &lt;70 Belum Lulus · 70–84 (1★) · 85–94 (2★) · ≥95 (3★). Misi Kelulusan lulus jika skor ≥80.
                 </p>
               </div>
-              <span className="text-xs font-mono text-sky-400 font-bold px-2.5 py-1 rounded-lg bg-sky-950/40 border border-sky-500/30">
-                Katalog PRD §7
-              </span>
+              {showTechnicalRefs && (
+                <span className="text-xs font-mono text-sky-400 font-bold px-2.5 py-1 rounded-lg bg-sky-950/40 border border-sky-500/30">
+                  Katalog PRD §7
+                </span>
+              )}
             </div>
 
             {/* TINGKAT 1: PENGENALAN */}
@@ -1001,7 +1009,9 @@ export const L2_TraineeHome: React.FC<TraineeHomeProps> = ({
               <div className="space-y-2">
                 <div className="text-xs font-bold text-amber-400 uppercase tracking-wider flex items-center gap-1.5">
                   <span className="w-2 h-2 rounded-full bg-amber-400" />
-                  <span>Tingkat 3: Gangguan Tunggal (Sulit · 2,0x XP · 5 Gangguan Utama PRD §7)</span>
+                  <span>
+                    Tingkat 3: Gangguan Tunggal (Sulit · 2,0x XP · 5 Gangguan Utama{showTechnicalRefs ? ' PRD §7' : ''})
+                  </span>
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                   {level3Missions.map(renderMissionCard)}
@@ -1053,7 +1063,7 @@ export const L2_TraineeHome: React.FC<TraineeHomeProps> = ({
             <div className="pt-2 border-t border-[#1e293b] flex items-center justify-between flex-wrap gap-2 text-xs">
               <div className="flex items-center gap-2 flex-wrap">
                 <span className="font-bold text-slate-300">
-                  Lencana {currentUser.fullName.split(' ')[0]} ({myBadges.length} dari {BADGES_LIST.length} PRD §8):
+                  Lencana {currentUser.fullName.split(' ')[0]} ({myBadges.length} dari {BADGES_LIST.length}{showTechnicalRefs ? ' PRD §8' : ' Lencana'}):
                 </span>
                 {myBadges.length === 0 ? (
                   <span className="text-slate-500 text-[11px]">
@@ -1080,8 +1090,8 @@ export const L2_TraineeHome: React.FC<TraineeHomeProps> = ({
                 className="text-sky-400 hover:text-sky-300 underline font-semibold text-[11px] cursor-pointer"
               >
                 {BADGES_LIST.length - myBadges.length > 0
-                  ? `+ ${BADGES_LIST.length - myBadges.length} Lencana Terkunci (Lihat di L7)`
-                  : 'Semua 8 Lencana Terbuka! (Lihat di L7)'}
+                  ? `+ ${BADGES_LIST.length - myBadges.length} Lencana Terkunci (${showTechnicalRefs ? 'Lihat di L7' : 'Lihat Galeri Lencana'})`
+                  : `Semua 8 Lencana Terbuka! (${showTechnicalRefs ? 'Lihat di L7' : 'Lihat Galeri Lencana'})`}
               </button>
             </div>
           </div>

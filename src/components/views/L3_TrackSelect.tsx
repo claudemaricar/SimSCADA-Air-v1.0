@@ -13,7 +13,7 @@ interface TrackSelectProps {
 }
 
 export const L3_TrackSelect: React.FC<TrackSelectProps> = ({ onConfirmTrack }) => {
-  const { currentTenant, activeTrack, setActiveTrack, currentUser, getMissionsForTrack, getBestMissionResult, isMissionUnlocked, setCurrentView } = useApp();
+  const { currentTenant, activeTrack, setActiveTrack, currentUser, getMissionsForTrack, getBestMissionResult, isMissionUnlocked, setCurrentView, showTechnicalRefs } = useApp();
 
   const allowedTracks = currentTenant.license.packageTracks;
   const ipaMissions = getMissionsForTrack('ipa');
@@ -79,7 +79,7 @@ export const L3_TrackSelect: React.FC<TrackSelectProps> = ({ onConfirmTrack }) =
           Pemilihan Jalur Pembelajaran Operator
         </h1>
         <p className="text-xs text-slate-400 mt-0.5">
-          Pilih salah satu spesialisasi kompetensi air minum · 1 Jalur Aktif per Peserta (PRD §7)
+          Pilih salah satu spesialisasi kompetensi air minum · 1 Jalur Aktif per Peserta{showTechnicalRefs ? ' (PRD §7)' : ''}
         </p>
       </div>
 
@@ -87,7 +87,7 @@ export const L3_TrackSelect: React.FC<TrackSelectProps> = ({ onConfirmTrack }) =
       <div className="p-4 rounded-xl bg-sky-950/30 border border-sky-500/40 text-xs space-y-1 shadow-sm">
         <div className="font-bold text-sky-400 flex items-center gap-1.5 uppercase tracking-wider text-[11px]">
           <Sparkles className="w-4 h-4 text-sky-400" />
-          <span>Aturan Jalur Belajar (PRD SimSCADA-Air v1.1 §7):</span>
+          <span>Aturan Jalur Belajar{showTechnicalRefs ? ' (PRD SimSCADA-Air v1.2 §7)' : ''}:</span>
         </div>
         <p className="text-slate-300 text-[11px] leading-relaxed">
           Satu jalur aktif per peserta. Tidak ada prasyarat untuk memilih Terpadu. Misi IPA atau Distribusi yang telah lulus dihitung otomatis bila pindah ke Terpadu. Jalur di luar paket lisensi lembaga tidak ditampilkan.
@@ -278,7 +278,7 @@ export const L3_TrackSelect: React.FC<TrackSelectProps> = ({ onConfirmTrack }) =
                 <div className="text-purple-400 font-semibold">• T5 Ujian: TRP-02 Misi Kelulusan Terpadu (≥80)</div>
 
                 <div className="mt-2.5 p-2 rounded-lg bg-indigo-950/40 border border-indigo-500/30 text-[10px] text-indigo-300 leading-relaxed">
-                  <strong>PENGAKUAN PROGRES OTOMATIS (PRD §7):</strong> Misi IPA atau Distribusi yang sudah Anda selesaikan akan langsung dihitung otomatis jika Anda beralih ke jalur Terpadu ({terpaduProgress.passed} dari {terpaduMissions.length} misi selesai).
+                  <strong>PENGAKUAN PROGRES OTOMATIS{showTechnicalRefs ? ' (PRD §7)' : ''}:</strong> Misi IPA atau Distribusi yang sudah Anda selesaikan akan langsung dihitung otomatis jika Anda beralih ke jalur Terpadu ({terpaduProgress.passed} dari {terpaduMissions.length} misi selesai).
                 </div>
               </div>
 

@@ -8,6 +8,7 @@ import { useApp } from '../../context/AppContext';
 import { MISSIONS_LIST } from '../../data/seedData';
 import { computeBestPassedResults } from '../../utils/gamification';
 import {
+  AlertTriangle,
   CheckCircle2,
   FileSpreadsheet,
   Plus,
@@ -43,6 +44,7 @@ export const L12_ManageUsersGroups: React.FC = () => {
     userPrePostTests,
     setCurrentView,
     setVerificationCertNo,
+    showTechnicalRefs,
   } = useApp();
 
   const [searchQuery, setSearchQuery] = useState('');
@@ -50,8 +52,9 @@ export const L12_ManageUsersGroups: React.FC = () => {
   const [showAddUserModal, setShowAddUserModal] = useState(false);
   const [showAddGroupModal, setShowAddGroupModal] = useState(false);
   const [actionFeedback, setActionFeedback] = useState<string | null>(null);
+  const [actionFeedbackType, setActionFeedbackType] = useState<'success' | 'error'>('success');
 
-  const visibleUsers = getVisibleUsers();
+  const visibleUsers = getVisibleUsers().filter((u) => u.role !== 'superadmin');
   const visibleGroups = getVisibleGroups();
   const visibleCertificates = getVisibleCertificates();
 
@@ -101,18 +104,12 @@ export const L12_ManageUsersGroups: React.FC = () => {
   const handleCreateUser = (e: React.FormEvent) => {
     e.preventDefault();
     if (!newUsername.trim() || !newFullName.trim()) return;
-    if (currentTenant.license.seatsUsed >= currentTenant.license.seatQuota) {
-      setActionFeedback(
-        `Pendaftaran gagal: kuota lisensi ${currentTenant.name} sudah penuh (${currentTenant.license.seatQuota} kursi).`
-      );
-      return;
-    }
 
     const domain =
       currentTenant.id === 'tirta' ? 'tirtamandiri.co.id' : 'diklatnusantara.id';
     const defaultTrack = currentTenant.license.packageTracks[0] || 'ipa';
 
-    addUser({
+    const result = addUser({
       username: newUsername.trim(),
       fullName: newFullName.trim(),
       email: newEmail.trim() || `${newUsername.trim()}@${domain}`,
@@ -122,7 +119,16 @@ export const L12_ManageUsersGroups: React.FC = () => {
       track: newRole === 'peserta' ? defaultTrack : undefined,
     });
 
-    setActionFeedback(`Akun ${newUsername.trim()} berhasil ditambahkan ke ${currentTenant.name}.`);
+    if (!result.success) {
+      setActionFeedbackType('error');
+      setActionFeedback(result.message || 'Gagal menambahkan pengguna baru.');
+      return;
+    }
+
+    setActionFeedbackType('success');
+    setActionFeedback(
+      result.message || `Akun ${newUsername.trim()} berhasil ditambahkan ke ${currentTenant.name}.`
+    );
     setShowAddUserModal(false);
     setNewUsername('');
     setNewFullName('');
@@ -140,20 +146,23 @@ export const L12_ManageUsersGroups: React.FC = () => {
       track: currentTenant.license.packageTracks[0] || 'ipa',
     });
 
+    setActionFeedbackType('success');
     setActionFeedback(`Kelompok "${newGroupName.trim()}" berhasil dibuat untuk ${currentTenant.name}.`);
     setShowAddGroupModal(false);
     setNewGroupName('');
   };
 
   const handleImportCsv = () => {
+    setActionFeedbackType('success');
     setActionFeedback(
-      `Simulasi Impor CSV (FR-05): Berkas template ${currentTenant.code} tervalidasi (siap impor ke ${
+      `Simulasi Impor CSV${showTechnicalRefs ? ' (FR-05)' : ''}: Berkas template ${currentTenant.code} tervalidasi (siap impor ke ${
         visibleGroups[0]?.name || currentTenant.name
       }).`
     );
   };
 
   const handleDeactivateUser = (username: string) => {
+    setActionFeedbackType('success');
     setActionFeedback(`Status akun ${username} ditandai nonaktif untuk pengujian (${currentTenant.code}).`);
   };
 
@@ -207,14 +216,24 @@ export const L12_ManageUsersGroups: React.FC = () => {
           Kelola Pengguna, Kelompok &amp; Kuota Kursi · {currentTenant.name}
         </h1>
         <p className="text-xs text-slate-400 mt-0.5">
-          Manajemen Akun {currentTenant.name} ({currentTenant.code}) · Kuota {currentTenant.license.seatQuota} Kursi (PRD §5 &amp; §18)
+          Manajemen Akun {currentTenant.name} ({currentTenant.code}) · Kuota {currentTenant.license.seatQuota} Kursi{showTechnicalRefs ? ' (PRD §5 & §18)' : ''}
         </p>
       </div>
 
       {actionFeedback && (
-        <div className="p-3 rounded-xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-between text-xs text-emerald-300">
+        <div
+          className={`p-3 rounded-xl flex items-center justify-between text-xs border ${
+            actionFeedbackType === 'error'
+              ? 'bg-rose-500/10 border-rose-500/30 text-rose-300'
+              : 'bg-emerald-500/10 border-emerald-500/30 text-emerald-300'
+          }`}
+        >
           <span className="flex items-center gap-2 font-semibold">
-            <CheckCircle2 className="w-4 h-4 shrink-0" />
+            {actionFeedbackType === 'error' ? (
+              <AlertTriangle className="w-4 h-4 shrink-0" />
+            ) : (
+              <CheckCircle2 className="w-4 h-4 shrink-0" />
+            )}
             {actionFeedback}
           </span>
           <button
@@ -237,7 +256,7 @@ export const L12_ManageUsersGroups: React.FC = () => {
         >
           <div className="flex items-center justify-between">
             <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">
-              ALOKASI KURSI LISENSI (PRD §5):
+              ALOKASI KURSI LISENSI{showTechnicalRefs ? ' (PRD §5)' : ''}:
             </span>
             <span
               className={`px-2 py-0.5 rounded-md font-bold text-[9px] border ${
@@ -264,7 +283,7 @@ export const L12_ManageUsersGroups: React.FC = () => {
         {/* Card 2: Active Groups */}
         <div className="p-4 rounded-2xl bg-[#0f172a] border border-[#24324d] shadow-lg space-y-2">
           <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">
-            KELOMPOK AKTIF (PRD §5):
+            KELOMPOK AKTIF{showTechnicalRefs ? ' (PRD §5)' : ''}:
           </span>
           <div className="text-2xl font-black text-sky-400 font-mono">
             {visibleGroups.length} Kelompok
@@ -298,7 +317,7 @@ export const L12_ManageUsersGroups: React.FC = () => {
         <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-3">
           <div>
             <h2 className="text-base font-bold text-white">
-              Daftar Akun Pengguna {currentTenant.name} (PRD SimSCADA-Air v1.1 §5)
+              Daftar Akun Pengguna {currentTenant.name}{showTechnicalRefs ? ' (PRD SimSCADA-Air v1.2 §5)' : ''}
             </h2>
             <p className="text-xs text-slate-400">
               Menampilkan {visibleUsers.length} akun resmi {currentTenant.name} ({currentTenant.code}) · Data lembaga lain terisolasi penuh
@@ -330,7 +349,7 @@ export const L12_ManageUsersGroups: React.FC = () => {
               className="px-3.5 py-1.5 rounded-xl bg-[#1e293b] hover:bg-[#334155] border border-[#334155] text-slate-200 text-xs font-semibold transition-all flex items-center gap-1.5 cursor-pointer"
             >
               <FileSpreadsheet className="w-3.5 h-3.5 text-emerald-400" />
-              <span>Impor CSV (FR-05)</span>
+              <span>Impor CSV{showTechnicalRefs ? ' (FR-05)' : ''}</span>
             </button>
           </div>
         </div>
@@ -340,12 +359,12 @@ export const L12_ManageUsersGroups: React.FC = () => {
           <table className="w-full text-left text-xs text-slate-300">
             <thead className="bg-[#0b1120] text-slate-400 text-[10px] uppercase tracking-wider border-b border-[#1e293b] font-bold">
               <tr>
-                <th className="py-3 px-3">Username (PRD §5)</th>
+                <th className="py-3 px-3">Username{showTechnicalRefs ? ' (PRD §5)' : ''}</th>
                 <th className="py-3 px-3">Nama Lengkap</th>
                 <th className="py-3 px-3">Peran Sistem</th>
                 <th className="py-3 px-3">Kelompok</th>
                 <th className="py-3 px-3">Jalur Belajar</th>
-                <th className="py-3 px-3">Kondisi Data Awal (PRD §5)</th>
+                <th className="py-3 px-3">Kondisi Data Awal{showTechnicalRefs ? ' (PRD §5)' : ''}</th>
                 <th className="py-3 px-3 text-right">Aksi</th>
               </tr>
             </thead>
@@ -410,7 +429,7 @@ export const L12_ManageUsersGroups: React.FC = () => {
                           }}
                           className="text-emerald-400 hover:underline font-semibold text-[11px] cursor-pointer"
                         >
-                          Piagam (L8)
+                          Piagam{showTechnicalRefs ? ' (L8)' : ''}
                         </button>
                       )}
                       {hasPre && (
@@ -418,6 +437,7 @@ export const L12_ManageUsersGroups: React.FC = () => {
                           type="button"
                           onClick={() => {
                             resetPreTestForUser(u.id);
+                            setActionFeedbackType('success');
                             setActionFeedback(
                               `Pre-Test untuk ${u.username} (${u.fullName}) berhasil di-reset oleh Admin Lembaga.`
                             );
@@ -474,7 +494,9 @@ export const L12_ManageUsersGroups: React.FC = () => {
       <div className="bg-[#0f172a] rounded-2xl border border-[#24324d] p-6 space-y-4 shadow-xl">
         <div className="flex items-center justify-between">
           <div>
-            <h2 className="text-base font-bold text-white">Kelompok Belajar Binaan Lembaga (FR-05)</h2>
+            <h2 className="text-base font-bold text-white">
+              Kelompok Belajar Binaan Lembaga{showTechnicalRefs ? ' (FR-05)' : ''}
+            </h2>
             <p className="text-xs text-slate-400">
               Pengelompokan peserta {currentTenant.name} untuk penugasan modul dan pemantauan
             </p>
@@ -506,9 +528,10 @@ export const L12_ManageUsersGroups: React.FC = () => {
                   <div className="space-x-2 text-[11px]">
                     <button
                       type="button"
-                      onClick={() =>
-                        setActionFeedback(`Pengaturan kelompok "${grp.name}" dibuka.`)
-                      }
+                      onClick={() => {
+                        setActionFeedbackType('success');
+                        setActionFeedback(`Pengaturan kelompok "${grp.name}" dibuka.`);
+                      }}
                       className="text-sky-400 font-semibold cursor-pointer hover:underline"
                     >
                       Ubah

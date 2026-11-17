@@ -21,16 +21,13 @@ interface CertificatePendingProps {
 }
 
 export const L8b_CertificatePending: React.FC<CertificatePendingProps> = ({ onBack }) => {
-  const { currentTenant, getVisibleCertificates } = useApp();
+  const { currentTenant, getVisibleCertificates, showTechnicalRefs } = useApp();
   const [reminderSent, setReminderSent] = useState(false);
 
   const visibleCerts = getVisibleCertificates();
   const pendingCert = visibleCerts.find(
     (c) => c.status === 'valid' && !c.instructorApproved
   );
-
-  const shortSignatureName = (fullName: string) =>
-    fullName.replace(/^(Dr\.|Ir\.|Hj\.|H\.)\s+/gi, '').split(',')[0].trim();
 
   if (!pendingCert) {
     return (
@@ -40,7 +37,7 @@ export const L8b_CertificatePending: React.FC<CertificatePendingProps> = ({ onBa
             Antrean Persetujuan Piagam · {currentTenant.name}
           </h1>
           <p className="text-xs text-slate-400 mt-0.5">
-            Alur Verifikasi Dua Tahap PRD SimSCADA-Air §13 · Penilai: {currentTenant.signers.instructorName}
+            Alur Verifikasi Dua Tahap{showTechnicalRefs ? ' (PRD SimSCADA-Air §13)' : ''} · Penilai: {currentTenant.signers.instructorName}
           </p>
         </div>
 
@@ -82,7 +79,7 @@ export const L8b_CertificatePending: React.FC<CertificatePendingProps> = ({ onBa
           Status Piagam: Menunggu Persetujuan Instruktur · {pendingCert.userName}
         </h1>
         <p className="text-xs text-slate-400 mt-0.5">
-          Alur Verifikasi Dua Tahap PRD SimSCADA-Air §13 · Tombol Unduh Nonaktif Sampai Disetujui
+          Alur Verifikasi Dua Tahap{showTechnicalRefs ? ' (PRD SimSCADA-Air §13)' : ''} · Tombol Unduh Nonaktif Sampai Disetujui
         </p>
       </div>
 
@@ -97,7 +94,7 @@ export const L8b_CertificatePending: React.FC<CertificatePendingProps> = ({ onBa
               STATUS PIAGAM: MENUNGGU PERSETUJUAN INSTRUKTUR ({currentTenant.signers.instructorName.toUpperCase()})
             </div>
             <p className="text-[11px] text-slate-300 mt-0.5">
-              Seluruh misi, Misi Kelulusan, dan Post-Test telah lulus. Pengajuan penerbitan piagam telah terkirim ke dasbor instruktur L9.
+              Seluruh misi, Misi Kelulusan, dan Post-Test telah lulus. Pengajuan penerbitan piagam telah terkirim ke dasbor instruktur{showTechnicalRefs ? ' (L9)' : ''}.
             </p>
           </div>
         </div>
@@ -165,9 +162,9 @@ export const L8b_CertificatePending: React.FC<CertificatePendingProps> = ({ onBa
 
               <div className="text-center space-y-1">
                 <span className="text-[11px] text-slate-600 block">Pimpinan Lembaga,</span>
-                <div className="h-9 flex items-center justify-center">
-                  <span className="font-serif italic text-base text-slate-500">
-                    {shortSignatureName(currentTenant.signers.leaderName)}
+                <div className="min-h-9 flex items-center justify-center">
+                  <span className="font-serif italic text-sm text-slate-500 px-2 inline-block max-w-full leading-tight">
+                    {currentTenant.signers.leaderName}
                   </span>
                 </div>
                 <div className="font-bold text-xs text-slate-900">{currentTenant.signers.leaderName}</div>
@@ -186,7 +183,9 @@ export const L8b_CertificatePending: React.FC<CertificatePendingProps> = ({ onBa
         <div className="lg:col-span-4 bg-[#0f172a] rounded-2xl border border-[#24324d] p-5 space-y-5 shadow-lg">
           <div>
             <h2 className="text-sm font-bold text-white">Proses Validasi Instruktur</h2>
-            <p className="text-[11px] text-slate-400">Kebijakan Lembaga: "Persetujuan Instruktur Wajib (L13)"</p>
+            <p className="text-[11px] text-slate-400">
+              Kebijakan Lembaga: &quot;Persetujuan Instruktur Wajib{showTechnicalRefs ? ' (L13)' : ''}&quot;
+            </p>
           </div>
 
           <div className="space-y-3 text-xs">

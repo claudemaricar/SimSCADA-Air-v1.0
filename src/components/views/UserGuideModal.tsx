@@ -4,6 +4,7 @@
  */
 
 import React, { useState } from 'react';
+import { useApp } from '../../context/AppContext';
 import { 
   AlertTriangle, 
   BookOpen, 
@@ -29,6 +30,7 @@ interface UserGuideModalProps {
 }
 
 export const UserGuideModal: React.FC<UserGuideModalProps> = ({ onClose }) => {
+  const { showTechnicalRefs, setShowTechnicalRefs } = useApp();
   const [activeSection, setActiveSection] = useState<'peran' | 'peserta' | 'simulator' | 'alarm' | 'instruktur' | 'evaluasi' | 'verifikasi'>('simulator');
 
   return (
@@ -98,7 +100,7 @@ export const UserGuideModal: React.FC<UserGuideModalProps> = ({ onClose }) => {
               activeSection === 'evaluasi' ? 'bg-sky-600 text-white' : 'text-slate-600 hover:bg-slate-200'
             }`}
           >
-            Evaluasi Lembaga (T1–T4)
+            Evaluasi Lembaga{showTechnicalRefs ? ' (T1–T4)' : ''}
           </button>
           <button
             onClick={() => setActiveSection('verifikasi')}
@@ -118,6 +120,22 @@ export const UserGuideModal: React.FC<UserGuideModalProps> = ({ onClose }) => {
           </button>
         </div>
 
+        {/* Evaluator Toggle Bar */}
+        <div className="px-6 py-2 bg-slate-100 border-b border-slate-200 flex items-center justify-between gap-3 text-xs shrink-0">
+          <span className="text-[11px] text-slate-600">
+            Mode Tampilan Referensi Teknis:
+          </span>
+          <label className="inline-flex items-center gap-2 cursor-pointer select-none font-semibold text-slate-800">
+            <input
+              type="checkbox"
+              checked={showTechnicalRefs}
+              onChange={(e) => setShowTechnicalRefs(e.target.checked)}
+              className="w-4 h-4 accent-sky-600 rounded cursor-pointer"
+            />
+            <span>Tampilkan rujukan PRD (mode penguji)</span>
+          </label>
+        </div>
+
         {/* Content Body */}
         <div className="flex-1 overflow-y-auto p-6 space-y-6 text-xs text-slate-700 leading-relaxed">
           {/* SECTION: SIMULATOR */}
@@ -126,7 +144,7 @@ export const UserGuideModal: React.FC<UserGuideModalProps> = ({ onClose }) => {
               <div className="border-b pb-2">
                 <h3 className="text-base font-bold text-slate-900 flex items-center gap-2">
                   <Play className="w-4 h-4 text-sky-600" />
-                  Pengoperasian Simulator SCADA Interaktif (Layar 5)
+                  Pengoperasian Simulator SCADA Interaktif{showTechnicalRefs ? ' (Layar 5)' : ''}
                 </h3>
                 <p className="text-slate-500 text-[11px] mt-0.5">
                   Diagram HMI proses fisik dari intake air baku hingga jaringan pipa perkotaan.
@@ -144,7 +162,7 @@ export const UserGuideModal: React.FC<UserGuideModalProps> = ({ onClose }) => {
                     <li><strong>Filtrasi:</strong> Filter Pasir 1 &amp; 2 dengan pembacaan headloss (mH2O) dan siklus backwash.</li>
                     <li><strong>Desinfeksi:</strong> Pompa klorinasi dengan standar sisa klor bebas (0,2–0,5 mg/L).</li>
                     <li><strong>Reservoir:</strong> Tangki air bersih dengan ketinggian air dinamis (meter dan %).</li>
-                    <li><strong>Pompa Distribusi:</strong> Stasiun pompa transmisi P-101 &amp; P-102 bertekanan 4.1 bar.</li>
+                    <li><strong>Pompa Distribusi:</strong> Stasiun pompa transmisi P-101 &amp; P-102 bertekanan 4,1 bar.</li>
                     <li><strong>Katup PRV &amp; Isolasi:</strong> Katup pengatur tekanan zona dan katup isolasi ruas pipa pecah.</li>
                     <li><strong>Titik Pantau Jaringan:</strong> Sensor telemetri tekanan zona 1 (residensial) &amp; zona 2 (komersial/ujung).</li>
                   </ul>
@@ -216,7 +234,7 @@ export const UserGuideModal: React.FC<UserGuideModalProps> = ({ onClose }) => {
               <div className="border-b pb-2">
                 <h3 className="text-base font-bold text-slate-900 flex items-center gap-2">
                   <UserCheck className="w-4 h-4 text-sky-600" />
-                  Alur Pembelajaran &amp; Gamifikasi Peserta (Layar 2, 3, 4, 6, 7)
+                  Alur Pembelajaran &amp; Gamifikasi Peserta{showTechnicalRefs ? ' (Layar 2, 3, 4, 6, 7)' : ''}
                 </h3>
               </div>
 
@@ -224,7 +242,7 @@ export const UserGuideModal: React.FC<UserGuideModalProps> = ({ onClose }) => {
                 <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-2">
                   <strong className="text-slate-900 block text-sm">Urutan Belajar Peserta:</strong>
                   <ol className="space-y-1.5 pl-4 list-decimal text-slate-600">
-                    <li><strong>Pre-Test:</strong> Kerjakan pre-test 20 soal di halaman Pre/Post-test (L4a) untuk mencatat baseline kompetensi awal (T1) dan membuka misi pertama.</li>
+                    <li><strong>Pre-Test:</strong> Kerjakan pre-test 20 soal di halaman Pre/Post-test{showTechnicalRefs ? ' (L4a)' : ''} untuk mencatat baseline kompetensi awal{showTechnicalRefs ? ' (T1)' : ''} dan membuka misi pertama.</li>
                     <li><strong>Pilih Jalur:</strong> Tentukan kurikulum (IPA Saja 9 misi, Distribusi Saja 7 misi, atau Terpadu 16 misi).</li>
                     <li><strong>Peta Misi:</strong> Klik misi terbuka berikutnya. Selesaikan modul materi dan kuis 5 soal (minimal 3 benar).</li>
                     <li><strong>Simulasi SCADA:</strong> Kendalikan instalasi dan atasi gangguan sesuai briefing skenario.</li>
@@ -242,7 +260,7 @@ export const UserGuideModal: React.FC<UserGuideModalProps> = ({ onClose }) => {
               <div className="border-b pb-2">
                 <h3 className="text-base font-bold text-slate-900 flex items-center gap-2">
                   <Users className="w-4 h-4 text-sky-600" />
-                  Fitur Instruktur &amp; Pengelolaan Pelatihan (Layar 9, 10, 11)
+                  Fitur Instruktur &amp; Pengelolaan Pelatihan{showTechnicalRefs ? ' (Layar 9, 10, 11)' : ''}
                 </h3>
               </div>
 
@@ -269,7 +287,7 @@ export const UserGuideModal: React.FC<UserGuideModalProps> = ({ onClose }) => {
               <div className="border-b pb-2">
                 <h3 className="text-base font-bold text-slate-900 flex items-center gap-2">
                   <Trophy className="w-4 h-4 text-sky-600" />
-                  Dashboard Evaluasi Lembaga Pembeli (Layar 14)
+                  Dashboard Evaluasi Lembaga Pembeli{showTechnicalRefs ? ' (Layar 14)' : ''}
                 </h3>
               </div>
 
@@ -277,19 +295,19 @@ export const UserGuideModal: React.FC<UserGuideModalProps> = ({ onClose }) => {
                 <p>Dashboard ini mengukur langsung 4 indikator keberhasilan investasi pelatihan:</p>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
                   <div className="p-3 bg-slate-50 rounded-xl border border-slate-200">
-                    <strong className="text-slate-900 block">T1. Kenaikan Kompetensi (≥ 25%):</strong>
+                    <strong className="text-slate-900 block">{showTechnicalRefs ? 'T1. ' : '1. '}Kenaikan Kompetensi (≥ 25%):</strong>
                     <span>Membandingkan nilai rata-rata Pre-Test dengan Post-Test per angkatan.</span>
                   </div>
                   <div className="p-3 bg-slate-50 rounded-xl border border-slate-200">
-                    <strong className="text-slate-900 block">T2. Penguasaan 5 Gangguan (≥ 80%):</strong>
+                    <strong className="text-slate-900 block">{showTechnicalRefs ? 'T2. ' : '2. '}Penguasaan 5 Gangguan (≥ 80%):</strong>
                     <span>Persentase kelulusan skenario kekeruhan, pompa trip, klor, pipa bocor, dan tekanan drop.</span>
                   </div>
                   <div className="p-3 bg-slate-50 rounded-xl border border-slate-200">
-                    <strong className="text-slate-900 block">T3. Waktu Menuju Lulus (~2 Bulan):</strong>
+                    <strong className="text-slate-900 block">{showTechnicalRefs ? 'T3. ' : '3. '}Waktu Menuju Lulus (~2 Bulan):</strong>
                     <span>Mempercepat masa orientasi operator baru dari ±3 bulan menjadi ±2 bulan.</span>
                   </div>
                   <div className="p-3 bg-slate-50 rounded-xl border border-slate-200">
-                    <strong className="text-slate-900 block">T4. Tingkat Kelulusan (≥ 70%):</strong>
+                    <strong className="text-slate-900 block">{showTechnicalRefs ? 'T4. ' : '4. '}Tingkat Kelulusan (≥ 70%):</strong>
                     <span>Rasio piagam resmi yang berhasil diterbitkan dibanding peserta aktif.</span>
                   </div>
                 </div>
@@ -304,7 +322,7 @@ export const UserGuideModal: React.FC<UserGuideModalProps> = ({ onClose }) => {
               <div className="border-b pb-2">
                 <h3 className="text-base font-bold text-slate-900 flex items-center gap-2">
                   <FileCheck2 className="w-4 h-4 text-emerald-600" />
-                  Penerbitan Piagam &amp; Layanan Verifikasi Publik (Layar 8 &amp; 16)
+                  Penerbitan Piagam &amp; Layanan Verifikasi Publik{showTechnicalRefs ? ' (Layar 8 & 16)' : ''}
                 </h3>
               </div>
 
@@ -314,8 +332,8 @@ export const UserGuideModal: React.FC<UserGuideModalProps> = ({ onClose }) => {
                   <p>Terbit otomatis setelah peserta lulus semua misi pada jalurnya, lulus ujian kelulusan (skor ≥ 80), lulus post-test (≥ 70), dan disetujui instruktur. Memuat kop resmi lembaga, nomor unik, tanda tangan pimpinan &amp; instruktur, predikat, dan kode QR.</p>
                 </div>
                 <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-1.5">
-                  <strong className="text-slate-900 block text-sm">Halaman Verifikasi Publik (L16):</strong>
-                  <p>Dapat diakses masyarakat umum tanpa login. Memasukkan nomor piagam (contoh: <code>SSA/BDAN/2026/001</code>) akan menampilkan status keabsahan dokumen (Sah atau Telah Dicabut).</p>
+                  <strong className="text-slate-900 block text-sm">Halaman Verifikasi Publik{showTechnicalRefs ? ' (L16)' : ''}:</strong>
+                  <p>Dapat diakses masyarakat umum tanpa login. Memasukkan nomor piagam (contoh: <code>SSA/NUS/2026/0001</code>) akan menampilkan status keabsahan dokumen (Sah atau Telah Dicabut).</p>
                 </div>
               </div>
             </div>

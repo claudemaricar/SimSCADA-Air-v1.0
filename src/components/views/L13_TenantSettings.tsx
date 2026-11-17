@@ -12,7 +12,7 @@ import {
 } from 'lucide-react';
 
 export const L13_TenantSettings: React.FC = () => {
-  const { currentTenant, updateTenant } = useApp();
+  const { currentTenant, updateTenant, showTechnicalRefs } = useApp();
 
   const buildDefaultSopNote = (tenantNameText: string, pid: string) =>
     currentTenant.config.localSopNotes?.[pid] ||
@@ -77,7 +77,7 @@ export const L13_TenantSettings: React.FC = () => {
       },
     });
     setSettingsFeedback(
-      `Catatan SOP lokal ${currentTenant.name} untuk titik ${selectedPointId} berhasil disimpan dan aktif di pop-up L5a.`
+      `Catatan SOP lokal ${currentTenant.name} untuk titik ${selectedPointId} berhasil disimpan dan aktif di pop-up detail unit${showTechnicalRefs ? ' (L5a)' : ''}.`
     );
   };
 
@@ -89,7 +89,7 @@ export const L13_TenantSettings: React.FC = () => {
           Pengaturan Lembaga, Kebijakan &amp; SOP Lokal · {currentTenant.name}
         </h1>
         <p className="text-xs text-slate-400 mt-0.5">
-          Konfigurasi Tenant PRD §6 &amp; §13: Identitas, Logo, Penanda Tangan, Aksen Piagam, Persetujuan, Papan Peringkat, Ambang Kelulusan &amp; SOP Lokal
+          Konfigurasi Lembaga{showTechnicalRefs ? ' (PRD §6 & §13)' : ''}: Identitas, Logo, Penanda Tangan, Aksen Piagam, Persetujuan, Papan Peringkat, Ambang Kelulusan &amp; SOP Lokal
         </p>
       </div>
 
@@ -115,7 +115,7 @@ export const L13_TenantSettings: React.FC = () => {
         <div className="lg:col-span-7 bg-[#0f172a] rounded-2xl border border-[#24324d] p-6 space-y-5 shadow-xl">
           <div>
             <h2 className="text-base font-bold text-white">
-              Identitas Lembaga & Kustomisasi Piagam (PRD §6 & §13)
+              Identitas Lembaga &amp; Kustomisasi Piagam{showTechnicalRefs ? ' (PRD §6 & §13)' : ''}
             </h2>
             <p className="text-xs text-slate-400">
               Data resmi yang tampil di header aplikasi, laporan eksekutif, dan piagam kelulusan
@@ -164,7 +164,7 @@ export const L13_TenantSettings: React.FC = () => {
             {/* Penanda Tangan Piagam (PRD §6) */}
             <div className="space-y-2 pt-2">
               <label className="block text-slate-300 font-bold uppercase tracking-wider text-[11px]">
-                Penanda Tangan Piagam (PRD §6):
+                Penanda Tangan Piagam{showTechnicalRefs ? ' (PRD §6)' : ''}:
               </label>
               
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -213,7 +213,7 @@ export const L13_TenantSettings: React.FC = () => {
             {/* Warna Aksen Templat Piagam */}
             <div>
               <label className="block text-slate-300 font-bold uppercase tracking-wider text-[11px] mb-1.5">
-                Warna Aksen Templat Piagam (PRD §13):
+                Warna Aksen Templat Piagam{showTechnicalRefs ? ' (PRD §13)' : ''}:
               </label>
               <div className="grid grid-cols-4 gap-2 text-center text-xs">
                 {[
@@ -241,9 +241,11 @@ export const L13_TenantSettings: React.FC = () => {
             <div className="space-y-2 pt-1">
               <div className="p-3.5 rounded-xl bg-[#0b1120] border border-[#1e293b] flex items-center justify-between">
                 <div>
-                  <div className="font-bold text-white text-xs">Persetujuan instruktur wajib sebelum piagam terbit (PRD §13)</div>
+                  <div className="font-bold text-white text-xs">
+                    Persetujuan instruktur wajib sebelum piagam terbit{showTechnicalRefs ? ' (PRD §13)' : ''}
+                  </div>
                   <div className="text-[10px] text-slate-400 mt-0.5">
-                    ON: piagam berstatus menunggu persetujuan di L9 (status L8b). OFF: piagam terbit langsung.
+                    ON: piagam berstatus menunggu persetujuan instruktur{showTechnicalRefs ? ' di L9 (status L8b)' : ''}. OFF: piagam terbit langsung.
                   </div>
                 </div>
                 <button
@@ -259,7 +261,9 @@ export const L13_TenantSettings: React.FC = () => {
 
               <div className="p-3.5 rounded-xl bg-[#0b1120] border border-[#1e293b] flex items-center justify-between">
                 <div>
-                  <div className="font-bold text-white text-xs">Papan peringkat peserta (FR-21)</div>
+                  <div className="font-bold text-white text-xs">
+                    Papan peringkat peserta{showTechnicalRefs ? ' (FR-21)' : ''}
+                  </div>
                   <div className="text-[10px] text-slate-400 mt-0.5">
                     Peserta hanya melihat peringkat di lembaga ini. Nonaktifkan bila menurunkan motivasi.
                   </div>
@@ -279,7 +283,7 @@ export const L13_TenantSettings: React.FC = () => {
             {/* Ambang Kelulusan Lembaga */}
             <div className="space-y-1.5 pt-1">
               <label className="block text-slate-300 font-bold uppercase tracking-wider text-[11px]">
-                Ambang Kelulusan Lembaga (PRD §6):
+                Ambang Kelulusan Lembaga{showTechnicalRefs ? ' (PRD §6)' : ''}:
               </label>
               <div className="grid grid-cols-3 gap-2.5 text-center">
                 <div className="p-2.5 rounded-xl bg-[#0b1120] border border-[#1e293b]">
@@ -313,7 +317,7 @@ export const L13_TenantSettings: React.FC = () => {
         <div className="lg:col-span-5 bg-[#0f172a] rounded-2xl border border-[#24324d] p-6 space-y-5 shadow-xl">
           <div>
             <h2 className="text-base font-bold text-white">
-              Catatan SOP Lokal per Titik Kontrol (PRD §9)
+              Catatan SOP Lokal per Titik Kontrol{showTechnicalRefs ? ' (PRD §9)' : ''}
             </h2>
             <p className="text-xs text-slate-400">
               Tambahkan catatan operasional khusus lembaga tanpa mengubah narasi baku Super Admin
@@ -350,7 +354,7 @@ export const L13_TenantSettings: React.FC = () => {
 
             <div>
               <label className="block text-slate-300 font-semibold mb-1">
-                ISI CATATAN SOP LOKAL (LANGSUNG TAMPIL DI POP-UP L5a):
+                ISI CATATAN SOP LOKAL (TAMPIL DI POP-UP DETAIL UNIT{showTechnicalRefs ? ' L5a' : ''}):
               </label>
               <textarea
                 value={sopNoteText}
@@ -360,7 +364,7 @@ export const L13_TenantSettings: React.FC = () => {
                 placeholder="Tuliskan instruksi SOP lokal instalasi Anda..."
               />
               <p className="text-[10px] text-slate-500 mt-1">
-                Catatan ini otomatis muncul pada pop-up narasi titik kontrol L5a bagi semua peserta {currentTenant.name}.
+                Catatan ini otomatis muncul pada pop-up narasi titik kontrol{showTechnicalRefs ? ' L5a' : ''} bagi semua peserta {currentTenant.name}.
               </p>
             </div>
 
@@ -377,7 +381,9 @@ export const L13_TenantSettings: React.FC = () => {
           <div className="p-4 rounded-xl bg-rose-950/20 border border-rose-500/30 text-xs space-y-2">
             <div className="font-bold text-rose-300 uppercase tracking-wider text-[11px] flex items-center gap-1.5">
               <Lock className="w-3.5 h-3.5 text-rose-400" />
-              <span>AMBANG BATAS ALARM BAKU TERKUNCI (PRD SIMSCADA-AIR v1.1 §6):</span>
+              <span>
+                AMBANG BATAS ALARM BAKU TERKUNCI{showTechnicalRefs ? ' (PRD SIMSCADA-AIR v1.2 §6)' : ''}:
+              </span>
             </div>
             <p className="text-slate-300 text-[11px] leading-relaxed">
               Pengeditan ambang alarm baku ditiadakan bagi Admin Lembaga. Ambang batas alarm baku (Permenkes No. 2/2023) ditetapkan terpusat oleh Super Admin platform demi menjamin standarisasi uji kompetensi:
@@ -385,7 +391,7 @@ export const L13_TenantSettings: React.FC = () => {
             <div className="space-y-1 font-mono text-[10px] text-slate-300 bg-[#0b1120] p-2.5 rounded-lg border border-[#1e293b]">
               <div>• Kekeruhan air olahan: Tinggi bila ≥ 3,0 NTU (Auto-clear ≤ 2,7 NTU)</div>
               <div>• Sisa klor: Kritis bila &lt; 0,2 mg/L</div>
-              <div>• Tekanan distribusi: Drop bila &lt; 1,5 bar</div>
+              <div>• Tekanan distribusi: Drop bila &lt; 2,0 bar (rentang normal 2,0–2,8 bar)</div>
             </div>
             <p className="text-[10px] text-rose-400/90 font-medium italic">
               Lembaga tidak dapat mengubah ambang baku ini.

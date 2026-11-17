@@ -58,6 +58,7 @@ export const Header: React.FC<HeaderProps> = ({ currentView, onNavigate }) => {
     userMissionResults,
     resetDemoData,
     setSelectedMissionCode,
+    showTechnicalRefs,
   } = useApp();
 
   const [showSwitchModal, setShowSwitchModal] = useState(false);
@@ -111,7 +112,7 @@ export const Header: React.FC<HeaderProps> = ({ currentView, onNavigate }) => {
       },
       {
         id: 'track_select',
-        label: 'Pilih Jalur (L3)',
+        label: `Pilih Jalur${showTechnicalRefs ? ' (L3)' : ''}`,
         shortLabel: 'Pilih Jalur',
         secondary: true,
         isActive: currentView === 'track_select',
@@ -119,14 +120,14 @@ export const Header: React.FC<HeaderProps> = ({ currentView, onNavigate }) => {
       },
       {
         id: 'module_quiz',
-        label: 'Materi & Kuis (L4)',
+        label: `Materi & Kuis${showTechnicalRefs ? ' (L4)' : ''}`,
         shortLabel: 'Materi & Kuis',
         isActive: currentView === 'module_quiz',
         onClick: () => onNavigate('module_quiz'),
       },
       {
         id: 'pre_post_test',
-        label: 'Pre/Post-Test (L4a)',
+        label: `Pre/Post-Test${showTechnicalRefs ? ' (L4a)' : ''}`,
         shortLabel: 'Pre/Post-Test',
         secondary: true,
         isActive: currentView === 'pre_post_test',
@@ -134,7 +135,7 @@ export const Header: React.FC<HeaderProps> = ({ currentView, onNavigate }) => {
       },
       {
         id: 'simulator',
-        label: 'Simulator SCADA (L5)',
+        label: `Simulator SCADA${showTechnicalRefs ? ' (L5)' : ''}`,
         shortLabel: 'Simulator',
         icon: <PlayCircle className="w-3.5 h-3.5 text-sky-400" />,
         isActive: currentView === 'simulator',
@@ -145,7 +146,7 @@ export const Header: React.FC<HeaderProps> = ({ currentView, onNavigate }) => {
       },
       {
         id: 'badges',
-        label: 'Lencana & Peringkat (L7)',
+        label: `Lencana & Peringkat${showTechnicalRefs ? ' (L7)' : ''}`,
         shortLabel: 'Lencana',
         icon: <Award className="w-3.5 h-3.5 text-amber-400" />,
         isActive: currentView === 'badges',
@@ -153,7 +154,7 @@ export const Header: React.FC<HeaderProps> = ({ currentView, onNavigate }) => {
       },
       {
         id: 'certificate',
-        label: 'Piagam Kelulusan (L8)',
+        label: `Piagam Kelulusan${showTechnicalRefs ? ' (L8)' : ''}`,
         shortLabel: 'Piagam',
         icon: <FileCheck2 className="w-3.5 h-3.5 text-emerald-400" />,
         isActive: currentView === 'certificate' || currentView === 'certificate_pending',
@@ -164,29 +165,29 @@ export const Header: React.FC<HeaderProps> = ({ currentView, onNavigate }) => {
     navItems.push(
       {
         id: 'instructor_dashboard',
-        label: 'Dasbor Pengawasan (L9)',
-        shortLabel: 'Dasbor (L9)',
+        label: `Dasbor Pengawasan${showTechnicalRefs ? ' (L9)' : ''}`,
+        shortLabel: `Dasbor${showTechnicalRefs ? ' (L9)' : ''}`,
         isActive: currentView === 'instructor_dashboard' || currentView === 'home',
         onClick: () => onNavigate('instructor_dashboard'),
       },
       {
         id: 'manage_scenarios',
-        label: 'Kelola Skenario (L10)',
-        shortLabel: 'Skenario (L10)',
+        label: `Kelola Skenario${showTechnicalRefs ? ' (L10)' : ''}`,
+        shortLabel: `Skenario${showTechnicalRefs ? ' (L10)' : ''}`,
         isActive: currentView === 'manage_scenarios',
         onClick: () => onNavigate('manage_scenarios'),
       },
       {
         id: 'replay',
-        label: 'Putar Ulang Sesi (L11)',
-        shortLabel: 'Replay (L11)',
+        label: `Putar Ulang Sesi${showTechnicalRefs ? ' (L11)' : ''}`,
+        shortLabel: `Replay${showTechnicalRefs ? ' (L11)' : ''}`,
         icon: <History className="w-3.5 h-3.5 text-sky-400" />,
         isActive: currentView === 'replay',
         onClick: () => onNavigate('replay'),
       },
       {
         id: 'simulator',
-        label: 'Uji Simulator (L5)',
+        label: `Uji Simulator${showTechnicalRefs ? ' (L5)' : ''}`,
         shortLabel: 'Simulator',
         isActive: currentView === 'simulator',
         onClick: () => {
@@ -201,8 +202,8 @@ export const Header: React.FC<HeaderProps> = ({ currentView, onNavigate }) => {
   ) {
     navItems.push({
       id: 'evaluation',
-      label: 'Evaluasi Lembaga (T1–T4)',
-      shortLabel: 'Evaluasi (L14)',
+      label: `Evaluasi Lembaga${showTechnicalRefs ? ' (T1–T4)' : ''}`,
+      shortLabel: `Evaluasi${showTechnicalRefs ? ' (L14)' : ''}`,
       icon: <LineChart className="w-3.5 h-3.5 text-sky-400" />,
       isActive: currentView === 'evaluation' || currentView === 'home',
       onClick: () => onNavigate('evaluation'),
@@ -211,16 +212,16 @@ export const Header: React.FC<HeaderProps> = ({ currentView, onNavigate }) => {
       navItems.push(
         {
           id: 'manage_users',
-          label: 'Pengguna & Kelompok (L12)',
-          shortLabel: 'Pengguna (L12)',
+          label: `Pengguna & Kelompok${showTechnicalRefs ? ' (L12)' : ''}`,
+          shortLabel: `Pengguna${showTechnicalRefs ? ' (L12)' : ''}`,
           icon: <Users className="w-3.5 h-3.5 text-emerald-400" />,
           isActive: currentView === 'manage_users',
           onClick: () => onNavigate('manage_users'),
         },
         {
           id: 'tenant_settings',
-          label: 'Pengaturan Lembaga (L13)',
-          shortLabel: 'Pengaturan (L13)',
+          label: `Pengaturan Lembaga${showTechnicalRefs ? ' (L13)' : ''}`,
+          shortLabel: `Pengaturan${showTechnicalRefs ? ' (L13)' : ''}`,
           icon: <Settings className="w-3.5 h-3.5 text-amber-400" />,
           isActive: currentView === 'tenant_settings',
           onClick: () => onNavigate('tenant_settings'),
@@ -229,8 +230,8 @@ export const Header: React.FC<HeaderProps> = ({ currentView, onNavigate }) => {
     }
     navItems.push({
       id: 'certificate',
-      label: 'Daftar Piagam (L8)',
-      shortLabel: 'Piagam (L8)',
+      label: `Daftar Piagam${showTechnicalRefs ? ' (L8)' : ''}`,
+      shortLabel: `Piagam${showTechnicalRefs ? ' (L8)' : ''}`,
       isActive: currentView === 'certificate',
       onClick: () => onNavigate('certificate'),
     });
@@ -238,15 +239,15 @@ export const Header: React.FC<HeaderProps> = ({ currentView, onNavigate }) => {
     navItems.push(
       {
         id: 'superadmin_dashboard',
-        label: 'Konsol Lembaga & Lisensi (L15)',
-        shortLabel: 'Konsol Lembaga (L15)',
+        label: `Konsol Lembaga & Lisensi${showTechnicalRefs ? ' (L15)' : ''}`,
+        shortLabel: `Konsol Lembaga${showTechnicalRefs ? ' (L15)' : ''}`,
         icon: <Shield className="w-3.5 h-3.5 text-indigo-400" />,
         isActive: currentView === 'superadmin_dashboard' || currentView === 'home',
         onClick: () => onNavigate('superadmin_dashboard'),
       },
       {
         id: 'simulator',
-        label: 'Uji Simulator (L5)',
+        label: `Uji Simulator${showTechnicalRefs ? ' (L5)' : ''}`,
         shortLabel: 'Simulator',
         isActive: currentView === 'simulator',
         onClick: () => {
@@ -259,8 +260,8 @@ export const Header: React.FC<HeaderProps> = ({ currentView, onNavigate }) => {
 
   navItems.push({
     id: 'public_verification',
-    label: 'Verifikasi Publik (L16)',
-    shortLabel: 'Verifikasi (L16)',
+    label: `Verifikasi Publik${showTechnicalRefs ? ' (L16)' : ''}`,
+    shortLabel: `Verifikasi${showTechnicalRefs ? ' (L16)' : ''}`,
     secondary: currentUser?.role === 'peserta',
     isActive: currentView === 'public_verification',
     onClick: () => onNavigate('public_verification'),
@@ -521,7 +522,7 @@ export const Header: React.FC<HeaderProps> = ({ currentView, onNavigate }) => {
                 </div>
                 <div>
                   <h3 className="text-base font-bold text-white">
-                    Pilih Akun Demo Prototipe (PRD §5)
+                    Pilih Akun Demo Prototipe{showTechnicalRefs ? ' (PRD §5)' : ''}
                   </h3>
                   <p className="text-[11px] text-slate-400">
                     Sandi semua akun demo: <code className="text-sky-400 font-mono font-bold">Demo#2026</code>
@@ -556,7 +557,7 @@ export const Header: React.FC<HeaderProps> = ({ currentView, onNavigate }) => {
                   </div>
                 </div>
                 <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-sky-500/20 text-sky-300 border border-sky-500/30">
-                  Sesi Contoh L5/L6
+                  Sesi Contoh{showTechnicalRefs ? ' L5/L6' : ''}
                 </span>
               </button>
 
@@ -652,7 +653,7 @@ export const Header: React.FC<HeaderProps> = ({ currentView, onNavigate }) => {
                     pimpinan.nusantara · Dr. Ir. Bambang Sutrisno, M.Eng.
                   </div>
                   <div className="text-[11px] text-slate-400">
-                    Pimpinan Balai Diklat · Dasbor Eksekutif (T1–T4) &amp; Penanda Tangan Piagam
+                    Pimpinan Balai Diklat · Dasbor Eksekutif{showTechnicalRefs ? ' (T1–T4)' : ''} &amp; Penanda Tangan Piagam
                   </div>
                 </div>
                 <UserCheck className="w-4 h-4 text-sky-400" />
@@ -719,7 +720,7 @@ export const Header: React.FC<HeaderProps> = ({ currentView, onNavigate }) => {
               <button
                 type="button"
                 onClick={() => {
-                  if (confirm('Kembalikan semua data latihan ke kondisi bawaan prototipe PRD §5?')) {
+                  if (confirm(`Kembalikan semua data latihan ke kondisi bawaan prototipe${showTechnicalRefs ? ' (PRD §5)' : ''}?`)) {
                     resetDemoData();
                     setShowSwitchModal(false);
                     onNavigate('home');

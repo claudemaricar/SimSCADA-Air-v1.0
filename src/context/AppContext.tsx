@@ -31,6 +31,7 @@ import {
   EKO_MISSION_RESULTS,
   SITI_AMINAH_MISSION_RESULTS,
   TIRTA_ALUMNI_MISSION_RESULTS,
+  NUSANTARA_ALUMNI_MISSION_RESULTS,
 } from '../data/seedData';
 import {
   computeMissionXP,
@@ -82,6 +83,8 @@ interface AppContextType {
   setReplayUserId: (id?: string) => void;
   verificationCertNo: string;
   setVerificationCertNo: (no: string) => void;
+  showTechnicalRefs: boolean;
+  setShowTechnicalRefs: (show: boolean) => void;
 
   // Actions
   loginAs: (username: string) => boolean;
@@ -99,7 +102,7 @@ interface AppContextType {
   issueCertificate: (userId: string) => Certificate | null;
   updateTenant: (tenantId: string, updates: Partial<Tenant>) => void;
   updateUser: (userId: string, updates: Partial<User>) => void;
-  addUser: (user: Omit<User, 'id' | 'createdAt' | 'lastLoginAt'>) => void;
+  addUser: (user: Omit<User, 'id' | 'createdAt' | 'lastLoginAt'>) => { success: boolean; message?: string };
   addGroup: (group: Omit<TrainingGroup, 'id' | 'createdAt'>) => void;
   archiveGroup: (groupId: string) => void;
   deleteGroup: (groupId: string) => void;
@@ -119,7 +122,7 @@ interface AppContextType {
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
 
-const STORAGE_KEY = 'simscada_air_state_v1_6';
+const STORAGE_KEY = 'simscada_air_state_v1_7';
 
 export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [tenants, setTenants] = useState<Tenant[]>(INITIAL_TENANTS);
@@ -131,6 +134,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   const [userPrePostTests, setUserPrePostTests] = useState<PrePostTestResult[]>(INITIAL_TEST_RESULTS);
   const [unlockedMissions, setUnlockedMissions] = useState<Record<string, string[]>>({});
   const [openedNarratives, setOpenedNarratives] = useState<Record<string, string[]>>({});
+  const [showTechnicalRefs, setShowTechnicalRefs] = useState<boolean>(false);
 
   // Default logged in user: Dimas Wahyu Pratama (peserta.ipa) for rich review or can start as peserta.baru
   const [currentUserId, setCurrentUserId] = useState<string>('user-peserta-ipa');
@@ -152,13 +156,14 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       'user-rian-hidayat': [...RIAN_MISSION_RESULTS],
       'user-eko-prasetyo': [...EKO_MISSION_RESULTS],
       'user-peserta-tirta': [...SITI_AMINAH_MISSION_RESULTS],
+      ...NUSANTARA_ALUMNI_MISSION_RESULTS,
       ...TIRTA_ALUMNI_MISSION_RESULTS,
     };
 
     const badges: Record<string, string[]> = {
-      // Dimas: 3 badges open
+      // Dimas: 3 badges open (NOT graduated -> no b-tanpa-petunjuk)
       'user-peserta-ipa': ['b-penjelajah', 'b-respons-kilat', 'b-tanpa-alarm-terlewat'],
-      // Andi: all badges open
+      // Andi: full Terpadu graduate with 0 hints across all 16 missions & post-test >= 70
       'user-peserta-lulus': [
         'b-penjelajah', 'b-respons-kilat', 'b-tanpa-alarm-terlewat',
         'b-penjaga-mutu', 'b-penjaga-tekanan', 'b-tiga-bintang',
@@ -167,6 +172,12 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       'user-peserta-distribusi': ['b-penjelajah', 'b-penjaga-tekanan'],
       'user-peserta-tirta': ['b-penjelajah'],
     };
+    Object.keys(NUSANTARA_ALUMNI_MISSION_RESULTS).forEach((uid) => {
+      const userRes = NUSANTARA_ALUMNI_MISSION_RESULTS[uid] || [];
+      if (userRes.length >= 7) {
+        badges[uid] = ['b-penjelajah', 'b-penjaga-mutu', 'b-tanpa-alarm-terlewat'];
+      }
+    });
     for (let i = 1; i <= 12; i++) {
       badges[`user-trm-${i}`] = ['b-penjelajah', 'b-penjaga-mutu', 'b-tanpa-alarm-terlewat'];
     }
@@ -180,6 +191,9 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       'user-rian-hidayat': ['IPA-01', 'IPA-02', 'IPA-03', 'IPA-04', 'IPA-05', 'IPA-06', 'IPA-07', 'IPA-08', 'IPA-09'],
       'user-peserta-tirta': ['IPA-01', 'IPA-02', 'IPA-03', 'IPA-04'],
     };
+    Object.keys(NUSANTARA_ALUMNI_MISSION_RESULTS).forEach((uid) => {
+      unlocked[uid] = (NUSANTARA_ALUMNI_MISSION_RESULTS[uid] || []).map((r) => r.missionCode);
+    });
     for (let i = 1; i <= 12; i++) {
       unlocked[`user-trm-${i}`] = ['IPA-01', 'IPA-02', 'IPA-03', 'IPA-04', 'IPA-05', 'IPA-06', 'IPA-07', 'IPA-08', 'IPA-09'];
     }
@@ -331,6 +345,41 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     }
   };
 
+  const checkZeroHintTrackGraduation = (
+    userId: string,
+    allUserAttempts: MissionResult[],
+    testsList: PrePostTestResult[]
+  ): boolean => {
+    if (allUserAttempts.length === 0) return false;
+    // Never award if ANY mission attempt ever used hints
+    if (!allUserAttempts.every((r) => (r.hintsUsedCount || 0) === 0)) {
+      return false;
+    }
+
+    const userObj = users.find((u) => u.id === userId);
+    const tenantObj = tenants.find((t) => t.id === userObj?.tenantId) || currentTenant;
+    const track = userObj?.track || activeTrackState;
+    const trackMissions = MISSIONS_LIST.filter((m) => m.track.includes(track));
+    if (trackMissions.length === 0) return false;
+
+    const allMissionsPassed = trackMissions.every((m) => {
+      const attempts = allUserAttempts.filter((r) => r.missionCode === m.code);
+      if (attempts.length === 0) return false;
+      const bestScore = Math.max(...attempts.map((a) => a.totalScore));
+      return bestScore >= (m.passScore ?? 70);
+    });
+    if (!allMissionsPassed) return false;
+
+    const gradCode = track === 'ipa' ? 'IPA-09' : track === 'distribusi' ? 'DST-07' : 'TRP-02';
+    const gradAttempts = allUserAttempts.filter((r) => r.missionCode === gradCode);
+    const bestGradScore = gradAttempts.length > 0 ? Math.max(...gradAttempts.map((a) => a.totalScore)) : 0;
+    const gradThreshold = tenantObj.config.graduationThresholdScore || 80;
+    if (bestGradScore < gradThreshold) return false;
+
+    const postTest = testsList.find((t) => t.userId === userId && t.type === 'post');
+    return Boolean(postTest && postTest.score >= 70);
+  };
+
   const saveMissionResult = (result: MissionResult) => {
     const missionDef = MISSIONS_LIST.find((m) => m.code === result.missionCode);
     const passScore = missionDef?.passScore ?? 70;
@@ -347,35 +396,50 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     const nextResults = { ...userMissionResults, [result.userId]: updated };
     setUserMissionResults(nextResults);
 
-    // Auto-unlock next mission if passed
-    if (result.isPassed) {
-      const track = result.track;
+    let nextUnlocked = unlockedMissions;
+    const currentBadgesList = [...(userBadges[result.userId] || [])];
+    const addBadgeLocal = (bId: string) => {
+      if (!currentBadgesList.includes(bId)) currentBadgesList.push(bId);
+    };
+
+    if (normalizedResult.isPassed) {
+      const track = normalizedResult.track;
       const trackMissions = getMissionsForTrack(track);
-      const currIdx = trackMissions.findIndex((m) => m.code === result.missionCode);
+      const currIdx = trackMissions.findIndex((m) => m.code === normalizedResult.missionCode);
       if (currIdx >= 0 && currIdx < trackMissions.length - 1) {
-        const nextMission = trackMissions[currIdx + 1];
-        unlockMissionForUser(result.userId, nextMission.code);
+        const nextCode = trackMissions[currIdx + 1].code;
+        const currUserUnlocked = unlockedMissions[result.userId] || [];
+        if (!currUserUnlocked.includes(nextCode)) {
+          nextUnlocked = {
+            ...unlockedMissions,
+            [result.userId]: [...currUserUnlocked, nextCode],
+          };
+          setUnlockedMissions(nextUnlocked);
+        }
       }
 
-      // Check Badges PRD §8
-      if (result.missionCode === 'IPA-06' && result.durationSec <= 510) {
-        // Did action within 25 seconds (< 50% * 60s)
-        awardBadge(result.userId, 'b-respons-kilat');
-        awardBadge(result.userId, 'b-tanpa-alarm-terlewat');
+      if (normalizedResult.missionCode === 'IPA-06' && normalizedResult.durationSec <= 510) {
+        addBadgeLocal('b-respons-kilat');
+        addBadgeLocal('b-tanpa-alarm-terlewat');
       }
 
-      if (result.stars === 3) {
-        awardBadge(result.userId, 'b-tiga-bintang');
+      if (normalizedResult.stars === 3) {
+        addBadgeLocal('b-tiga-bintang');
       }
 
-      if (result.hintsUsedCount === 0 && result.missionCode.includes('09')) {
-        awardBadge(result.userId, 'b-tanpa-petunjuk');
-      }
-
-      if (result.missionCode === 'TRP-01') {
-        awardBadge(result.userId, 'b-hulu-ke-hilir');
+      if (normalizedResult.missionCode === 'TRP-01') {
+        addBadgeLocal('b-hulu-ke-hilir');
       }
     }
+
+    // Check strict Lulus Tanpa Petunjuk rule:
+    // ONLY granted if track is completed, grad passed, post-test >= 70, and 0 hints across ALL attempts.
+    if (checkZeroHintTrackGraduation(result.userId, updated, userPrePostTests)) {
+      addBadgeLocal('b-tanpa-petunjuk');
+    }
+
+    const nextBadges = { ...userBadges, [result.userId]: currentBadgesList };
+    setUserBadges(nextBadges);
 
     saveStateToStorage(
       tenants,
@@ -383,9 +447,9 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       groups,
       certificates,
       nextResults,
-      userBadges,
+      nextBadges,
       userPrePostTests,
-      unlockedMissions,
+      nextUnlocked,
       openedNarratives
     );
   };
@@ -466,13 +530,26 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       }
     }
 
+    // Re-evaluate Lulus Tanpa Petunjuk after Post-Test completion
+    let nextBadges = userBadges;
+    if (test.type === 'post') {
+      const userAttempts = userMissionResults[test.userId] || [];
+      if (checkZeroHintTrackGraduation(test.userId, userAttempts, nextTests)) {
+        const currB = userBadges[test.userId] || [];
+        if (!currB.includes('b-tanpa-petunjuk')) {
+          nextBadges = { ...userBadges, [test.userId]: [...currB, 'b-tanpa-petunjuk'] };
+          setUserBadges(nextBadges);
+        }
+      }
+    }
+
     saveStateToStorage(
       tenants,
       users,
       groups,
       certificates,
       userMissionResults,
-      userBadges,
+      nextBadges,
       nextTests,
       nextUnlocked,
       openedNarratives
@@ -670,11 +747,13 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     );
   };
 
-  const addUser = (userData: Omit<User, 'id' | 'createdAt' | 'lastLoginAt'>) => {
+  const addUser = (userData: Omit<User, 'id' | 'createdAt' | 'lastLoginAt'>): { success: boolean; message?: string } => {
     const tenant = tenants.find((t) => t.id === userData.tenantId);
     if (tenant && tenant.license.seatsUsed >= tenant.license.seatQuota) {
-      alert(`Pendaftaran gagal! Kuota lisensi ${tenant.name} telah mencapai batas maksimal (${tenant.license.seatQuota} kursi). Hubungi Super Admin.`);
-      return;
+      return {
+        success: false,
+        message: `Pendaftaran gagal! Kuota lisensi ${tenant.name} telah mencapai batas maksimal (${tenant.license.seatQuota} kursi). Hubungi Super Admin.`,
+      };
     }
 
     const newUser: User = {
@@ -687,14 +766,16 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     setUsers(nextUsers);
 
     // Update seatsUsed
+    let nextTenants = tenants;
     if (tenant) {
-      updateTenant(tenant.id, {
-        license: { ...tenant.license, seatsUsed: tenant.license.seatsUsed + 1 },
-      });
+      nextTenants = tenants.map((t) =>
+        t.id === tenant.id ? { ...t, license: { ...t.license, seatsUsed: t.license.seatsUsed + 1 } } : t
+      );
+      setTenants(nextTenants);
     }
 
     saveStateToStorage(
-      tenants,
+      nextTenants,
       nextUsers,
       groups,
       certificates,
@@ -704,6 +785,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       unlockedMissions,
       openedNarratives
     );
+    return { success: true };
   };
 
   const addGroup = (groupData: Omit<TrainingGroup, 'id' | 'createdAt'>) => {
@@ -864,9 +946,11 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     // T3: Waktu Menuju Kelulusan = 58 Hari (Nusantara), 49 Hari (Tirta Mandiri)
     const t3Days = tenantId === 'nusantara' ? 58 : 49;
 
-    // T4: Penyelesaian Jalur (Kelulusan) = 32 Piagam / 42 Peserta Aktif = 76.2%
-    const validCerts = certificates.filter((c) => c.tenantId === tenantId && c.status === 'valid');
-    const t4Count = tenantId === 'nusantara' ? 32 : validCerts.length;
+    // T4: Penyelesaian Jalur (Kelulusan)
+    const issuedValidCerts = certificates.filter(
+      (c) => c.tenantId === tenantId && c.status === 'valid' && c.instructorApproved
+    );
+    const t4Count = issuedValidCerts.length;
     const t4Rate = activeCount > 0 ? Number(((t4Count / activeCount) * 100).toFixed(1)) : 76.2;
 
     return {
@@ -888,10 +972,10 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     };
   };
 
-  // TENANT ISOLATION FILTERS
+  // TENANT ISOLATION FILTERS (superadmin is platform-level, never shown inside tenant rosters)
   const getVisibleUsers = (): User[] => {
     if (currentUser?.role === 'superadmin') return users;
-    return users.filter((u) => u.tenantId === currentTenant.id);
+    return users.filter((u) => u.tenantId === currentTenant.id && u.role !== 'superadmin');
   };
 
   const getVisibleCertificates = (): Certificate[] => {
@@ -931,6 +1015,8 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         setReplayUserId,
         verificationCertNo,
         setVerificationCertNo,
+        showTechnicalRefs,
+        setShowTechnicalRefs,
 
         // Actions
         loginAs,

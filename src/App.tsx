@@ -180,6 +180,7 @@ function AppContent() {
 
         {currentView === 'simulator' && (
           <L5_ScadaSimulator
+            key={`${selectedMission.code}-${currentUser?.id || 'anon'}`}
             mission={selectedMission}
             onFinishMission={handleFinishSimulation}
             onExit={() => setCurrentView('home')}

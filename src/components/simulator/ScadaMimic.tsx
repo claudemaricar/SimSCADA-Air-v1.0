@@ -79,7 +79,7 @@ export const ScadaMimic: React.FC<ScadaMimicProps> = ({
         {/* ======================================================== */}
         {/* SECTION 1: IPA (WATER TREATMENT PLANT)                     */}
         {/* ======================================================== */}
-        <g id="ipa-section" opacity={isIpaVisible ? 1 : 0.35}>
+        <g id="ipa-section" opacity={isIpaVisible ? 1 : 0.35} className={!isIpaVisible ? 'pointer-events-none' : ''}>
           {/* Title Tag */}
             <text x="25" y="28" fill="#94a3b8" fontSize="12" fontWeight="bold" letterSpacing="1">
               INSTALASI PENGOLAHAN AIR (IPA)
@@ -137,7 +137,7 @@ export const ScadaMimic: React.FC<ScadaMimicProps> = ({
 
               {/* Unit Title */}
               <text x="30" y="70" fill="#f8fafc" fontSize="11" fontWeight="bold">INTAKE AIR BAKU</text>
-              <text x="30" y="86" fill="#38bdf8" fontSize="10">Q: {scada.rawWaterFlow.toFixed(0)} m³/h</text>
+              <text x="30" y="86" fill="#38bdf8" fontSize="10">Q: {scada.rawWaterFlow.toFixed(0)} L/s</text>
               <text x="30" y="100" fill={scada.rawWaterTurbidity > 50 ? '#f43f5e' : '#e2e8f0'} fontSize="10" fontWeight={scada.rawWaterTurbidity > 50 ? 'bold' : 'normal'}>
                 NTU: {scada.rawWaterTurbidity.toFixed(1)}
               </text>
@@ -599,7 +599,7 @@ export const ScadaMimic: React.FC<ScadaMimicProps> = ({
         {/* ======================================================== */}
         {/* SECTION 2: JARINGAN DISTRIBUSI (DISTRIBUTION NETWORK)     */}
         {/* ======================================================== */}
-        <g id="distribusi-section" opacity={isDistribusiVisible ? 1 : 0.35}>
+        <g id="distribusi-section" opacity={isDistribusiVisible ? 1 : 0.35} className={!isDistribusiVisible ? 'pointer-events-none' : ''}>
           {/* Title Tag */}
             <text x="25" y="278" fill="#94a3b8" fontSize="12" fontWeight="bold" letterSpacing="1">
               JARINGAN PIPA DISTRIBUSI KOTA
@@ -662,7 +662,7 @@ export const ScadaMimic: React.FC<ScadaMimicProps> = ({
               <text x="720" y="338" fill={scada.distDischargePressure < 3.0 ? '#f43f5e' : '#38bdf8'} fontSize="10" fontWeight="bold">
                 Tekanan: {scada.distDischargePressure.toFixed(2)} bar
               </text>
-              <text x="720" y="352" fill="#e2e8f0" fontSize="10">Debit: {scada.distTotalFlow.toFixed(0)} m³/h</text>
+              <text x="720" y="352" fill="#e2e8f0" fontSize="10">Debit: {scada.distTotalFlow.toFixed(0)} L/s</text>
               <text x="720" y="366" fill={scada.distPumpTripped ? '#f43f5e' : '#10b981'} fontSize="9" fontWeight="bold">
                 {scada.distPumpTripped ? 'P-101 TRIP!' : scada.distPump1Running ? 'P-101 RUN (DUTY)' : 'STANDBY'}
               </text>
@@ -805,19 +805,19 @@ export const ScadaMimic: React.FC<ScadaMimicProps> = ({
               {/* Zone 1 Card */}
               <rect x="30" y="335" width="205" height="60" fill="#0f172a" rx="4" stroke="#334155" />
               <text x="40" y="352" fill="#38bdf8" fontSize="10" fontWeight="bold">ZONA 1 (KOTA / RESIDENSIAL)</text>
-              <text x="40" y="368" fill={scada.zone1Pressure < 1.8 ? '#f43f5e' : '#10b981'} fontSize="11" fontWeight="bold">
+              <text x="40" y="368" fill={scada.zone1Pressure < 2.0 ? '#f43f5e' : '#10b981'} fontSize="11" fontWeight="bold">
                 P: {scada.zone1Pressure.toFixed(2)} bar
               </text>
-              <text x="135" y="368" fill="#e2e8f0" fontSize="10">Q: {scada.zone1Flow.toFixed(0)} m³/h</text>
+              <text x="135" y="368" fill="#e2e8f0" fontSize="10">Q: {scada.zone1Flow.toFixed(0)} L/s</text>
               <text x="40" y="385" fill="#94a3b8" fontSize="9">Batas Standar: 2.0 - 2.8 bar</text>
 
               {/* Zone 2 Card */}
               <rect x="30" y="405" width="205" height="75" fill="#0f172a" rx="4" stroke="#334155" />
               <text x="40" y="422" fill="#38bdf8" fontSize="10" fontWeight="bold">ZONA 2 (KOMERSIAL & UJUNG)</text>
-              <text x="40" y="438" fill={scada.zone2Pressure < 1.6 ? '#f43f5e' : '#10b981'} fontSize="11" fontWeight="bold">
+              <text x="40" y="438" fill={scada.zone2Pressure < 2.0 ? '#f43f5e' : '#10b981'} fontSize="11" fontWeight="bold">
                 P: {scada.zone2Pressure.toFixed(2)} bar
               </text>
-              <text x="135" y="438" fill="#e2e8f0" fontSize="10">Q: {scada.zone2Flow.toFixed(0)} m³/h</text>
+              <text x="135" y="438" fill="#e2e8f0" fontSize="10">Q: {scada.zone2Flow.toFixed(0)} L/s</text>
               <text x="40" y="456" fill={scada.zoneChlorineEnd < 0.2 ? '#f43f5e' : '#34d399'} fontSize="10" fontWeight="bold">
                 Sisa Klor Ujung: {scada.zoneChlorineEnd.toFixed(2)} mg/L
               </text>

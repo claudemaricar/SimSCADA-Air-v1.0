@@ -27,7 +27,7 @@ interface LoginProps {
 }
 
 export const L1_Login: React.FC<LoginProps> = ({ onLoginSuccess, onOpenPublicVerification }) => {
-  const { tenants, users, loginAs, getUserXP, userMissionResults } = useApp();
+  const { tenants, users, loginAs, getUserXP, userMissionResults, showTechnicalRefs } = useApp();
 
   const getUserStars = (userId: string) =>
     computeBestPassedResults(userMissionResults[userId] || [], MISSIONS_LIST).reduce(
@@ -78,7 +78,7 @@ export const L1_Login: React.FC<LoginProps> = ({ onLoginSuccess, onOpenPublicVer
           className="px-3.5 py-1.5 rounded-xl border border-[#334155] bg-[#0f172a]/80 hover:bg-[#1e293b] text-slate-300 hover:text-white text-xs font-semibold flex items-center gap-1.5 transition-all shadow-sm"
         >
           <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
-          <span>Verifikasi Piagam Publik (L16)</span>
+          <span>Verifikasi Piagam Publik{showTechnicalRefs ? ' (L16)' : ''}</span>
         </button>
       </div>
 
@@ -108,7 +108,9 @@ export const L1_Login: React.FC<LoginProps> = ({ onLoginSuccess, onOpenPublicVer
               <label className="text-xs font-bold text-slate-300 uppercase tracking-wider">
                 Pilih Lembaga Penyelenggara
               </label>
-              <span className="text-[10px] text-sky-400 font-medium">Multi-Tenant PRD §5</span>
+              {showTechnicalRefs && (
+                <span className="text-[10px] text-sky-400 font-medium">Multi-Tenant PRD §5</span>
+              )}
             </div>
             <div className="grid grid-cols-2 gap-2.5">
               {tenants.map((t) => (
@@ -182,10 +184,10 @@ export const L1_Login: React.FC<LoginProps> = ({ onLoginSuccess, onOpenPublicVer
             <div className="p-3 rounded-xl bg-sky-950/20 border border-sky-500/20 text-[11px] text-slate-400 space-y-1">
               <div className="font-semibold text-sky-400 flex items-center gap-1.5">
                 <CheckCircle2 className="w-3.5 h-3.5" />
-                <span>Auto-Detect Peran & Lembaga (PRD §5)</span>
+                <span>Auto-Detect Peran &amp; Lembaga{showTechnicalRefs ? ' (PRD §5)' : ''}</span>
               </div>
               <p>
-                Pemilih peran manual dihapus sesuai PRD §5. Sistem mengenali Lembaga & Peran secara otomatis dari akun. 5 Peran: Super Admin, Admin Lembaga, Pimpinan Lembaga, Instruktur, Peserta Operator.
+                Sistem mengenali Lembaga &amp; Peran secara otomatis dari akun pengguna. 5 Peran: Super Admin, Admin Lembaga, Pimpinan Lembaga, Instruktur, Peserta Operator.
               </p>
             </div>
 
@@ -202,7 +204,7 @@ export const L1_Login: React.FC<LoginProps> = ({ onLoginSuccess, onOpenPublicVer
             <div className="flex items-center justify-between mb-3">
               <span className="text-xs font-bold text-slate-300 uppercase tracking-wider flex items-center gap-1.5">
                 <Sparkles className="w-3.5 h-3.5 text-amber-400" />
-                <span>Masuk Sebagai... (10 Akun Demo PRD §5)</span>
+                <span>Masuk Sebagai... (10 Akun Demo{showTechnicalRefs ? ' PRD §5' : ''})</span>
               </span>
               <span className="text-[10px] text-slate-500">Klik 1x untuk langsung login</span>
             </div>
@@ -292,7 +294,9 @@ export const L1_Login: React.FC<LoginProps> = ({ onLoginSuccess, onOpenPublicVer
                   <span className="text-xs font-bold text-white group-hover:text-sky-300">pimpinan.nusantara</span>
                   <span className="text-[9px] px-1.5 py-0.2 rounded-full bg-slate-700 text-slate-300">Pimpinan</span>
                 </div>
-                <div className="text-[10px] text-slate-400">Dr. Ir. Bambang · T1-T4 & Piagam</div>
+                <div className="text-[10px] text-slate-400">
+                  Dr. Ir. Bambang · {showTechnicalRefs ? 'T1-T4 & ' : ''}Evaluasi &amp; Piagam
+                </div>
               </button>
 
               {/* Tirta & Superadmin */}
@@ -335,7 +339,7 @@ export const L1_Login: React.FC<LoginProps> = ({ onLoginSuccess, onOpenPublicVer
           </div>
 
           <div className="text-center text-[11px] text-slate-500 pt-1">
-            Isolasi Database Antar-Lembaga · Sesuai PRD SimSCADA-Air v1.1 §5
+            Isolasi Database Antar-Lembaga{showTechnicalRefs ? ' · Sesuai PRD SimSCADA-Air v1.2 §5' : ' · Platform Pelatihan Multi-Lembaga'}
           </div>
         </div>
       </div>

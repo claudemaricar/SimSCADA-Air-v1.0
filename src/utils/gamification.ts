@@ -3,10 +3,10 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { Mission, MissionResult, OperatorLevelName } from '../types';
+import { Mission, MissionResult, OperatorLevelName, QuizQuestion, ShuffledOption, ShuffledQuestion } from '../types';
 
 /**
- * Pengali XP resmi per kode misi (PRD SimSCADA-Air v1.1 §7 & §8):
+ * Pengali XP resmi per kode misi (PRD SimSCADA-Air v1.2 §7 & §8):
  * - Mudah (1,0x): IPA-01, IPA-02, DST-01, DST-02
  * - Sedang (1,5x): IPA-03, IPA-04, IPA-05, DST-03, DST-04
  * - Sulit (2,0x): IPA-06, IPA-07, IPA-08, DST-05, DST-06
@@ -200,4 +200,35 @@ export function formatDecimalID(value: number, decimals = 1): string {
 
 export function formatIntegerID(value: number): string {
   return Math.round(value).toLocaleString('id-ID');
+}
+
+export function stripOptionPrefix(text: string): string {
+  return text.replace(/^[A-D]\.\s*/i, '').trim();
+}
+
+export function shuffleQuizQuestions<T extends QuizQuestion>(questions: T[]): ShuffledQuestion<T>[] {
+  return questions.map((q) => {
+    const tagged: ShuffledOption[] = q.options.map((opt, idx) => ({
+      id: `${q.id}-opt-${idx}`,
+      text: stripOptionPrefix(opt),
+    }));
+    const correctOptionId = `${q.id}-opt-${q.correctIndex}`;
+
+    // Fisher-Yates shuffle
+    const shuffled = [...tagged];
+    for (let i = shuffled.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    }
+
+    return {
+      id: q.id,
+      question: q.question,
+      options: shuffled,
+      correctOptionId,
+      explanation: q.explanation,
+      category: q.category,
+      original: q,
+    };
+  });
 }

@@ -23,7 +23,7 @@ export const L11_SessionReplay: React.FC<SessionReplayProps> = ({
   initialUserId,
   onBack,
 }) => {
-  const { currentTenant, users, userMissionResults } = useApp();
+  const { currentTenant, users, userMissionResults, showTechnicalRefs } = useApp();
 
   // Strictly resolve replay target within currentTenant
   const tenantParticipants = users.filter(
@@ -148,13 +148,14 @@ export const L11_SessionReplay: React.FC<SessionReplayProps> = ({
           />
 
           {/* Staggered Event Markers */}
-          <div className="absolute top-0 left-0 right-0 flex justify-between text-[9px] font-mono text-slate-400 px-1 pointer-events-none">
+          <div className="absolute top-0 left-0 right-0 flex justify-between gap-1 text-[9px] font-mono text-slate-400 px-1 pointer-events-none overflow-x-auto whitespace-nowrap">
             <span className="text-amber-400">01:15 (Alarm Baku)</span>
             <span className="text-sky-300">01:25 (ACK)</span>
             <span className="text-rose-400">01:45 (≥3 NTU)</span>
             <span className="text-emerald-400 font-bold">02:10 (Koreksi)</span>
             <span className="text-sky-300">02:40 (Debit 75 L/s)</span>
-            <span className="text-emerald-400">06:20 (Auto-Clear)</span>
+            <span className="text-sky-300">06:10 (Pulih 2,4 NTU)</span>
+            <span className="text-emerald-400">06:20 (Auto-Clear 10 dtk)</span>
             <span className="text-slate-400">08:30 (Selesai)</span>
           </div>
         </div>
@@ -208,7 +209,9 @@ export const L11_SessionReplay: React.FC<SessionReplayProps> = ({
           {/* Sync Real-Time Graph */}
           <div className="space-y-2">
             <div className="flex items-center justify-between text-xs font-bold text-slate-300">
-              <span className="uppercase tracking-wider">Grafik Parameter Real-Time 1 Hz (Identik L6 & Data PRD §10):</span>
+              <span className="uppercase tracking-wider">
+                Grafik Parameter Real-Time 1 Hz{showTechnicalRefs ? ' (Identik L6 & Data PRD §10)' : ''}:
+              </span>
               <div className="flex items-center gap-3 text-[10px] font-mono">
                 <span className="text-amber-400">● Kekeruhan Baku (185 NTU)</span>
                 <span className="text-sky-400">● Air Olahan (NTU)</span>
@@ -243,7 +246,8 @@ export const L11_SessionReplay: React.FC<SessionReplayProps> = ({
                 <span>00:00</span>
                 <span>01:15 (Lonjakan Baku)</span>
                 <span>02:10 (Koreksi)</span>
-                <span>06:10 (Pulih)</span>
+                <span>06:10 (Pulih ≤ 2,7 NTU)</span>
+                <span>06:20 (Auto-Clear 10 dtk)</span>
                 <span>08:30 (Selesai)</span>
               </div>
             </div>
@@ -254,10 +258,10 @@ export const L11_SessionReplay: React.FC<SessionReplayProps> = ({
         <div className="lg:col-span-4 bg-[#0f172a] rounded-2xl border border-[#24324d] p-6 space-y-5 shadow-lg">
           <div>
             <h2 className="text-base font-bold text-white">
-              Audit Log Detik-per-Detik (PRD §10)
+              Audit Log Detik-per-Detik{showTechnicalRefs ? ' (PRD §10)' : ''}
             </h2>
             <p className="text-xs text-slate-400">
-              Sinkron dengan rekaman sensor & alarm ISA-18.2
+              Sinkron dengan rekaman sensor &amp; alarm{showTechnicalRefs ? ' ISA-18.2' : ' sistem'}
             </p>
           </div>
 
@@ -289,8 +293,13 @@ export const L11_SessionReplay: React.FC<SessionReplayProps> = ({
             </div>
 
             <div className="p-2.5 rounded-xl bg-[#0b1120] border border-[#1e293b] space-y-0.5">
-              <span className="text-emerald-400 font-bold">06:20 · AUTO-CLEAR ALARM TINGGI</span>
-              <div className="text-slate-300">Kekeruhan 2,4 NTU stabil 10 dtk · Clear otomatis</div>
+              <span className="text-sky-300 font-bold">06:10 · AIR OLAHAN PULIH (2,4 NTU ≤ 2,7)</span>
+              <div className="text-slate-300">Kekeruhan air olahan turun di bawah batas 2,7 NTU · mulai hitung stabil 10 dtk</div>
+            </div>
+
+            <div className="p-2.5 rounded-xl bg-[#0b1120] border border-[#1e293b] space-y-0.5">
+              <span className="text-emerald-400 font-bold">06:20 · ALARM CLEAR OTOMATIS</span>
+              <div className="text-slate-300">Alarm clear otomatis (stabil 10 detik pada 2,4 NTU)</div>
             </div>
           </div>
 

@@ -36,6 +36,7 @@ export const L8_MyCertificate: React.FC<CertificateProps> = ({ onOpenPublicVerif
     userMissionResults,
     verificationCertNo,
     setCurrentView,
+    showTechnicalRefs,
   } = useApp();
   const certRef = useRef<HTMLDivElement>(null);
   const [selectedCertId, setSelectedCertId] = useState<string>('');
@@ -100,7 +101,7 @@ export const L8_MyCertificate: React.FC<CertificateProps> = ({ onOpenPublicVerif
               Piagam Kelulusan Saya · {currentUser.fullName} ({currentUser.username})
             </h1>
             <p className="text-xs text-slate-400 mt-0.5">
-              {currentTenant.name} ({currentTenant.code}) · Syarat Penerbitan Piagam PRD §13
+              {currentTenant.name} ({currentTenant.code}) · Syarat Penerbitan Piagam{showTechnicalRefs ? ' PRD §13' : ''}
             </p>
           </div>
 
@@ -212,14 +213,14 @@ export const L8_MyCertificate: React.FC<CertificateProps> = ({ onOpenPublicVerif
                   onClick={() => setCurrentView('home')}
                   className="px-4 py-2 rounded-xl bg-sky-600 hover:bg-sky-500 text-white font-bold text-xs transition-all cursor-pointer"
                 >
-                  Kembali ke Peta Misi (L2)
+                  Kembali ke Peta Misi{showTechnicalRefs ? ' (L2)' : ''}
                 </button>
                 <button
                   type="button"
                   onClick={() => onOpenPublicVerification('')}
                   className="px-4 py-2 rounded-xl bg-[#1e293b] hover:bg-[#334155] border border-[#334155] text-slate-200 font-semibold text-xs transition-all cursor-pointer"
                 >
-                  Portal Verifikasi Publik (L16)
+                  Portal Verifikasi Publik{showTechnicalRefs ? ' (L16)' : ''}
                 </button>
               </div>
             </div>
@@ -296,9 +297,6 @@ export const L8_MyCertificate: React.FC<CertificateProps> = ({ onOpenPublicVerif
   const gainPct =
     preScore > 0 ? formatDecimalID(((postScore - preScore) / preScore) * 100, 1) : '0,0';
 
-  const shortSignatureName = (fullName: string) =>
-    fullName.replace(/^(Dr\.|Ir\.|Hj\.|H\.)\s+/gi, '').split(',')[0].trim();
-
   return (
     <div className="max-w-[1720px] mx-auto px-4 sm:px-6 py-6 font-sans text-slate-100 space-y-6">
       {/* Title Block */}
@@ -310,7 +308,7 @@ export const L8_MyCertificate: React.FC<CertificateProps> = ({ onOpenPublicVerif
               : `Arsip Piagam Terbit (${issuedVisibleCerts.length}) · ${currentTenant.name}`}
           </h1>
           <p className="text-xs text-slate-400 mt-0.5">
-            Format Baku Cetak A4 Landscape · Sesuai Ketentuan Ketat PRD SimSCADA-Air §13
+            Format Baku Cetak A4 Landscape · Dokumen Kelulusan Pelatihan Resmi{showTechnicalRefs ? ' (PRD SimSCADA-Air §13)' : ''}
           </p>
         </div>
 
@@ -417,9 +415,9 @@ export const L8_MyCertificate: React.FC<CertificateProps> = ({ onOpenPublicVerif
               {/* Left Signer */}
               <div className="text-center space-y-1">
                 <span className="text-[11px] text-slate-600 block">Instruktur Penilai,</span>
-                <div className="h-10 flex items-center justify-center">
-                  <span className="font-serif italic text-base text-sky-800 font-bold border-b border-slate-400 px-4">
-                    {shortSignatureName(certTenant.signers.instructorName)}
+                <div className="min-h-10 flex items-center justify-center">
+                  <span className="font-serif italic text-sm text-sky-800 font-bold border-b border-slate-400 px-2 inline-block max-w-full leading-tight">
+                    {certTenant.signers.instructorName}
                   </span>
                 </div>
                 <div className="font-bold text-xs text-slate-900 leading-tight">
@@ -439,15 +437,17 @@ export const L8_MyCertificate: React.FC<CertificateProps> = ({ onOpenPublicVerif
                 >
                   <QrCode className="w-14 h-14 text-slate-900" />
                 </div>
-                <span className="text-[9px] text-slate-500 mt-1 font-mono">Scan Validasi L16</span>
+                <span className="text-[9px] text-slate-500 mt-1 font-mono">
+                  Scan Validasi{showTechnicalRefs ? ' L16' : ' Publik'}
+                </span>
               </div>
 
               {/* Right Signer */}
               <div className="text-center space-y-1">
                 <span className="text-[11px] text-slate-600 block">Pimpinan Lembaga,</span>
-                <div className="h-10 flex items-center justify-center">
-                  <span className="font-serif italic text-base text-amber-800 font-bold border-b border-slate-400 px-4">
-                    {shortSignatureName(certTenant.signers.leaderName)}
+                <div className="min-h-10 flex items-center justify-center">
+                  <span className="font-serif italic text-sm text-amber-800 font-bold border-b border-slate-400 px-2 inline-block max-w-full leading-tight">
+                    {certTenant.signers.leaderName}
                   </span>
                 </div>
                 <div className="font-bold text-xs text-slate-900 leading-tight">
@@ -459,7 +459,7 @@ export const L8_MyCertificate: React.FC<CertificateProps> = ({ onOpenPublicVerif
               </div>
             </div>
 
-            {/* Mandatory Footnote (PRD §13) */}
+            {/* Mandatory Footnote */}
             <div className="pt-3 border-t border-slate-200 text-center space-y-0.5">
               <p className="text-[10px] text-slate-600 font-semibold italic">
                 "Piagam ini menyatakan penyelesaian pelatihan berbasis simulator dan bukan sertifikat kompetensi resmi."
@@ -476,7 +476,9 @@ export const L8_MyCertificate: React.FC<CertificateProps> = ({ onOpenPublicVerif
           <div className="bg-[#0f172a] rounded-2xl border border-[#24324d] p-5 space-y-4 shadow-lg">
             <div>
               <h2 className="text-sm font-bold text-white">Verifikasi Syarat Kelulusan Jalur</h2>
-              <p className="text-[11px] text-slate-400">Standar Kelulusan PRD SimSCADA-Air §13</p>
+              <p className="text-[11px] text-slate-400">
+                Standar Kelulusan Pelatihan{showTechnicalRefs ? ' (PRD SimSCADA-Air §13)' : ''}
+              </p>
             </div>
 
             {/* 4 Checklist Criteria */}
@@ -529,7 +531,7 @@ export const L8_MyCertificate: React.FC<CertificateProps> = ({ onOpenPublicVerif
                 className="w-full py-2.5 px-3 rounded-xl bg-[#1e293b] hover:bg-[#334155] border border-[#334155] text-slate-200 hover:text-white font-semibold text-xs transition-all flex items-center justify-center gap-2 cursor-pointer"
               >
                 <ExternalLink className="w-3.5 h-3.5 text-sky-400" />
-                <span>Verifikasi di Portal Publik (L16)</span>
+                <span>Verifikasi di Portal Publik{showTechnicalRefs ? ' (L16)' : ''}</span>
               </button>
 
               <button
@@ -545,10 +547,10 @@ export const L8_MyCertificate: React.FC<CertificateProps> = ({ onOpenPublicVerif
               </button>
             </div>
 
-            {/* PRD Legal Note */}
+            {/* Legal Note */}
             <div className="p-3 rounded-xl bg-[#0b1120] border border-[#1e293b] text-[10px] text-slate-400 space-y-1">
               <span className="font-bold text-slate-300 block uppercase tracking-wider text-[10px]">
-                Catatan Ketentuan Hukum (PRD §13):
+                Catatan Ketentuan Hukum{showTechnicalRefs ? ' (PRD §13)' : ''}:
               </span>
               <p>
                 Piagam tidak memuat NIP aparatur atau rincian nilai angka untuk menjaga privasi peserta. Piagam dapat dicabut oleh Admin Lembaga jika ditemukan pelanggaran.

@@ -3,9 +3,9 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useApp } from '../../context/AppContext';
-import { PRE_POST_TEST_QUESTIONS } from '../../data/seedData';
+import { POST_TEST_QUESTIONS_SET_B, PRE_TEST_QUESTIONS_SET_A } from '../../data/seedData';
 import {
   ArrowLeft,
   ArrowRight,
@@ -19,7 +19,7 @@ import {
   TrendingUp,
 } from 'lucide-react';
 import { LearningTrack } from '../../types';
-import { formatDecimalID } from '../../utils/gamification';
+import { formatDecimalID, shuffleQuizQuestions } from '../../utils/gamification';
 
 interface PrePostTestProps {
   initialMode?: 'auto' | 'pre' | 'post';
@@ -49,6 +49,7 @@ export const L4a_PrePostTest: React.FC<PrePostTestProps> = ({
     userPrePostTests,
     savePrePostTest,
     certificates,
+    showTechnicalRefs,
   } = useApp();
 
   if (!currentUser) return null;
@@ -86,6 +87,7 @@ export const L4a_PrePostTest: React.FC<PrePostTestProps> = ({
   };
 
   const [activeTab, setActiveTab] = useState<'pre' | 'post'>(resolveInitialTab);
+  const [shuffleSeed, setShuffleSeed] = useState<number>(1);
   const [isExamActive, setIsExamActive] = useState<boolean>(() => {
     const tab = resolveInitialTab();
     if (tab === 'pre' && !preTest) return true;
@@ -93,14 +95,21 @@ export const L4a_PrePostTest: React.FC<PrePostTestProps> = ({
     return false;
   });
   const [activeQuestionIdx, setActiveQuestionIdx] = useState<number>(0);
-  const [selectedAnswers, setSelectedAnswers] = useState<Record<number, number>>({});
+  const [selectedAnswers, setSelectedAnswers] = useState<Record<number, string>>({});
   const [secondsLeft, setSecondsLeft] = useState<number>(30 * 60); // 30 minutes
   const [justSubmittedType, setJustSubmittedType] = useState<'pre' | 'post' | null>(null);
+
+  const activeQuestions = useMemo(() => {
+    const sourceBank = activeTab === 'pre' ? PRE_TEST_QUESTIONS_SET_A : POST_TEST_QUESTIONS_SET_B;
+    return shuffleQuizQuestions(sourceBank);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [activeTab, shuffleSeed]);
 
   // Reset exam state when switching logged-in user or initialMode
   useEffect(() => {
     const tab = resolveInitialTab();
     setActiveTab(tab);
+    setShuffleSeed((s) => s + 1);
     setSelectedAnswers({});
     setActiveQuestionIdx(0);
     setSecondsLeft(30 * 60);
@@ -117,12 +126,12 @@ export const L4a_PrePostTest: React.FC<PrePostTestProps> = ({
 
   const handleSubmitExam = () => {
     let correct = 0;
-    PRE_POST_TEST_QUESTIONS.forEach((q, idx) => {
-      if (selectedAnswers[idx] === q.correctIndex) {
+    activeQuestions.forEach((q, idx) => {
+      if (selectedAnswers[idx] === q.correctOptionId) {
         correct += 1;
       }
     });
-    const score = Math.round((correct / PRE_POST_TEST_QUESTIONS.length) * 100);
+    const score = Math.round((correct / activeQuestions.length) * 100);
     savePrePostTest({
       userId: currentUser.id,
       tenantId: currentTenant.id,
@@ -156,6 +165,7 @@ export const L4a_PrePostTest: React.FC<PrePostTestProps> = ({
       return;
     }
     setActiveTab(type);
+    setShuffleSeed((s) => s + 1);
     setSelectedAnswers({});
     setActiveQuestionIdx(0);
     setSecondsLeft(30 * 60);
@@ -165,6 +175,7 @@ export const L4a_PrePostTest: React.FC<PrePostTestProps> = ({
 
   const switchTab = (tab: 'pre' | 'post') => {
     setActiveTab(tab);
+    setShuffleSeed((s) => s + 1);
     setSelectedAnswers({});
     setActiveQuestionIdx(0);
     setSecondsLeft(30 * 60);
@@ -185,7 +196,7 @@ export const L4a_PrePostTest: React.FC<PrePostTestProps> = ({
   };
 
   const answeredCount = Object.keys(selectedAnswers).length;
-  const currentQuestion = PRE_POST_TEST_QUESTIONS[activeQuestionIdx] || PRE_POST_TEST_QUESTIONS[0];
+  const currentQuestion = activeQuestions[activeQuestionIdx] || activeQuestions[0];
 
   const t1Diff = preTest && postTest ? postTest.score - preTest.score : null;
   const t1Pct =
@@ -201,10 +212,11 @@ export const L4a_PrePostTest: React.FC<PrePostTestProps> = ({
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-2 border-b border-[#1e293b]">
         <div>
           <h1 className="text-xl sm:text-2xl font-bold text-white tracking-tight">
-            Pre-Test &amp; Post-Test Evaluasi Kompetensi (L4a)
+            Pre-Test &amp; Post-Test Evaluasi Kompetensi{showTechnicalRefs ? ' (L4a)' : ''}
           </h1>
           <p className="text-xs text-slate-400 mt-0.5">
-            Peserta Aktif: <strong className="text-sky-400">{currentUser.fullName}</strong> ({currentUser.username}) · Jalur {trackLabel} ({trackMissions.length} Misi) · Metrik T1 (PRD §3 &amp; §11)
+            Peserta Aktif: <strong className="text-sky-400">{currentUser.fullName}</strong> ({currentUser.username}) · Jalur {trackLabel} ({trackMissions.length} Misi)
+            {showTechnicalRefs ? ' · Metrik T1 (PRD §3 & §11)' : ''}
           </p>
         </div>
         <button
@@ -220,12 +232,14 @@ export const L4a_PrePostTest: React.FC<PrePostTestProps> = ({
       <div className="p-4 rounded-xl bg-purple-950/20 border border-purple-500/40 text-xs flex flex-col md:flex-row md:items-center justify-between gap-3 shadow-md">
         <div>
           <div className="font-bold text-purple-300 uppercase tracking-wider text-[11px] mb-0.5">
-            METRIK KEBERHASILAN T1 (PRD §3): FORMULA KENAIKAN KOMPETENSI PELATIHAN
+            {showTechnicalRefs
+              ? 'METRIK KEBERHASILAN T1 (PRD §3): FORMULA KENAIKAN KOMPETENSI PELATIHAN'
+              : 'FORMULA KENAIKAN KOMPETENSI PELATIHAN'}
           </div>
           <div className="text-slate-300 font-mono text-xs">
             Peningkatan Nilai (%) = ((Post − Pre) ÷ Pre) × 100% ·{' '}
             <span className="text-emerald-400 font-semibold font-sans">
-              Target PRD: Kenaikan ≥ 25% · KKM Post-Test: ≥ 70
+              {showTechnicalRefs ? 'Target PRD: ' : 'Target Evaluasi: '}Kenaikan ≥ 25% · KKM Post-Test: ≥ 70
             </span>
           </div>
         </div>
@@ -328,10 +342,10 @@ export const L4a_PrePostTest: React.FC<PrePostTestProps> = ({
             <div className="space-y-3 text-xs pt-1">
               <div className="p-3.5 rounded-xl bg-sky-950/20 border border-sky-500/20 text-[11px] text-slate-300 space-y-1">
                 <span className="text-[10px] text-sky-400 font-bold uppercase tracking-wider block">
-                  Status Nilai Awal T1 (Terkunci · 1 Kali):
+                  Status Nilai Awal {showTechnicalRefs ? 'T1 ' : ''}(Terkunci · 1 Kali):
                 </span>
                 <p className="leading-relaxed">
-                  Nilai Pre-Test sebesar <strong className="text-white">{preTest.score}/100</strong> telah tersimpan permanen sebagai titik awal (baseline) perhitungan kenaikan kompetensi T1 di dasbor lembaga (L14) dan tidak dapat dikerjakan ulang oleh peserta.
+                  Nilai Pre-Test sebesar <strong className="text-white">{preTest.score}/100</strong> telah tersimpan permanen sebagai titik awal (baseline) perhitungan kenaikan kompetensi di dasbor lembaga{showTechnicalRefs ? ' (L14)' : ''} dan tidak dapat dikerjakan ulang oleh peserta.
                 </p>
               </div>
             </div>
@@ -360,8 +374,8 @@ export const L4a_PrePostTest: React.FC<PrePostTestProps> = ({
             <div>
               <h2 className="text-sm font-bold text-white">
                 {activeTab === 'pre'
-                  ? 'Lembar Uji Pre-Test (20 Soal)'
-                  : 'Lembar Uji Post-Test (20 Soal)'}
+                  ? 'Lembar Uji Pre-Test · Set A (20 Soal)'
+                  : 'Lembar Uji Post-Test · Set B (20 Soal)'}
               </h2>
               <p className="text-[11px] text-slate-400">
                 20 Soal Pilihan Ganda · Batas Waktu 30 Menit · Terjawab {answeredCount}/20
@@ -379,7 +393,7 @@ export const L4a_PrePostTest: React.FC<PrePostTestProps> = ({
               <div className="p-4 rounded-xl bg-[#0b1120] border border-[#1e293b] space-y-3">
                 <div className="flex items-center justify-between text-[10px] font-bold text-sky-400 uppercase tracking-wider">
                   <span>
-                    SOAL NO. {activeQuestionIdx + 1} DARI {PRE_POST_TEST_QUESTIONS.length} ·{' '}
+                    SOAL NO. {activeQuestionIdx + 1} DARI {activeQuestions.length} ·{' '}
                     {currentQuestion.category}
                   </span>
                 </div>
@@ -389,15 +403,16 @@ export const L4a_PrePostTest: React.FC<PrePostTestProps> = ({
 
                 <div className="space-y-2 pt-1 text-xs">
                   {currentQuestion.options.map((opt, oIdx) => {
-                    const isSelected = selectedAnswers[activeQuestionIdx] === oIdx;
+                    const isSelected = selectedAnswers[activeQuestionIdx] === opt.id;
+                    const optionLabel = ['A', 'B', 'C', 'D'][oIdx] || String(oIdx + 1);
                     return (
                       <button
-                        key={oIdx}
+                        key={opt.id}
                         type="button"
                         onClick={() =>
                           setSelectedAnswers((prev) => ({
                             ...prev,
-                            [activeQuestionIdx]: oIdx,
+                            [activeQuestionIdx]: opt.id,
                           }))
                         }
                         className={`w-full text-left p-2.5 rounded-xl border text-[11px] leading-snug transition-all flex items-center justify-between cursor-pointer ${
@@ -406,7 +421,7 @@ export const L4a_PrePostTest: React.FC<PrePostTestProps> = ({
                             : 'border-[#1e293b] bg-[#1e293b]/30 hover:bg-[#1e293b] text-slate-300'
                         }`}
                       >
-                        <span>{opt}</span>
+                        <span>{optionLabel}. {opt.text}</span>
                         {isSelected && <Check className="w-3.5 h-3.5 text-sky-400 shrink-0 ml-2" />}
                       </button>
                     );
@@ -425,10 +440,10 @@ export const L4a_PrePostTest: React.FC<PrePostTestProps> = ({
                   </button>
                   <button
                     type="button"
-                    disabled={activeQuestionIdx === PRE_POST_TEST_QUESTIONS.length - 1}
+                    disabled={activeQuestionIdx === activeQuestions.length - 1}
                     onClick={() =>
                       setActiveQuestionIdx((i) =>
-                        Math.min(PRE_POST_TEST_QUESTIONS.length - 1, i + 1)
+                        Math.min(activeQuestions.length - 1, i + 1)
                       )
                     }
                     className="px-3 py-1.5 rounded-lg bg-sky-600 hover:bg-sky-500 disabled:opacity-40 text-xs font-semibold text-white cursor-pointer"
@@ -444,7 +459,7 @@ export const L4a_PrePostTest: React.FC<PrePostTestProps> = ({
                   Navigator 20 Nomor Soal:
                 </div>
                 <div className="grid grid-cols-10 gap-1.5">
-                  {PRE_POST_TEST_QUESTIONS.map((_, idx) => {
+                  {activeQuestions.map((_, idx) => {
                     const isCurrent = idx === activeQuestionIdx;
                     const isAnswered = selectedAnswers[idx] !== undefined;
                     return (
@@ -511,7 +526,7 @@ export const L4a_PrePostTest: React.FC<PrePostTestProps> = ({
                     <span>Post-Test Kelulusan Masih Terkunci</span>
                   </div>
                   <p className="text-slate-300 leading-relaxed">
-                    Sesuai aturan FR-09, Post-Test hanya terbuka setelah seluruh misi wajib pada jalur{' '}
+                    {showTechnicalRefs ? 'Sesuai aturan FR-09, ' : ''}Post-Test hanya terbuka setelah seluruh misi wajib pada jalur{' '}
                     <strong>{trackLabel}</strong> ({trackMissions.length} misi) lulus dan Misi Kelulusan{' '}
                     <strong>{gradMissionCode}</strong> mencapai skor ≥ {gradThreshold}.
                   </p>
@@ -623,8 +638,8 @@ export const L4a_PrePostTest: React.FC<PrePostTestProps> = ({
                 </div>
                 <div className="py-1 px-2 rounded-lg bg-emerald-500/20 text-emerald-300 text-[10px] font-bold text-center border border-emerald-500/30">
                   {Number(t1Pct) >= 25
-                    ? `✓ MELEBIHI TARGET PRD T1 (+${t1Pct}% > 25%)`
-                    : `Target PRD T1: ≥ 25%`}
+                    ? `✓ MELEBIHI TARGET${showTechnicalRefs ? ' PRD T1' : ''} (+${t1Pct}% > 25%)`
+                    : `Target${showTechnicalRefs ? ' PRD T1' : ' Kenaikan'}: ≥ 25%`}
                 </div>
               </>
             ) : (
@@ -679,7 +694,7 @@ export const L4a_PrePostTest: React.FC<PrePostTestProps> = ({
               className="w-full py-2.5 px-3 rounded-xl bg-sky-600 hover:bg-sky-500 text-white font-bold text-xs transition-all flex items-center justify-center gap-1.5 shadow-md shadow-sky-950/50 cursor-pointer"
             >
               <FileCheck2 className="w-3.5 h-3.5" />
-              <span>Lihat Piagam Saya (L8) →</span>
+              <span>Lihat Piagam Saya{showTechnicalRefs ? ' (L8)' : ''} →</span>
             </button>
           )}
         </div>

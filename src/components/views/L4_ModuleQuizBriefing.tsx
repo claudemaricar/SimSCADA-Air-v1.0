@@ -3,9 +3,10 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { Mission } from '../../types';
 import { useApp } from '../../context/AppContext';
+import { shuffleQuizQuestions } from '../../utils/gamification';
 import {
   ArrowLeft,
   Check,
@@ -26,21 +27,26 @@ export const L4_ModuleQuizBriefing: React.FC<ModuleQuizProps> = ({
   onStartSimulation,
   onBack,
 }) => {
-  const { currentUser, getBestMissionResult } = useApp();
+  const { currentUser, getBestMissionResult, showTechnicalRefs } = useApp();
   const existingResult = currentUser
     ? getBestMissionResult(currentUser.id, mission.code)
     : undefined;
   const alreadyPassedMission = Boolean(existingResult && existingResult.isPassed);
 
-  const buildPassedAnswers = (): Record<number, number> => {
-    const map: Record<number, number> = {};
-    mission.quiz.forEach((q, idx) => {
-      map[idx] = q.correctIndex;
+  const shuffledQuiz = useMemo(
+    () => shuffleQuizQuestions(mission.quiz),
+    [mission.code, currentUser?.id]
+  );
+
+  const buildPassedAnswers = (): Record<number, string> => {
+    const map: Record<number, string> = {};
+    shuffledQuiz.forEach((q, idx) => {
+      map[idx] = q.correctOptionId;
     });
     return map;
   };
 
-  const [selectedAnswers, setSelectedAnswers] = useState<Record<number, number>>(() =>
+  const [selectedAnswers, setSelectedAnswers] = useState<Record<number, string>>(() =>
     alreadyPassedMission ? buildPassedAnswers() : {}
   );
   const [isQuizSubmitted, setIsQuizSubmitted] = useState<boolean>(alreadyPassedMission);
@@ -57,10 +63,10 @@ export const L4_ModuleQuizBriefing: React.FC<ModuleQuizProps> = ({
       setQuizScore(0);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [mission.code, currentUser?.id]);
+  }, [mission.code, currentUser?.id, shuffledQuiz]);
 
-  const handleSelectOption = (qIdx: number, optIdx: number) => {
-    setSelectedAnswers((prev) => ({ ...prev, [qIdx]: optIdx }));
+  const handleSelectOption = (qIdx: number, optId: string) => {
+    setSelectedAnswers((prev) => ({ ...prev, [qIdx]: optId }));
     if (isQuizSubmitted) {
       setIsQuizSubmitted(false);
     }
@@ -68,21 +74,21 @@ export const L4_ModuleQuizBriefing: React.FC<ModuleQuizProps> = ({
 
   const handleEvaluateQuiz = () => {
     let correct = 0;
-    mission.quiz.forEach((q, idx) => {
-      if (selectedAnswers[idx] === q.correctIndex) {
+    shuffledQuiz.forEach((q, idx) => {
+      if (selectedAnswers[idx] === q.correctOptionId) {
         correct += 1;
       }
     });
-    const score = Math.round((correct / Math.max(1, mission.quiz.length)) * 100);
+    const score = Math.round((correct / Math.max(1, shuffledQuiz.length)) * 100);
     setQuizScore(score);
     setIsQuizSubmitted(true);
   };
 
-  const correctCount = mission.quiz.filter(
-    (q, idx) => selectedAnswers[idx] === q.correctIndex
+  const correctCount = shuffledQuiz.filter(
+    (q, idx) => selectedAnswers[idx] === q.correctOptionId
   ).length;
   const isGatePassed = isQuizSubmitted && quizScore >= 60;
-  const allAnswered = Object.keys(selectedAnswers).length === mission.quiz.length;
+  const allAnswered = Object.keys(selectedAnswers).length === shuffledQuiz.length;
 
   return (
     <div className="max-w-[1720px] mx-auto px-4 sm:px-6 py-6 font-sans text-slate-100 space-y-6">
@@ -93,7 +99,8 @@ export const L4_ModuleQuizBriefing: React.FC<ModuleQuizProps> = ({
             Modul Materi &amp; Kuis Pra-Misi
           </h1>
           <p className="text-xs text-slate-400 mt-0.5">
-            Misi {mission.code}: {mission.name} ({mission.levelName}) · PRD §7, §9
+            Misi {mission.code}: {mission.name} ({mission.levelName})
+            {showTechnicalRefs ? ' · PRD §7, §9' : ''}
           </p>
         </div>
         <button
@@ -121,7 +128,8 @@ export const L4_ModuleQuizBriefing: React.FC<ModuleQuizProps> = ({
           {/* Skenario Box */}
           <div className="p-4 rounded-xl bg-sky-950/30 border border-sky-500/30 text-xs space-y-1.5">
             <span className="text-[10px] text-sky-400 font-bold uppercase tracking-wider block">
-              Ringkasan Skenario Misi {mission.code} (PRD §7):
+              Ringkasan Skenario Misi {mission.code}
+              {showTechnicalRefs ? ' (PRD §7)' : ''}:
             </span>
             <p className="text-slate-200 leading-relaxed text-[11px]">
               {mission.briefing.situation}
@@ -140,7 +148,7 @@ export const L4_ModuleQuizBriefing: React.FC<ModuleQuizProps> = ({
               <div className="p-3 rounded-xl bg-[#0b1120] border border-[#1e293b]">
                 <div className="text-[10px] text-slate-400">Batas Kekeruhan Air Olahan</div>
                 <div className="text-base font-extrabold text-rose-400 mt-0.5">&lt; 3,0 NTU</div>
-                <div className="text-[9px] text-slate-500 mt-1">≥3 NTU: Alarm Kritis Tinggi</div>
+                <div className="text-[9px] text-slate-500 mt-1">≥ 3 NTU: Alarm Tinggi</div>
               </div>
 
               <div className="p-3 rounded-xl bg-[#0b1120] border border-[#1e293b]">
@@ -155,7 +163,13 @@ export const L4_ModuleQuizBriefing: React.FC<ModuleQuizProps> = ({
                   Skor ≥ {mission.passScore}
                 </div>
                 <div className="text-[9px] text-slate-500 mt-1">
-                  Batas Waktu: {Math.round((mission.durationLimitSec || 300) / 60)} Menit
+                  Batas Waktu: {(() => {
+                    const sec = mission.durationLimitSec || 300;
+                    const mins = Math.floor(sec / 60);
+                    const rem = sec % 60;
+                    const mmss = `${String(mins).padStart(2, '0')}:${String(rem).padStart(2, '0')}`;
+                    return rem === 0 ? `${mins} Menit (${mmss})` : `${mins} Menit ${rem} Detik (${mmss})`;
+                  })()}
                 </div>
               </div>
             </div>
@@ -191,7 +205,10 @@ export const L4_ModuleQuizBriefing: React.FC<ModuleQuizProps> = ({
 
           <div className="p-3 rounded-xl bg-[#1e293b]/50 border border-[#334155] text-[11px] text-slate-400 flex items-center gap-2">
             <Info className="w-4 h-4 text-sky-400 shrink-0" />
-            <span>Catatan: Membuka narasi titik kontrol ("i") kapan saja <strong>TIDAK mengurangi skor</strong> (PRD §9).</span>
+            <span>
+              Catatan: Membuka narasi titik kontrol (&quot;i&quot;) kapan saja <strong>TIDAK mengurangi skor</strong>
+              {showTechnicalRefs ? ' (PRD §9)' : ''}.
+            </span>
           </div>
         </div>
 
@@ -250,25 +267,26 @@ export const L4_ModuleQuizBriefing: React.FC<ModuleQuizProps> = ({
 
           {/* Quiz Questions List */}
           <div className="space-y-4 max-h-[460px] overflow-y-auto pr-1">
-            {mission.quiz.map((q, qIdx) => {
-              const selectedOpt = selectedAnswers[qIdx];
+            {shuffledQuiz.map((q, qIdx) => {
+              const selectedOptId = selectedAnswers[qIdx];
               return (
                 <div
                   key={q.id}
                   className="p-3.5 rounded-xl bg-[#0b1120] border border-[#1e293b] space-y-2 text-xs"
                 >
                   <div className="font-bold text-white text-[11px] leading-snug">
-                    SOAL {qIdx + 1} DARI {mission.quiz.length} · {q.question}
+                    SOAL {qIdx + 1} DARI {shuffledQuiz.length} · {q.question}
                   </div>
                   <div className="space-y-1.5 pt-1">
                     {q.options.map((opt, optIdx) => {
-                      const isChosen = selectedOpt === optIdx;
-                      const isCorrectAnswer = optIdx === q.correctIndex;
+                      const isChosen = selectedOptId === opt.id;
+                      const isCorrectAnswer = opt.id === q.correctOptionId;
+                      const optionLabel = ['A', 'B', 'C', 'D'][optIdx] || String(optIdx + 1);
                       return (
                         <button
-                          key={optIdx}
+                          key={opt.id}
                           type="button"
-                          onClick={() => handleSelectOption(qIdx, optIdx)}
+                          onClick={() => handleSelectOption(qIdx, opt.id)}
                           className={`w-full text-left p-2 rounded-lg border text-[11px] transition-all flex items-center justify-between cursor-pointer ${
                             isQuizSubmitted && isChosen && isCorrectAnswer
                               ? 'bg-emerald-950/40 border-emerald-500 text-emerald-300 font-semibold'
@@ -281,7 +299,7 @@ export const L4_ModuleQuizBriefing: React.FC<ModuleQuizProps> = ({
                               : 'border-[#1e293b] bg-[#1e293b]/30 hover:bg-[#1e293b] text-slate-300'
                           }`}
                         >
-                          <span>{opt}</span>
+                          <span>{optionLabel}. {opt.text}</span>
                           {isQuizSubmitted && isChosen && isCorrectAnswer && (
                             <Check className="w-3.5 h-3.5 text-emerald-400 shrink-0 ml-1" />
                           )}

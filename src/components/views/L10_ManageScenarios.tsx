@@ -12,7 +12,7 @@ import {
 } from 'lucide-react';
 
 export const L10_ManageScenarios: React.FC = () => {
-  const { currentTenant, getVisibleGroups } = useApp();
+  const { currentTenant, getVisibleGroups, showTechnicalRefs } = useApp();
   const visibleGroups = getVisibleGroups();
   const hasDistribusi = currentTenant.license.packageTracks.includes('distribusi');
   const hasTerpadu = currentTenant.license.packageTracks.includes('terpadu');
@@ -28,7 +28,7 @@ export const L10_ManageScenarios: React.FC = () => {
   const [triggerSec, setTriggerSec] = useState('90');
   const [targetTimeSec, setTargetTimeSec] = useState('60');
   const [deviationThreshold, setDeviationThreshold] = useState(
-    hasDistribusi ? 'Tekanan < 1,5 bar & Debit > 160 L/s' : 'Kekeruhan Olahan ≥ 3,0 NTU'
+    hasDistribusi ? 'Tekanan < 2,0 bar & Debit > 40 L/s' : 'Kekeruhan Olahan ≥ 3,0 NTU'
   );
   const [assignedGroup, setAssignedGroup] = useState(visibleGroups[0]?.id || '');
   const [feedbackMsg, setFeedbackMsg] = useState<string | null>(null);
@@ -45,7 +45,7 @@ export const L10_ManageScenarios: React.FC = () => {
         : 'Simulasi Lonjakan Kekeruhan Air Baku & Penyesuaian Dosis PAC'
     );
     setDeviationThreshold(
-      allowDist ? 'Tekanan < 1,5 bar & Debit > 160 L/s' : 'Kekeruhan Olahan ≥ 3,0 NTU'
+      allowDist ? 'Tekanan < 2,0 bar & Debit > 40 L/s' : 'Kekeruhan Olahan ≥ 3,0 NTU'
     );
     setFeedbackMsg(null);
   }, [currentTenant.id]);
@@ -69,7 +69,7 @@ export const L10_ManageScenarios: React.FC = () => {
           Kelola Skenario Gangguan Kustom · {currentTenant.name}
         </h1>
         <p className="text-xs text-slate-400 mt-0.5">
-          Authoring Tool Skenario Gangguan (FR-23) · Lengkap dengan Isian Tingkat Kesulitan PRD §7
+          Perancang Skenario Gangguan &amp; Pengaturan Tingkat Kesulitan{showTechnicalRefs ? ' (FR-23 · PRD §7)' : ''}
         </p>
       </div>
 
@@ -96,7 +96,7 @@ export const L10_ManageScenarios: React.FC = () => {
         <div className="lg:col-span-7 bg-[#0f172a] rounded-2xl border border-[#24324d] p-6 space-y-5 shadow-lg">
           <div>
             <h2 className="text-base font-bold text-white">
-              Formulir Perancangan Skenario Baru (Authoring Tool FR-23)
+              Formulir Perancangan Skenario Baru{showTechnicalRefs ? ' (Authoring Tool FR-23)' : ''}
             </h2>
             <p className="text-xs text-slate-400">
               Rancang skenario kondisi abnormal berbasis hidrolika dan kimia proses air minum
@@ -119,7 +119,7 @@ export const L10_ManageScenarios: React.FC = () => {
             {/* Tingkat Kesulitan & Pengali XP */}
             <div>
               <label className="block text-xs font-bold text-amber-400 uppercase tracking-wider mb-1">
-                ★ Tingkat Kesulitan &amp; Pengali XP (PRD SimSCADA-Air v1.1 §7):
+                ★ Tingkat Kesulitan &amp; Pengali XP{showTechnicalRefs ? ' (PRD SimSCADA-Air v1.2 §7)' : ''}:
               </label>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <select
@@ -194,7 +194,7 @@ export const L10_ManageScenarios: React.FC = () => {
                   type="text"
                   value={deviationThreshold}
                   onChange={(e) => setDeviationThreshold(e.target.value)}
-                  placeholder={hasDistribusi ? 'Tekanan < 1,5 bar' : 'Kekeruhan ≥ 3,0 NTU'}
+                  placeholder={hasDistribusi ? 'Tekanan < 2,0 bar' : 'Kekeruhan ≥ 3,0 NTU'}
                   className="w-full px-3 py-2 bg-[#0b1120] border border-[#24324d] rounded-xl text-xs text-rose-300 font-mono"
                 />
               </div>
@@ -208,14 +208,14 @@ export const L10_ManageScenarios: React.FC = () => {
               {track === 'ipa' ? (
                 <div className="text-[11px] text-slate-300 space-y-1 font-mono">
                   <p>1. Wajib menyesuaikan dosis PAC &amp; pH dalam target {targetTimeSec} detik (Bobot Respons 25%).</p>
-                  <p>2. Mematikan seluruh pompa intake saat air baku tinggi dianggap tidak aman (-15 poin penalti PRD §8).</p>
+                  <p>2. Mematikan seluruh pompa intake saat air baku tinggi dianggap tidak aman (-15 poin penalti{showTechnicalRefs ? ' PRD §8' : ''}).</p>
                   <p>3. Alarm clear otomatis saat kekeruhan air olahan ≤ 2,7 NTU stabil selama 10 detik.</p>
                 </div>
               ) : (
                 <div className="text-[11px] text-slate-300 space-y-1 font-mono">
                   <p>1. Wajib menutup valve isolasi V-Z2 dalam waktu target {targetTimeSec} detik (Bobot Respons 25%).</p>
-                  <p>2. Mematikan semua pompa distribusi dianggap tindakan tidak aman (-15 poin penalti PRD §8).</p>
-                  <p>3. Alarm clear otomatis saat tekanan zona pulih di rentang 2,0–3,0 bar selama 10 detik.</p>
+                  <p>2. Mematikan semua pompa distribusi dianggap tindakan tidak aman (-15 poin penalti{showTechnicalRefs ? ' PRD §8' : ''}).</p>
+                  <p>3. Alarm clear otomatis saat tekanan zona pulih di rentang 2,0–2,8 bar selama 10 detik.</p>
                 </div>
               )}
             </div>
@@ -346,7 +346,7 @@ export const L10_ManageScenarios: React.FC = () => {
           {/* Tenant Isolation Policy */}
           <div className="p-3.5 rounded-xl bg-[#0b1120] border border-[#1e293b] text-[10px] text-slate-400 space-y-1">
             <span className="font-bold text-sky-400 uppercase tracking-wider text-[10px] block">
-              Kebijakan Konten Multi-Tenant (PRD §6):
+              Kebijakan Konten Multi-Tenant{showTechnicalRefs ? ' (PRD §6)' : ''}:
             </span>
             <p>
               Skenario kustom yang dibuat hanya dapat diakses oleh peserta {currentTenant.name} dan tidak akan terlihat oleh lembaga lain. Misi baku tetap menjadi acuan kelulusan.

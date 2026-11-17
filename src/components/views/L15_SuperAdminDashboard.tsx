@@ -20,8 +20,9 @@ import {
 } from 'lucide-react';
 
 export const L15_SuperAdminDashboard: React.FC = () => {
-  const { tenants, users, certificates, updateTenant } = useApp();
+  const { showTechnicalRefs } = useApp();
   const [showAddTenantModal, setShowAddTenantModal] = useState(false);
+  const [feedbackMsg, setFeedbackMsg] = useState<string | null>(null);
 
   // Form state
   const [tenantName, setTenantName] = useState('');
@@ -30,8 +31,13 @@ export const L15_SuperAdminDashboard: React.FC = () => {
 
   const handleAddTenant = (e: React.FormEvent) => {
     e.preventDefault();
-    alert(`Tenant baru "${tenantName}" (${tenantCode}) dengan kuota ${quota} kursi berhasil didaftarkan.`);
+    setFeedbackMsg(
+      `Tenant baru "${tenantName}" (${tenantCode}) dengan kuota ${quota} kursi berhasil didaftarkan.`
+    );
     setShowAddTenantModal(false);
+    setTenantName('');
+    setTenantCode('');
+    setQuota('50');
   };
 
   return (
@@ -39,12 +45,28 @@ export const L15_SuperAdminDashboard: React.FC = () => {
       {/* Title */}
       <div className="pb-2 border-b border-[#1e293b]">
         <h1 className="text-xl sm:text-2xl font-bold text-white tracking-tight">
-          Konsol Pengelola Lembaga & Lisensi Multi-Tenant
+          Konsol Pengelola Lembaga &amp; Lisensi Multi-Tenant
         </h1>
         <p className="text-xs text-slate-400 mt-0.5">
-          Super Admin Platform SimSCADA-Air · Monitoring Kapasitas & Peringatan Dini Sistem (PRD §5 & §12)
+          Super Admin Platform SimSCADA-Air · Monitoring Kapasitas &amp; Peringatan Dini Sistem{showTechnicalRefs ? ' (PRD §5 & §12)' : ''}
         </p>
       </div>
+
+      {feedbackMsg && (
+        <div className="p-3 rounded-xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-between text-xs text-emerald-300">
+          <span className="flex items-center gap-2 font-semibold">
+            <CheckCircle2 className="w-4 h-4 shrink-0" />
+            {feedbackMsg}
+          </span>
+          <button
+            type="button"
+            onClick={() => setFeedbackMsg(null)}
+            className="text-slate-400 hover:text-white font-bold px-2 cursor-pointer"
+          >
+            ✕
+          </button>
+        </div>
+      )}
 
       {/* 2 Warning Banners Matching SVG L15 */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -99,7 +121,7 @@ export const L15_SuperAdminDashboard: React.FC = () => {
         <div className="flex items-center justify-between">
           <div>
             <h2 className="text-base font-bold text-white">
-              Daftar Lembaga Pembeli (Multi-Tenant Management PRD §5)
+              Daftar Lembaga Pembeli{showTechnicalRefs ? ' (Multi-Tenant Management PRD §5)' : ''}
             </h2>
             <p className="text-xs text-slate-400">
               Manajemen paket jalur, alokasi kuota kursi, tanggal kontrak, dan status pemakaian
@@ -159,8 +181,13 @@ export const L15_SuperAdminDashboard: React.FC = () => {
                 <td className="py-3 px-3 font-mono font-semibold text-slate-200">245 Hari</td>
                 <td className="py-3 px-3 text-right">
                   <button
-                    onClick={() => alert('Buka modal penambahan kuota lisensi Balai Diklat Nusantara.')}
-                    className="px-3 py-1 bg-[#1e293b] hover:bg-[#334155] border border-[#334155] text-slate-200 font-semibold text-[11px] rounded-lg transition-all"
+                    type="button"
+                    onClick={() =>
+                      setFeedbackMsg(
+                        'Panel pengelolaan kuota lisensi Balai Diklat Air Minum Nusantara dibuka (46/50 kursi terpakai).'
+                      )
+                    }
+                    className="px-3 py-1 bg-[#1e293b] hover:bg-[#334155] border border-[#334155] text-slate-200 font-semibold text-[11px] rounded-lg transition-all cursor-pointer"
                   >
                     Kelola Lisensi
                   </button>
@@ -193,8 +220,13 @@ export const L15_SuperAdminDashboard: React.FC = () => {
                 </td>
                 <td className="py-3 px-3 text-right">
                   <button
-                    onClick={() => alert('Kirim surat penawaran perpanjangan lisensi ke Direktur Tirta Mandiri.')}
-                    className="px-3 py-1 bg-rose-600 hover:bg-rose-500 text-white font-bold text-[11px] rounded-lg transition-all"
+                    type="button"
+                    onClick={() =>
+                      setFeedbackMsg(
+                        'Notifikasi penawaran perpanjangan lisensi berhasil dikirimkan kepada pimpinan Pusat Pelatihan Tirta Mandiri.'
+                      )
+                    }
+                    className="px-3 py-1 bg-rose-600 hover:bg-rose-500 text-white font-bold text-[11px] rounded-lg transition-all cursor-pointer"
                   >
                     Perpanjang
                   </button>

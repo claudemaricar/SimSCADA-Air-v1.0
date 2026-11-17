@@ -86,6 +86,22 @@ export interface QuizQuestion {
   options: string[];
   correctIndex: number;
   explanation: string;
+  category?: string;
+}
+
+export interface ShuffledOption {
+  id: string;
+  text: string;
+}
+
+export interface ShuffledQuestion<T extends QuizQuestion = QuizQuestion> {
+  id: string;
+  question: string;
+  options: ShuffledOption[];
+  correctOptionId: string;
+  explanation: string;
+  category?: string;
+  original?: T;
 }
 
 export interface ControlPointDef {
@@ -242,7 +258,7 @@ export interface ScadaState {
   intakePump2Running: boolean;
   intakePumpDuty: 1 | 2;
   intakePumpTripped: boolean;
-  rawWaterFlow: number; // m3/h (Target: 180 - 220)
+  rawWaterFlow: number; // L/s (Target: 75 - 100 L/s)
   rawWaterTurbidity: number; // NTU (Normal: 15 - 35; Spikes to 180)
   
   // Coagulation & pH
@@ -286,7 +302,7 @@ export interface ScadaState {
   distPumpDuty: 1 | 2;
   distPumpTripped: boolean;
   distDischargePressure: number; // bar (Normal: 3.5 - 4.5 bar)
-  distTotalFlow: number; // m3/h
+  distTotalFlow: number; // L/s
   
   // Zone & Hydraulics
   valveZone1Open: boolean;
@@ -294,10 +310,10 @@ export interface ScadaState {
   valveIsolasiBocorOpen: boolean;
   prvSetpointBar: number; // bar (Target: 2.2 - 2.8 bar)
   zone1Pressure: number; // bar (Normal: 2.0 - 2.8 bar)
-  zone2Pressure: number; // bar (Normal: 1.8 - 2.5 bar)
-  zone1Flow: number; // m3/h
-  zone2Flow: number; // m3/h
+  zone2Pressure: number; // bar (Normal: 2.0 - 2.8 bar)
+  zone1Flow: number; // L/s
+  zone2Flow: number; // L/s
   pipeLeakActive: boolean;
-  leakFlowSurge: number; // m3/h
-  zoneChlorineEnd: number; // mg/L (Target: 0.15 - 0.35 mg/L)
+  leakFlowSurge: number; // L/s
+  zoneChlorineEnd: number; // mg/L (Target: 0.2 - 0.5 mg/L)
 }

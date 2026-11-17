@@ -3,8 +3,8 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useState } from 'react';
-import { ChevronDown, ChevronUp, LineChart, TrendingUp } from 'lucide-react';
+import React, { useEffect, useState } from 'react';
+import { LineChart } from 'lucide-react';
 
 interface TrendPoint {
   timeSec: number;
@@ -16,16 +16,40 @@ interface TrendPoint {
   zoneFlow?: number;
 }
 
+export type TrendParamKey = 'turbidity' | 'freeChlorine' | 'reservoirLevel' | 'zonePressure';
+
 interface TrendChartProps {
   trendHistory?: TrendPoint[];
   history?: TrendPoint[];
+  initialParam?: TrendParamKey;
 }
 
-export const TrendChart: React.FC<TrendChartProps> = ({ trendHistory, history }) => {
+export const TrendChart: React.FC<TrendChartProps> = ({
+  trendHistory,
+  history,
+  initialParam = 'turbidity',
+}) => {
   const points = trendHistory || history || [];
-  const [selectedParam, setSelectedParam] = useState<'turbidity' | 'freeChlorine' | 'reservoirLevel' | 'zonePressure'>('turbidity');
+  const [selectedParam, setSelectedParam] = useState<TrendParamKey>(initialParam);
 
-  const paramConfig = {
+  useEffect(() => {
+    setSelectedParam(initialParam);
+  }, [initialParam]);
+
+  const paramConfig: Record<
+    TrendParamKey,
+    {
+      name: string;
+      unit: string;
+      target: string;
+      color: string;
+      min: number;
+      max: number;
+      safeMin?: number;
+      safeMax?: number;
+      getValue: (p: TrendPoint) => number;
+    }
+  > = {
     turbidity: {
       name: 'Kekeruhan Air Olahan (Filtrasi)',
       unit: 'NTU',
@@ -45,7 +69,7 @@ export const TrendChart: React.FC<TrendChartProps> = ({ trendHistory, history })
       max: 1.0,
       safeMin: 0.2,
       safeMax: 0.5,
-      getValue: (p: TrendPoint) => p.freeChlorine || 0.35,
+      getValue: (p: TrendPoint) => p.freeChlorine ?? 0.35,
     },
     reservoirLevel: {
       name: 'Level Ketinggian Reservoir',
@@ -56,7 +80,7 @@ export const TrendChart: React.FC<TrendChartProps> = ({ trendHistory, history })
       max: 5.0,
       safeMin: 2.0,
       safeMax: 4.8,
-      getValue: (p: TrendPoint) => p.reservoirLevel || 4.2,
+      getValue: (p: TrendPoint) => p.reservoirLevel ?? 4.2,
     },
     zonePressure: {
       name: 'Tekanan Jaringan (Zona 1)',
@@ -66,8 +90,8 @@ export const TrendChart: React.FC<TrendChartProps> = ({ trendHistory, history })
       min: 0,
       max: 4.0,
       safeMin: 2.0,
-      safeMax: 3.0,
-      getValue: (p: TrendPoint) => p.zonePressure || 2.4,
+      safeMax: 2.8,
+      getValue: (p: TrendPoint) => p.zonePressure ?? 2.4,
     },
   };
 
@@ -90,7 +114,11 @@ export const TrendChart: React.FC<TrendChartProps> = ({ trendHistory, history })
     return `${x},${y}`;
   }).join(' ');
 
-  const latestVal = displayPoints.length > 0 ? currConfig.getValue(displayPoints[displayPoints.length - 1]) : 3.4;
+  const latestVal = displayPoints.length > 0 ? currConfig.getValue(displayPoints[displayPoints.length - 1]) : 0;
+  const isOutOfRange =
+    (currConfig.safeMin !== undefined && latestVal < currConfig.safeMin) ||
+    (currConfig.safeMax !== undefined && latestVal >= currConfig.safeMax && selectedParam === 'turbidity') ||
+    (currConfig.safeMax !== undefined && selectedParam !== 'turbidity' && latestVal > currConfig.safeMax);
 
   return (
     <div className="bg-[#0b1120] rounded-xl border border-[#1e293b] p-3 text-slate-100 font-sans shadow-inner">
@@ -109,7 +137,7 @@ export const TrendChart: React.FC<TrendChartProps> = ({ trendHistory, history })
                 key={key}
                 type="button"
                 onClick={() => setSelectedParam(key)}
-                className={`px-2 py-0.5 rounded transition-colors ${
+                className={`px-2 py-0.5 rounded transition-colors cursor-pointer ${
                   selectedParam === key
                     ? 'bg-sky-600 text-white font-bold'
                     : 'bg-[#1e293b] text-slate-400 hover:text-white'
@@ -125,7 +153,7 @@ export const TrendChart: React.FC<TrendChartProps> = ({ trendHistory, history })
 
           <div className="text-right pl-2 border-l border-[#1e293b]">
             <span className="text-[10px] text-slate-400 mr-1 font-mono">Nilai Terkini:</span>
-            <span className="text-xs font-black text-rose-400 font-mono">
+            <span className={`text-xs font-black font-mono ${isOutOfRange ? 'text-rose-400' : 'text-emerald-400'}`}>
               {latestVal.toFixed(2)} {currConfig.unit}
             </span>
           </div>
