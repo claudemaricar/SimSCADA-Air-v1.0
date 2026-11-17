@@ -41,7 +41,7 @@ export const NarrativeModal: React.FC<NarrativeModalProps> = ({
   }, [controlPoint.id]);
 
   const localSopNote = currentTenant.config.localSopNotes?.[controlPoint.id] ||
-    'Di instalasi latih IPA Balai Nusantara, injeksi koagulan memakai dosing pump otomatis dengan kalibrasi larutan PAC 10%. Batas minimum tangki harian adalah 20%.';
+    `Di instalasi latih IPA ${currentTenant.shortName}, injeksi koagulan memakai dosing pump otomatis dengan kalibrasi larutan PAC 10%. Batas minimum tangki harian adalah 20%.`;
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/75 backdrop-blur-xs p-4 animate-fade-in font-sans">

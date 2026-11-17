@@ -13,7 +13,7 @@ interface TrackSelectProps {
 }
 
 export const L3_TrackSelect: React.FC<TrackSelectProps> = ({ onConfirmTrack }) => {
-  const { currentTenant, activeTrack, setActiveTrack, currentUser, getMissionsForTrack, getBestMissionResult, setCurrentView } = useApp();
+  const { currentTenant, activeTrack, setActiveTrack, currentUser, getMissionsForTrack, getBestMissionResult, isMissionUnlocked, setCurrentView } = useApp();
 
   const allowedTracks = currentTenant.license.packageTracks;
   const ipaMissions = getMissionsForTrack('ipa');
@@ -34,9 +34,37 @@ export const L3_TrackSelect: React.FC<TrackSelectProps> = ({ onConfirmTrack }) =
     return { passed, stars };
   };
 
+  const getNextMissionCode = (missions: typeof ipaMissions, fallback: string) => {
+    if (!currentUser) return fallback;
+    const nextPending = missions.find((m) => {
+      const res = getBestMissionResult(currentUser.id, m.code);
+      return !res || !res.isPassed;
+    });
+    return nextPending ? nextPending.code : missions[missions.length - 1]?.code || fallback;
+  };
+
+  const renderMissionRow = (m: (typeof ipaMissions)[number]) => {
+    const res = currentUser ? getBestMissionResult(currentUser.id, m.code) : undefined;
+    const unlocked = currentUser ? isMissionUnlocked(currentUser.id, m.code) : false;
+    const prefix = res?.isPassed ? '✓' : unlocked ? '⏳' : '🔒';
+    const textClass = res?.isPassed
+      ? 'text-emerald-400'
+      : unlocked
+      ? 'text-amber-400'
+      : 'text-slate-500';
+    return (
+      <div key={m.code} className={textClass}>
+        {prefix} T{m.level} {m.levelName}: {m.code} {m.name}
+        {m.level === 5 ? ' (KKM ≥80)' : ''}
+      </div>
+    );
+  };
+
   const ipaProgress = countProgress(ipaMissions);
   const distProgress = countProgress(distMissions);
   const terpaduProgress = countProgress(terpaduMissions);
+  const nextIpaCode = getNextMissionCode(ipaMissions, 'IPA-01');
+  const nextDistCode = getNextMissionCode(distMissions, 'DST-01');
 
   const handleSelectTrack = (trackId: LearningTrack) => {
     setActiveTrack(trackId);
@@ -104,15 +132,7 @@ export const L3_TrackSelect: React.FC<TrackSelectProps> = ({ onConfirmTrack }) =
                 <div className="font-bold text-slate-400 font-sans text-[10px] uppercase tracking-wider mb-1">
                   Katalog 9 Misi Berjenjang (IPA-01 s/d IPA-09):
                 </div>
-                <div className="text-emerald-400">✓ T1 Mudah: IPA-01 Kenali Ruang Kendali</div>
-                <div className="text-emerald-400">✓ T2 Mudah: IPA-02 Menyalakan Intake</div>
-                <div className="text-emerald-400">✓ T2 Sedang: IPA-03 Dosis Koagulan Normal</div>
-                <div className="text-emerald-400">✓ T2 Sedang: IPA-04 Jaga Filter & Backwash</div>
-                <div className="text-emerald-400">✓ T2 Sedang: IPA-05 Klorinasi Tepat</div>
-                <div className="text-emerald-400">✓ T3 Sulit: IPA-06 Lonjakan Kekeruhan (Sesi Contoh)</div>
-                <div className="text-emerald-400">✓ T3 Sulit: IPA-07 Gangguan Pompa Trip</div>
-                <div className="text-amber-400">⏳ T3 Sulit: IPA-08 Dosis Klor Tidak Sesuai</div>
-                <div className="text-slate-500">🔒 T5 Ujian: IPA-09 Misi Kelulusan IPA (KKM ≥80)</div>
+                {ipaMissions.map(renderMissionRow)}
 
                 {ipaProgress.passed > 0 && (
                   <div className="mt-2 pt-2 border-t border-[#1e293b] text-sky-400 font-sans text-xs font-semibold">
@@ -135,7 +155,7 @@ export const L3_TrackSelect: React.FC<TrackSelectProps> = ({ onConfirmTrack }) =
                   }}
                   className="w-full py-2.5 px-4 bg-sky-600 hover:bg-sky-500 text-white font-bold text-xs rounded-xl shadow-md transition-all flex items-center justify-center gap-2"
                 >
-                  <span>Lanjutkan Belajar IPA-08 →</span>
+                  <span>Lanjutkan Belajar {nextIpaCode} →</span>
                 </button>
               ) : (
                 <button
@@ -184,13 +204,7 @@ export const L3_TrackSelect: React.FC<TrackSelectProps> = ({ onConfirmTrack }) =
                 <div className="font-bold text-slate-400 font-sans text-[10px] uppercase tracking-wider mb-1">
                   Katalog {distMissions.length} Misi Berjenjang (DST-01 s/d DST-07):
                 </div>
-                <div className="text-slate-300">• T1 Mudah: DST-01 Kenali Jaringan Distribusi</div>
-                <div className="text-slate-300">• T2 Mudah: DST-02 Pompa Distribusi & Reservoir</div>
-                <div className="text-slate-300">• T2 Sedang: DST-03 Atur Tekanan Jam Puncak</div>
-                <div className="text-slate-300">• T2 Sedang: DST-04 Sisa Klor di Ujung Jaringan</div>
-                <div className="text-amber-400">• T3 Sulit: DST-05 Gangguan: Kebocoran Pipa</div>
-                <div className="text-amber-400">• T3 Sulit: DST-06 Gangguan: Tekanan Jaringan Drop</div>
-                <div className="text-slate-500">• T5 Ujian: DST-07 Misi Kelulusan Distribusi (≥80)</div>
+                {distMissions.map(renderMissionRow)}
                 {distProgress.passed > 0 && (
                   <div className="mt-2 pt-2 border-t border-[#1e293b] text-amber-400 font-sans text-xs font-semibold">
                     Progres Anda: {distProgress.passed} dari {distMissions.length} Misi Selesai ({distProgress.stars} Bintang)
@@ -210,7 +224,7 @@ export const L3_TrackSelect: React.FC<TrackSelectProps> = ({ onConfirmTrack }) =
                   onClick={() => setCurrentView('home')}
                   className="w-full py-2.5 px-4 bg-amber-600 hover:bg-amber-500 text-white font-bold text-xs rounded-xl shadow-md transition-all flex items-center justify-center gap-2"
                 >
-                  <span>Lanjutkan Belajar Distribusi →</span>
+                  <span>Lanjutkan Belajar {nextDistCode} →</span>
                 </button>
               ) : (
                 <button

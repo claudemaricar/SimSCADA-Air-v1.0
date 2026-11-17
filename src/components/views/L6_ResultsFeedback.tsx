@@ -45,7 +45,8 @@ export const L6_ResultsFeedback: React.FC<ResultsFeedbackProps> = ({
   onBackToHome,
   onViewBadges,
 }) => {
-  const { getUserOperatorLevel, setCurrentView, setReplayUserId, userBadges } = useApp();
+  const { currentUser, getUserOperatorLevel, setCurrentView, setReplayUserId, userBadges } = useApp();
+  const participantFirstName = currentUser?.fullName?.split(/\s+/)[0] || 'Operator';
 
   useEffect(() => {
     if (result.isPassed) {
@@ -189,7 +190,7 @@ export const L6_ResultsFeedback: React.FC<ResultsFeedbackProps> = ({
                 <span>Debriefing Evaluasi Mentor (Operator Senior):</span>
               </div>
               <p className="text-slate-200 text-xs leading-relaxed italic">
-                "Kerja luar biasa, Dimas! Tindakan koreksi pertama Anda datang 25 detik setelah alarm air olahan (&lt; 50% target skenario 60 detik) sehingga berhak atas Lencana 'Respons Kilat'. Penyesuaian pH kapur Anda sangat tepat mencegah flok pecah di bak flokulasi."
+                "Kerja luar biasa, {participantFirstName}! Tindakan koreksi Anda terjaga sesuai ambang batas SOP skenario. Pertahankan kedisiplinan dalam verifikasi nilai proses sebelum menekan Clear alarm."
               </p>
               <div className="text-[11px] text-sky-300 font-semibold pt-1">
                 Catatan: Lanjutkan ke Misi IPA-07 (Pompa Intake Trip) untuk mengasah alih pompa standby.
@@ -242,7 +243,7 @@ export const L6_ResultsFeedback: React.FC<ResultsFeedbackProps> = ({
 
             <button
               onClick={() => {
-                setReplayUserId('user-peserta-ipa');
+                setReplayUserId(result.userId);
                 setCurrentView('replay');
               }}
               className="w-full py-2.5 px-3 rounded-xl bg-[#1e293b] hover:bg-[#334155] border border-[#334155] text-slate-200 hover:text-white font-bold text-xs transition-all flex items-center justify-center gap-2"

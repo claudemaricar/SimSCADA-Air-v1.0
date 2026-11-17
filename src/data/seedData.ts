@@ -72,10 +72,10 @@ export const INITIAL_TENANTS: Tenant[] = [
       isActive: true,
     },
     signers: {
-      leaderName: 'Hj. Dewi Anggraini, S.T., M.M.',
+      leaderName: 'Ir. Hendra Kusuma, M.T.',
       leaderTitle: 'Direktur Pusat Pelatihan Tirta Mandiri',
       instructorName: 'Agus Salim, M.T.',
-      instructorTitle: 'Instruktur Senior Operasi Hidrolika',
+      instructorTitle: 'Instruktur Utama Operasi IPA Tirta Mandiri',
     },
     config: {
       passThresholdScore: 70,
@@ -111,8 +111,8 @@ export const INITIAL_GROUPS: TrainingGroup[] = [
   {
     id: 'grp-tirta-1',
     tenantId: 'tirta',
-    name: 'Angkatan 1 Tirta Mandiri (22 Peserta)',
-    instructorId: 'user-admin-tirta',
+    name: 'Angkatan 1 Tirta Mandiri',
+    instructorId: 'user-instruktur-tirta',
     track: 'ipa',
     createdAt: '2026-10-01',
   },
@@ -224,18 +224,41 @@ export const INITIAL_USERS: User[] = [
   {
     id: 'user-admin-tirta',
     username: 'admin.tirta',
-    fullName: 'Hj. Dewi Anggraini (Admin Tirta)',
-    email: 'dewi.admin@tirtamandiri.co.id',
+    fullName: 'Hj. Dewi Anggraini',
+    email: 'dewi.anggraini@tirtamandiri.co.id',
     role: 'admin_lembaga',
     tenantId: 'tirta',
     createdAt: '2026-03-01',
     lastLoginAt: '2026-10-28T08:30:00Z',
   },
+  // Pimpinan Tirta Mandiri (contoh lembaga Tirta)
+  {
+    id: 'user-pimpinan-tirta',
+    username: 'pimpinan.tirta',
+    fullName: 'Ir. Hendra Kusuma, M.T.',
+    email: 'hendra.kusuma@tirtamandiri.co.id',
+    role: 'pimpinan_lembaga',
+    tenantId: 'tirta',
+    createdAt: '2026-03-01',
+    lastLoginAt: '2026-10-28T08:45:00Z',
+  },
+  // Instruktur Tirta Mandiri (contoh lembaga Tirta)
+  {
+    id: 'user-instruktur-tirta',
+    username: 'instruktur.tirta',
+    fullName: 'Agus Salim, M.T.',
+    email: 'agus.salim@tirtamandiri.co.id',
+    role: 'instruktur',
+    tenantId: 'tirta',
+    groupId: 'grp-tirta-1',
+    createdAt: '2026-03-05',
+    lastLoginAt: '2026-10-28T09:15:00Z',
+  },
   // 10. Peserta Tirta Mandiri
   {
     id: 'user-peserta-tirta',
     username: 'peserta.tirta',
-    fullName: 'Siti Aminah (Peserta Tirta)',
+    fullName: 'Siti Aminah',
     email: 'siti.aminah@peserta.tirtamandiri.co.id',
     role: 'peserta',
     tenantId: 'tirta',
@@ -371,10 +394,10 @@ export const BADGES_LIST: Badge[] = [
   },
   {
     id: 'b-tiga-bintang',
-    name: 'Tiga Bintang Sempurna',
-    description: 'Meraih skor ≥95 (bintang 3) pada semua misi di jalur aktif.',
+    name: 'Tiga Bintang IPA / Distribusi',
+    description: 'Meraih skor ≥95 (3★) pada semua misi jalur IPA atau Distribusi.',
     iconName: 'Star',
-    requirement: 'Raih 3 bintang pada seluruh misi jalur pelatihan.',
+    requirement: 'Meraih skor ≥95 (3★) pada semua misi jalur IPA atau Distribusi.',
   },
   {
     id: 'b-hulu-ke-hilir',
@@ -1790,6 +1813,35 @@ export const INITIAL_TEST_RESULTS: PrePostTestResult[] = [
       });
     }
   }
+
+  // Tirta Mandiri (TRM): 18 active participants Pre-Test avg = 55,0; 12 graduates Post-Test avg = 74,0 -> T1 = +34,5%
+  INITIAL_TEST_RESULTS.push({
+    userId: 'user-peserta-tirta',
+    tenantId: 'tirta',
+    type: 'pre',
+    score: 56,
+    completedAt: '2026-10-18T08:00:00Z',
+  });
+  for (let i = 1; i <= 17; i++) {
+    const preScore = i === 1 ? 54 : 55; // (56 + 54 + 16*55) / 18 = 990 / 18 = 55.0
+    INITIAL_TEST_RESULTS.push({
+      userId: `user-trm-${i}`,
+      tenantId: 'tirta',
+      type: 'pre',
+      score: preScore,
+      completedAt: '2026-10-02T08:00:00Z',
+    });
+    if (i <= 12) {
+      const postScore = i % 2 === 0 ? 76 : 72; // 6*76 + 6*72 = 888 / 12 = 74.0
+      INITIAL_TEST_RESULTS.push({
+        userId: `user-trm-${i}`,
+        tenantId: 'tirta',
+        type: 'post',
+        score: postScore,
+        completedAt: '2026-10-24T09:00:00Z',
+      });
+    }
+  }
 })();
 
 // Initial Certificates
@@ -1890,16 +1942,16 @@ export const INITIAL_CERTIFICATES: Certificate[] = [
       id: `cert-trm-${i}`,
       certificateNumber: certNo,
       userId: `user-trm-${i}`,
-      userName: `Alumni Tirta ${i}`,
+      userName: `Peserta Tirta Mandiri ${i}`,
       tenantId: 'tirta',
       tenantName: 'Pusat Pelatihan Tirta Mandiri',
       track: 'ipa',
       trackName: 'Jalur Operator IPA (9 Misi)',
-      predicate: 'Lulus dengan Baik',
-      averageScore: 86,
-      starsCount: 22,
+      predicate: i % 3 === 0 ? 'Lulus dengan Pujian' : 'Lulus dengan Baik',
+      averageScore: 86 + (i % 6),
+      starsCount: 20 + (i % 5),
       operatorLevel: 'Operator Madya',
-      issueDate: '20 September 2026',
+      issueDate: '24 Oktober 2026',
       status: 'valid',
       instructorApproved: true,
       leaderSigned: true,
@@ -2315,6 +2367,121 @@ export const EKO_MISSION_RESULTS: MissionResult[] = [
     trendHistory: [],
   },
 ]);
+
+// Pre-seeded results for Siti Aminah (peserta.tirta · Jalur IPA Tirta Mandiri)
+// IPA-01: 90 (2★) = 90 + 80 = 170 XP; IPA-02: 86 (2★) = 86 + 80 = 166 XP; IPA-03: 82 (1★) = 123 + 80 = 203 XP -> 539 XP (Operator Muda), 5★
+const SITI_AMINAH_SCORES: Array<{ code: string; score: number; completedAt: string }> = [
+  { code: 'IPA-01', score: 90, completedAt: '2026-10-20T09:30:00Z' },
+  { code: 'IPA-02', score: 86, completedAt: '2026-10-23T11:15:00Z' },
+  { code: 'IPA-03', score: 82, completedAt: '2026-10-26T14:20:00Z' },
+];
+
+export const SITI_AMINAH_MISSION_RESULTS: MissionResult[] = SITI_AMINAH_SCORES.map(({ code, score, completedAt }) => ({
+  id: `res-siti-aminah-${code}`,
+  userId: 'user-peserta-tirta',
+  tenantId: 'tirta',
+  missionCode: code,
+  track: 'ipa' as const,
+  completedAt,
+  durationSec: 210,
+  scoreTindakan: Math.round(score * 0.4),
+  scoreWaktuRespons: Math.round(score * 0.25),
+  scoreStabilitas: Math.round(score * 0.2),
+  scoreAlarm: Math.max(0, score - Math.round(score * 0.4) - Math.round(score * 0.25) - Math.round(score * 0.2)),
+  scoreDeductions: 0,
+  totalScore: score,
+  stars: computeStarsFromScore(score, 70),
+  xpEarned: computeMissionXP(code, score, true),
+  hintsUsedCount: 0,
+  isPassed: true,
+  actionLogs:
+    code === 'IPA-03'
+      ? [
+          { timestampSec: 20, controlPointId: 'koagulasi', action: 'Mengatur dosis koagulan PAC awal ke 26 mg/L', value: 26, isCorrect: true },
+          { timestampSec: 65, controlPointId: 'flokulasi', action: 'Menyesuaikan pengadukan lambat flokulator 28 RPM', value: 28, isCorrect: true },
+          { timestampSec: 140, controlPointId: 'filtrasi', action: 'Kekeruhan air olahan stabil di 1,4 NTU (< 3,0 NTU)', value: 1.4, isCorrect: true },
+          { timestampSec: 210, controlPointId: 'simulasi', action: 'Simulasi IPA-03 selesai. Skor total 82', value: 82, isCorrect: true },
+        ]
+      : [],
+  alarmLogs: [],
+  trendHistory:
+    code === 'IPA-03'
+      ? [
+          { timeSec: 0, turbidity: 25, settledTurbidity: 4.1, freeChlorine: 0.34, reservoirLevel: 4.1, zonePressure: 2.3, zoneFlow: 95 },
+          { timeSec: 90, turbidity: 25, settledTurbidity: 2.6, freeChlorine: 0.35, reservoirLevel: 4.1, zonePressure: 2.3, zoneFlow: 95 },
+          { timeSec: 210, turbidity: 25, settledTurbidity: 1.4, freeChlorine: 0.36, reservoirLevel: 4.2, zonePressure: 2.3, zoneFlow: 95 },
+        ]
+      : [],
+}));
+
+// Pre-seeded results for Tirta Mandiri alumni (user-trm-1..12) and active trainees (user-trm-13..17)
+export const TIRTA_ALUMNI_MISSION_RESULTS: Record<string, MissionResult[]> = (() => {
+  const map: Record<string, MissionResult[]> = {};
+  const ipaAll = ['IPA-01', 'IPA-02', 'IPA-03', 'IPA-04', 'IPA-05', 'IPA-06', 'IPA-07', 'IPA-08', 'IPA-09'];
+
+  for (let i = 1; i <= 12; i++) {
+    const uid = `user-trm-${i}`;
+    const baseScore = 86 + (i % 6);
+    map[uid] = ipaAll.map((code, idx) => {
+      const score = Math.min(98, baseScore + (idx % 2 === 0 ? 1 : -1));
+      const passScore = code === 'IPA-09' ? 80 : 70;
+      return {
+        id: `res-trm-${i}-${code}`,
+        userId: uid,
+        tenantId: 'tirta',
+        missionCode: code,
+        track: 'ipa' as const,
+        completedAt: `2026-10-${String(12 + idx).padStart(2, '0')}T10:00:00Z`,
+        durationSec: 230,
+        scoreTindakan: Math.round(score * 0.4),
+        scoreWaktuRespons: Math.round(score * 0.25),
+        scoreStabilitas: Math.round(score * 0.2),
+        scoreAlarm: Math.max(0, score - Math.round(score * 0.4) - Math.round(score * 0.25) - Math.round(score * 0.2)),
+        scoreDeductions: 0,
+        totalScore: score,
+        stars: computeStarsFromScore(score, passScore),
+        xpEarned: computeMissionXP(code, score, true),
+        hintsUsedCount: 0,
+        isPassed: true,
+        actionLogs: [],
+        alarmLogs: [],
+        trendHistory: [],
+      };
+    });
+  }
+
+  for (let i = 13; i <= 17; i++) {
+    const uid = `user-trm-${i}`;
+    const partialCodes = ipaAll.slice(0, 5 + (i % 2));
+    map[uid] = partialCodes.map((code, idx) => {
+      const score = 78 + ((i + idx) % 7);
+      return {
+        id: `res-trm-${i}-${code}`,
+        userId: uid,
+        tenantId: 'tirta',
+        missionCode: code,
+        track: 'ipa' as const,
+        completedAt: `2026-10-${String(18 + idx).padStart(2, '0')}T13:00:00Z`,
+        durationSec: 250,
+        scoreTindakan: Math.round(score * 0.4),
+        scoreWaktuRespons: Math.round(score * 0.25),
+        scoreStabilitas: Math.round(score * 0.2),
+        scoreAlarm: Math.max(0, score - Math.round(score * 0.4) - Math.round(score * 0.25) - Math.round(score * 0.2)),
+        scoreDeductions: 0,
+        totalScore: score,
+        stars: computeStarsFromScore(score, 70),
+        xpEarned: computeMissionXP(code, score, true),
+        hintsUsedCount: 0,
+        isPassed: true,
+        actionLogs: [],
+        alarmLogs: [],
+        trendHistory: [],
+      };
+    });
+  }
+
+  return map;
+})();
 
 // ====================================================================
 // I. BANK 20 SOAL PRE-TEST & POST-TEST KOMPETENSI (L4a · PRD §3 & §11)

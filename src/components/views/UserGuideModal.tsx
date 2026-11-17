@@ -389,14 +389,14 @@ export const UserGuideModal: React.FC<UserGuideModalProps> = ({ onClose }) => {
                     </tr>
                     <tr>
                       <td className="p-2.5 font-mono font-bold text-purple-800">admin.tirta</td>
-                      <td className="p-2.5">Admin Lembaga</td>
-                      <td className="p-2.5">Pusat Diklat Tirta Mandiri</td>
+                      <td className="p-2.5">Admin Lembaga (Hj. Dewi)</td>
+                      <td className="p-2.5">Pusat Pelatihan Tirta Mandiri</td>
                       <td className="p-2.5">Uji isolasi data lembaga kedua.</td>
                     </tr>
                     <tr>
                       <td className="p-2.5 font-mono font-bold text-purple-800">peserta.tirta</td>
-                      <td className="p-2.5">Peserta Operator</td>
-                      <td className="p-2.5">Pusat Diklat Tirta Mandiri</td>
+                      <td className="p-2.5">Peserta Operator (Siti Aminah)</td>
+                      <td className="p-2.5">Pusat Pelatihan Tirta Mandiri</td>
                       <td className="p-2.5">Uji isolasi data peserta lembaga kedua.</td>
                     </tr>
                     <tr>

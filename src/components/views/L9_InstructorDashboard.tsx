@@ -28,6 +28,7 @@ const PRIORITY_ORDER = [
   'user-peserta-lulus',
   'user-eko-prasetyo',
   'user-rian-hidayat',
+  'user-peserta-tirta',
 ];
 
 const renderStarsLabel = (stars: number): string => {
@@ -74,18 +75,21 @@ export const L9_InstructorDashboard: React.FC<InstructorDashboardProps> = ({
 
   const visibleGroups = getVisibleGroups();
   const [selectedGroup, setSelectedGroup] = useState<string>(
-    visibleGroups[0]?.id || 'grp-nusantara-1'
+    visibleGroups[0]?.id || ''
   );
   const [selectedTrackFilter, setSelectedTrackFilter] = useState<string>('all');
   const [unlockedEko, setUnlockedEko] = useState<boolean>(false);
+  const [actionBanner, setActionBanner] = useState<string | null>(null);
 
   useEffect(() => {
     if (visibleGroups.length > 0 && !visibleGroups.some((g) => g.id === selectedGroup)) {
       setSelectedGroup(visibleGroups[0].id);
     }
+    setSelectedTrackFilter('all');
+    setActionBanner(null);
   }, [currentTenant.id, visibleGroups, selectedGroup]);
 
-  // Check pending certificate for Rian Hidayat
+  // Check pending certificate within current tenant
   const pendingCert = certificates.find(
     (c) =>
       c.tenantId === currentTenant.id &&
@@ -96,19 +100,41 @@ export const L9_InstructorDashboard: React.FC<InstructorDashboardProps> = ({
   const handleApprovePending = () => {
     if (pendingCert) {
       approveCertificate(pendingCert.id);
-      alert(
-        `Piagam ${pendingCert.certificateNumber} atas nama ${pendingCert.userName} BERHASIL DISETUJUI dan resmi diterbitkan!`
+      setActionBanner(
+        `Piagam ${pendingCert.certificateNumber} atas nama ${pendingCert.userName} berhasil disetujui dan diterbitkan.`
       );
     }
   };
 
   const handleUnlockEko = () => {
-    unlockMissionForUser('user-eko-prasetyo', 'IPA-07');
-    unlockMissionForUser('user-eko-prasetyo', 'IPA-08');
-    setUnlockedEko(true);
-    alert(
-      'Kunci Misi IPA-07 dan IPA-08 untuk Eko Prasetyo berhasil dibuka secara manual oleh instruktur!'
+    const hasEko = users.some(
+      (u) => u.id === 'user-eko-prasetyo' && u.tenantId === currentTenant.id
     );
+    if (hasEko) {
+      unlockMissionForUser('user-eko-prasetyo', 'IPA-07');
+      unlockMissionForUser('user-eko-prasetyo', 'IPA-08');
+      setUnlockedEko(true);
+      setActionBanner(
+        'Kunci Misi IPA-07 dan IPA-08 untuk Eko Prasetyo berhasil dibuka oleh instruktur.'
+      );
+      return;
+    }
+    const firstParticipant = groupParticipants[0];
+    if (firstParticipant) {
+      const nextLocked = MISSIONS_LIST.find(
+        (m) =>
+          m.track.includes(firstParticipant.track || 'ipa') &&
+          !isMissionUnlocked(firstParticipant.id, m.code)
+      );
+      if (nextLocked) {
+        unlockMissionForUser(firstParticipant.id, nextLocked.code);
+        setActionBanner(
+          `Misi ${nextLocked.code} untuk ${firstParticipant.fullName} berhasil dibuka secara manual.`
+        );
+        return;
+      }
+    }
+    setActionBanner('Seluruh misi aktif peserta pada kelompok ini sudah terbuka.');
   };
 
   // All participants in current tenant & selected group (including peserta.baru & all Angkatan 1 accounts)
@@ -180,9 +206,15 @@ export const L9_InstructorDashboard: React.FC<InstructorDashboardProps> = ({
               className="bg-[#0b1120] border border-[#334155] rounded-xl px-3 py-1.5 text-xs text-slate-200 focus:outline-hidden"
             >
               <option value="all">Semua Jalur</option>
-              <option value="ipa">Operator IPA</option>
-              <option value="distribusi">Operator Distribusi</option>
-              <option value="terpadu">Air Minum Terpadu</option>
+              {currentTenant.license.packageTracks.includes('ipa') && (
+                <option value="ipa">Operator IPA</option>
+              )}
+              {currentTenant.license.packageTracks.includes('distribusi') && (
+                <option value="distribusi">Operator Distribusi</option>
+              )}
+              {currentTenant.license.packageTracks.includes('terpadu') && (
+                <option value="terpadu">Air Minum Terpadu</option>
+              )}
             </select>
           </div>
 
@@ -219,7 +251,12 @@ export const L9_InstructorDashboard: React.FC<InstructorDashboardProps> = ({
           )}
 
           <button
-            onClick={() => onViewReplay('user-peserta-ipa')}
+            onClick={() => {
+              const firstWithHistory = groupParticipants.find(
+                (p) => (userMissionResults[p.id] || []).length > 0
+              );
+              onViewReplay(firstWithHistory?.id || groupParticipants[0]?.id || '');
+            }}
             className="px-3 py-1.5 rounded-xl bg-amber-700 hover:bg-amber-600 text-white font-bold text-xs transition-all flex items-center gap-1.5 cursor-pointer"
           >
             <History className="w-3.5 h-3.5" />
@@ -228,7 +265,9 @@ export const L9_InstructorDashboard: React.FC<InstructorDashboardProps> = ({
 
           <button
             onClick={() =>
-              alert('Fitur Beri Catatan Evaluasi aktif. Catatan akan tampil di debriefing peserta.')
+              setActionBanner(
+                `Mode Catatan Evaluasi aktif untuk ${currentTenant.name}. Catatan instruktur tampil di ringkasan peserta.`
+              )
             }
             className="px-3 py-1.5 rounded-xl bg-[#1e293b] hover:bg-[#334155] border border-[#334155] text-slate-300 text-xs font-semibold transition-all flex items-center gap-1.5 cursor-pointer"
           >
@@ -237,6 +276,19 @@ export const L9_InstructorDashboard: React.FC<InstructorDashboardProps> = ({
           </button>
         </div>
       </div>
+
+      {actionBanner && (
+        <div className="p-3 rounded-xl bg-emerald-950/30 border border-emerald-500/40 text-emerald-300 text-xs flex items-center justify-between gap-3">
+          <span>{actionBanner}</span>
+          <button
+            type="button"
+            onClick={() => setActionBanner(null)}
+            className="text-emerald-200 hover:text-white font-bold cursor-pointer"
+          >
+            ✕
+          </button>
+        </div>
+      )}
 
       {/* Lagging Student Alert (PRD §12 Alert) */}
       {showEkoLaggingAlert && (

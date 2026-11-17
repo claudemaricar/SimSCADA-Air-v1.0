@@ -190,3 +190,14 @@ export function getOperatorLevelFromXP(xp: number): {
     currentXP: xp,
   };
 }
+
+export function formatDecimalID(value: number, decimals = 1): string {
+  return value.toLocaleString('id-ID', {
+    minimumFractionDigits: decimals,
+    maximumFractionDigits: decimals,
+  });
+}
+
+export function formatIntegerID(value: number): string {
+  return Math.round(value).toLocaleString('id-ID');
+}

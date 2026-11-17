@@ -3,18 +3,15 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useApp } from '../../context/AppContext';
 import { 
   Building2, 
   CheckCircle2, 
   Search, 
   ShieldAlert, 
-  ShieldCheck, 
   XCircle,
   ArrowLeft,
-  ExternalLink,
-  QrCode
 } from 'lucide-react';
 
 interface PublicVerificationProps {
@@ -23,17 +20,32 @@ interface PublicVerificationProps {
 }
 
 export const L16_PublicVerification: React.FC<PublicVerificationProps> = ({
-  initialCertNumber = 'SSA/NUS/2026/0001',
+  initialCertNumber = '',
   onBackToApp,
 }) => {
-  const { certificates, currentTenant } = useApp();
+  const { certificates, tenants, currentUser } = useApp();
   const [certQuery, setCertQuery] = useState<string>(initialCertNumber);
   const [activeCertNo, setActiveCertNo] = useState<string>(initialCertNumber);
   const [isSimulatedRevoked, setIsSimulatedRevoked] = useState<boolean>(false);
 
-  const cert = certificates.find(
-    (c) => c.certificateNumber.toLowerCase().replace(/[^a-z0-9]/g, '') === activeCertNo.toLowerCase().replace(/[^a-z0-9]/g, '')
-  );
+  useEffect(() => {
+    setCertQuery(initialCertNumber);
+    setActiveCertNo(initialCertNumber);
+    setIsSimulatedRevoked(false);
+  }, [initialCertNumber]);
+
+  const normalizedQuery = activeCertNo.toLowerCase().replace(/[^a-z0-9]/g, '');
+  const cert = normalizedQuery
+    ? certificates.find(
+        (c) => c.certificateNumber.toLowerCase().replace(/[^a-z0-9]/g, '') === normalizedQuery
+      )
+    : undefined;
+  const issuerTenant = cert ? tenants.find((t) => t.id === cert.tenantId) : undefined;
+
+  const placeholderText =
+    currentUser?.tenantId === 'tirta'
+      ? 'Masukkan nomor registrasi piagam (contoh: SSA/TRM/2026/0001)...'
+      : 'Masukkan nomor registrasi piagam (contoh: SSA/NUS/2026/0001)...';
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -42,7 +54,7 @@ export const L16_PublicVerification: React.FC<PublicVerificationProps> = ({
     setIsSimulatedRevoked(false);
   };
 
-  const isRevoked = isSimulatedRevoked || cert?.status === 'revoked';
+  const isRevoked = Boolean(cert) && (isSimulatedRevoked || cert?.status === 'revoked');
 
   return (
     <div className="min-h-screen bg-[#0b1120] text-slate-100 flex flex-col font-sans">
@@ -90,7 +102,7 @@ export const L16_PublicVerification: React.FC<PublicVerificationProps> = ({
               type="text"
               value={certQuery}
               onChange={(e) => setCertQuery(e.target.value)}
-              placeholder="Masukkan nomor registrasi piagam (contoh: SSA/NUS/2026/0001)..."
+              placeholder={placeholderText}
               className="w-full pl-4 pr-4 py-3 bg-[#0f172a] border border-[#24324d] rounded-xl text-xs font-mono font-bold text-white focus:outline-hidden focus:ring-2 focus:ring-sky-500 placeholder:text-slate-500 uppercase"
             />
           </div>
@@ -121,18 +133,20 @@ export const L16_PublicVerification: React.FC<PublicVerificationProps> = ({
               ) : (
                 <div className="px-3.5 py-1.5 rounded-xl bg-amber-500/20 border border-amber-500/40 text-amber-300 font-bold text-xs flex items-center gap-1.5">
                   <ShieldAlert className="w-4 h-4 text-amber-400" />
-                  <span>STATUS: TIDAK DITEMUKAN</span>
+                  <span>{normalizedQuery ? 'STATUS: TIDAK DITEMUKAN' : 'SIAP VERIFIKASI'}</span>
                 </div>
               )}
             </div>
 
-            <button
-              type="button"
-              onClick={() => setIsSimulatedRevoked(!isSimulatedRevoked)}
-              className="text-[11px] text-slate-400 hover:text-white px-2.5 py-1 rounded-lg border border-[#334155] bg-[#0b1120] transition-colors"
-            >
-              Simulasi Status: <span className="font-semibold text-rose-400">Uji Dicabut [Toggle]</span>
-            </button>
+            {cert && (
+              <button
+                type="button"
+                onClick={() => setIsSimulatedRevoked(!isSimulatedRevoked)}
+                className="text-[11px] text-slate-400 hover:text-white px-2.5 py-1 rounded-lg border border-[#334155] bg-[#0b1120] transition-colors"
+              >
+                Simulasi Status: <span className="font-semibold text-rose-400">Uji Dicabut [Toggle]</span>
+              </button>
+            )}
           </div>
 
           {cert ? (
@@ -155,7 +169,9 @@ export const L16_PublicVerification: React.FC<PublicVerificationProps> = ({
 
                 <div className="p-4 rounded-xl bg-[#0b1120] border border-[#1e293b] space-y-1">
                   <span className="text-[10px] text-slate-500 uppercase tracking-wider block font-bold">2. Lembaga Penyelenggara Pelatihan:</span>
-                  <div className="text-base font-black text-sky-400">{cert.tenantName} ({currentTenant.code})</div>
+                  <div className="text-base font-black text-sky-400">
+                    {cert.tenantName} ({issuerTenant?.code || (cert.tenantId === 'tirta' ? 'TRM' : 'NUS')})
+                  </div>
                 </div>
 
                 <div className="p-4 rounded-xl bg-[#0b1120] border border-[#1e293b] space-y-1">
@@ -190,13 +206,17 @@ export const L16_PublicVerification: React.FC<PublicVerificationProps> = ({
                 <div className="p-4 rounded-xl bg-rose-950/40 border-2 border-dashed border-rose-500 text-rose-200 text-xs space-y-2">
                   <div className="font-bold text-rose-400 text-sm flex items-center gap-2">
                     <XCircle className="w-5 h-5" />
-                    <span>CONTOH TAMPILAN BILA PIAGAM DICABUT (DIPICU TOMBOL "UJI DICABUT"):</span>
+                    <span>
+                      {isSimulatedRevoked
+                        ? 'SIMULASI TAMPILAN BILA PIAGAM DICABUT (DIPICU TOMBOL "UJI DICABUT"):'
+                        : 'PIAGAM TELAH DICABUT OLEH ADMIN LEMBAGA:'}
+                    </span>
                   </div>
                   <p className="text-slate-300">
-                    Nomor <strong className="text-white">SSA/NUS/2026/0007</strong> · Dicabut Admin Lembaga pada 2 November 2026.
+                    Nomor <strong className="text-white">{cert.certificateNumber}</strong> · Dicabut Admin Lembaga{cert.revokedAt ? ` pada ${cert.revokedAt}` : ''}.
                   </p>
                   <p className="text-rose-300">
-                    Alasan tercatat: piagam terbit atas nama peserta yang salah (data diperbaiki, piagam baru diterbitkan).
+                    Alasan tercatat: {cert.revokedReason || 'Simulasi uji tampilan piagam dicabut oleh Admin Lembaga.'}
                   </p>
                 </div>
               )}
@@ -204,7 +224,11 @@ export const L16_PublicVerification: React.FC<PublicVerificationProps> = ({
           ) : (
             <div className="py-12 text-center text-slate-400 space-y-2">
               <ShieldAlert className="w-12 h-12 text-slate-600 mx-auto" />
-              <p className="text-xs">Nomor piagam tidak ditemukan dalam basis data nasional SimSCADA-Air.</p>
+              <p className="text-xs">
+                {normalizedQuery
+                  ? 'Nomor piagam tidak ditemukan dalam basis data nasional SimSCADA-Air.'
+                  : 'Masukkan nomor registrasi piagam pada kolom di atas untuk memverifikasi keabsahan piagam.'}
+              </p>
             </div>
           )}
         </div>

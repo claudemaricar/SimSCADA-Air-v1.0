@@ -3,43 +3,47 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useApp } from '../../context/AppContext';
-import { 
-  Building2, 
-  Check, 
-  CheckCircle2, 
-  Lock, 
-  Palette, 
-  Save, 
-  ShieldAlert, 
-  Sliders, 
-  ToggleLeft, 
-  ToggleRight, 
-  Upload, 
-  UserCheck,
-  AlertTriangle,
-  Info
+import {
+  Building2,
+  CheckCircle2,
+  Lock,
 } from 'lucide-react';
 
 export const L13_TenantSettings: React.FC = () => {
   const { currentTenant, updateTenant } = useApp();
+
+  const buildDefaultSopNote = (tenantNameText: string, pid: string) =>
+    currentTenant.config.localSopNotes?.[pid] ||
+    `Di instalasi latih IPA ${tenantNameText}, penyesuaian setpoint titik ${pid.replace('_', ' ')} mengikuti standar kalibrasi harian ruang kendali lembaga.`;
 
   const [tenantName, setTenantName] = useState(currentTenant.name);
   const [leaderName, setLeaderName] = useState(currentTenant.signers.leaderName);
   const [leaderTitle, setLeaderTitle] = useState(currentTenant.signers.leaderTitle);
   const [instructorName, setInstructorName] = useState(currentTenant.signers.instructorName);
   const [instructorTitle, setInstructorTitle] = useState(currentTenant.signers.instructorTitle);
-  
+
   const [accentColor, setAccentColor] = useState('Navy Blue');
   const [requireApproval, setRequireApproval] = useState(true);
   const [enableLeaderboard, setEnableLeaderboard] = useState(currentTenant.config.leaderboardEnabled);
-  
+
   const [selectedPointId, setSelectedPointId] = useState('koagulasi');
   const [sopNoteText, setSopNoteText] = useState(
-    currentTenant.config.localSopNotes?.koagulasi ||
-    'Di instalasi latih IPA Balai Nusantara, injeksi koagulan memakai dosing pump otomatis dengan kalibrasi larutan PAC 10%. Batas minimum tangki harian adalah 20%.'
+    buildDefaultSopNote(currentTenant.name, 'koagulasi')
   );
+  const [settingsFeedback, setSettingsFeedback] = useState<string | null>(null);
+
+  useEffect(() => {
+    setTenantName(currentTenant.name);
+    setLeaderName(currentTenant.signers.leaderName);
+    setLeaderTitle(currentTenant.signers.leaderTitle);
+    setInstructorName(currentTenant.signers.instructorName);
+    setInstructorTitle(currentTenant.signers.instructorTitle);
+    setEnableLeaderboard(currentTenant.config.leaderboardEnabled);
+    setSopNoteText(buildDefaultSopNote(currentTenant.name, selectedPointId));
+    setSettingsFeedback(null);
+  }, [currentTenant.id]);
 
   const handleSaveGeneral = (e: React.FormEvent) => {
     e.preventDefault();
@@ -56,7 +60,9 @@ export const L13_TenantSettings: React.FC = () => {
         leaderboardEnabled: enableLeaderboard,
       },
     });
-    alert('Pengaturan identitas lembaga, logo, penanda tangan, dan saklar berhasil disimpan!');
+    setSettingsFeedback(
+      `Pengaturan identitas ${tenantName}, penanda tangan, dan saklar berhasil disimpan.`
+    );
   };
 
   const handleSaveSopNote = () => {
@@ -70,7 +76,9 @@ export const L13_TenantSettings: React.FC = () => {
         localSopNotes: nextNotes,
       },
     });
-    alert(`Catatan SOP lokal untuk titik ${selectedPointId} berhasil disimpan dan langsung aktif di pop-up L5a!`);
+    setSettingsFeedback(
+      `Catatan SOP lokal ${currentTenant.name} untuk titik ${selectedPointId} berhasil disimpan dan aktif di pop-up L5a.`
+    );
   };
 
   return (
@@ -78,12 +86,28 @@ export const L13_TenantSettings: React.FC = () => {
       {/* Title */}
       <div className="pb-2 border-b border-[#1e293b]">
         <h1 className="text-xl sm:text-2xl font-bold text-white tracking-tight">
-          Pengaturan Lembaga, Kebijakan & SOP Lokal
+          Pengaturan Lembaga, Kebijakan &amp; SOP Lokal · {currentTenant.name}
         </h1>
         <p className="text-xs text-slate-400 mt-0.5">
-          Konfigurasi Tenant PRD §6 & §13: Identitas, Logo, Penanda Tangan, Aksen Piagam, Persetujuan, Papan Peringkat, Ambang Kelulusan & SOP Lokal
+          Konfigurasi Tenant PRD §6 &amp; §13: Identitas, Logo, Penanda Tangan, Aksen Piagam, Persetujuan, Papan Peringkat, Ambang Kelulusan &amp; SOP Lokal
         </p>
       </div>
+
+      {settingsFeedback && (
+        <div className="p-3 rounded-xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-between text-xs text-emerald-300">
+          <span className="flex items-center gap-2 font-semibold">
+            <CheckCircle2 className="w-4 h-4 shrink-0" />
+            {settingsFeedback}
+          </span>
+          <button
+            type="button"
+            onClick={() => setSettingsFeedback(null)}
+            className="text-slate-400 hover:text-white font-bold px-2 cursor-pointer"
+          >
+            ✕
+          </button>
+        </div>
+      )}
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
         
@@ -120,12 +144,16 @@ export const L13_TenantSettings: React.FC = () => {
                 <div className="p-2 bg-[#0b1120] border border-[#24324d] rounded-xl flex items-center justify-between">
                   <div className="flex items-center gap-2 truncate">
                     <Building2 className="w-4 h-4 text-sky-400 shrink-0" />
-                    <span className="text-slate-300 font-mono text-[11px] truncate">logo_nusantara.svg</span>
+                    <span className="text-slate-300 font-mono text-[11px] truncate">
+                      logo_{currentTenant.code.toLowerCase()}.svg
+                    </span>
                   </div>
                   <button
                     type="button"
-                    onClick={() => alert('Pilih berkas logo resmi baru (PNG / SVG maks 2MB).')}
-                    className="text-sky-400 hover:text-sky-300 font-bold text-[10px] shrink-0 hover:underline"
+                    onClick={() =>
+                      setSettingsFeedback('Format logo yang didukung: PNG atau SVG maksimal 2 MB.')
+                    }
+                    className="text-sky-400 hover:text-sky-300 font-bold text-[10px] shrink-0 hover:underline cursor-pointer"
                   >
                     Ganti logo...
                   </button>
@@ -142,9 +170,9 @@ export const L13_TenantSettings: React.FC = () => {
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 {/* 1. Pimpinan Lembaga */}
                 <div className="p-3.5 rounded-xl bg-[#0b1120] border border-[#1e293b] space-y-2">
-                  <div className="flex items-center justify-between">
+                  <div className="flex items-center justify-between gap-2">
                     <span className="text-[10px] text-sky-400 font-bold uppercase tracking-wider">1. Pimpinan Lembaga</span>
-                    <span className="text-[10px] text-slate-500">Kepala Balai Diklat</span>
+                    <span className="text-[10px] text-slate-500 truncate">{leaderTitle}</span>
                   </div>
                   <input
                     type="text"
@@ -162,9 +190,9 @@ export const L13_TenantSettings: React.FC = () => {
 
                 {/* 2. Instruktur Penilai */}
                 <div className="p-3.5 rounded-xl bg-[#0b1120] border border-[#1e293b] space-y-2">
-                  <div className="flex items-center justify-between">
+                  <div className="flex items-center justify-between gap-2">
                     <span className="text-[10px] text-sky-400 font-bold uppercase tracking-wider">2. Instruktur Penilai</span>
-                    <span className="text-[10px] text-slate-500">Instruktur Utama SPAM</span>
+                    <span className="text-[10px] text-slate-500 truncate">{instructorTitle}</span>
                   </div>
                   <input
                     type="text"
@@ -302,17 +330,21 @@ export const L13_TenantSettings: React.FC = () => {
                 onChange={(e) => {
                   const pid = e.target.value;
                   setSelectedPointId(pid);
-                  setSopNoteText(currentTenant.config.localSopNotes?.[pid] || '');
+                  setSopNoteText(buildDefaultSopNote(currentTenant.name, pid));
                 }}
                 className="w-full p-2.5 bg-[#0b1120] border border-[#24324d] rounded-xl text-white font-bold text-xs"
               >
-                <option value="koagulasi">Flash Mixer Koagulasi (Pembubuhan & Pengaduk Cepat)</option>
-                <option value="intake">Intake & Pompa Air Baku</option>
+                <option value="koagulasi">Flash Mixer Koagulasi (Pembubuhan &amp; Pengaduk Cepat)</option>
+                <option value="intake">Intake &amp; Pompa Air Baku</option>
                 <option value="filtrasi">Filtrasi Pasir Cepat</option>
                 <option value="desinfeksi">Desinfeksi Klorinasi</option>
                 <option value="reservoir">Reservoir Air Bersih</option>
-                <option value="pompa_distribusi">Pompa Distribusi</option>
-                <option value="valve_prv">Katup PRV & Isolasi</option>
+                {currentTenant.license.packageTracks.includes('distribusi') && (
+                  <>
+                    <option value="pompa_distribusi">Pompa Distribusi</option>
+                    <option value="valve_prv">Katup PRV &amp; Isolasi</option>
+                  </>
+                )}
               </select>
             </div>
 
@@ -328,7 +360,7 @@ export const L13_TenantSettings: React.FC = () => {
                 placeholder="Tuliskan instruksi SOP lokal instalasi Anda..."
               />
               <p className="text-[10px] text-slate-500 mt-1">
-                Catatan ini otomatis muncul pada pop-up narasi titik kontrol L5a bagi semua peserta Balai Nusantara.
+                Catatan ini otomatis muncul pada pop-up narasi titik kontrol L5a bagi semua peserta {currentTenant.name}.
               </p>
             </div>
 

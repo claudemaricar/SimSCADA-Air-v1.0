@@ -3,19 +3,15 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useApp } from '../../context/AppContext';
-import { 
-  ArrowLeft, 
-  CheckCircle2, 
-  Clock, 
-  History, 
-  Pause, 
-  Play, 
-  RotateCcw, 
-  Save, 
-  Sparkles,
-  Sliders
+import { MISSIONS_LIST } from '../../data/seedData';
+import {
+  ArrowLeft,
+  CheckCircle2,
+  Pause,
+  Play,
+  Save,
 } from 'lucide-react';
 
 interface SessionReplayProps {
@@ -24,16 +20,54 @@ interface SessionReplayProps {
 }
 
 export const L11_SessionReplay: React.FC<SessionReplayProps> = ({
-  initialUserId = 'user-peserta-ipa',
+  initialUserId,
   onBack,
 }) => {
-  const { currentTenant, users } = useApp();
+  const { currentTenant, users, userMissionResults } = useApp();
+
+  // Strictly resolve replay target within currentTenant
+  const tenantParticipants = users.filter(
+    (u) => u.tenantId === currentTenant.id && u.role === 'peserta'
+  );
+  const targetUser =
+    tenantParticipants.find((u) => u.id === initialUserId) ||
+    tenantParticipants.find((u) => (userMissionResults[u.id] || []).length > 0) ||
+    tenantParticipants[0];
+
+  const rawResults = targetUser ? userMissionResults[targetUser.id] || [] : [];
+  const focusResult =
+    rawResults.find((r) => r.missionCode === 'IPA-06') ||
+    rawResults[rawResults.length - 1];
+  const focusMission = MISSIONS_LIST.find(
+    (m) => m.code === (focusResult?.missionCode || 'IPA-06')
+  );
+  const totalDur = focusResult?.durationSec || 510;
+  const isOfficialIpa06 = targetUser?.id === 'user-peserta-ipa' && focusResult?.missionCode === 'IPA-06';
+
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
   const [playbackSpeed, setPlaybackSpeed] = useState<number>(2);
-  const [currentSec, setCurrentSec] = useState<number>(130); // 02:10 (130 seconds)
-  const [instructorNotes, setInstructorNotes] = useState<string>(
-    'Tindakan Dimas pada 02:10 sangat tepat sesuai SOP. Respons waktu 25 detik memenuhi syarat Lencana Respons Kilat (25 dtk < 30 dtk). Skor 88, 2★.'
-  );
+  const [currentSec, setCurrentSec] = useState<number>(isOfficialIpa06 ? 130 : Math.min(90, totalDur));
+  const [instructorNotes, setInstructorNotes] = useState<string>('');
+  const [savedNotice, setSavedNotice] = useState<string | null>(null);
+
+  useEffect(() => {
+    const firstName = targetUser?.fullName?.split(/\s+/)[0] || 'Peserta';
+    if (isOfficialIpa06) {
+      setCurrentSec(130);
+      setInstructorNotes(
+        `Tindakan ${firstName} pada 02:10 sangat tepat sesuai SOP. Respons waktu 25 detik memenuhi syarat Lencana Respons Kilat (25 dtk < 30 dtk). Skor 88, 2★.`
+      );
+    } else if (focusResult) {
+      setCurrentSec(Math.round(focusResult.durationSec * 0.45));
+      setInstructorNotes(
+        `${targetUser?.fullName || 'Peserta'} menyelesaikan ${focusResult.missionCode} dengan skor ${focusResult.totalScore} (${focusResult.stars}★). Kestabilan proses terjaga sesuai standar SOP ${currentTenant.name}.`
+      );
+    } else {
+      setCurrentSec(0);
+      setInstructorNotes(`Belum ada rekaman simulasi untuk ${targetUser?.fullName || 'peserta ini'}.`);
+    }
+    setSavedNotice(null);
+  }, [currentTenant.id, targetUser?.id, focusResult?.id]);
 
   const formatTime = (sec: number) => {
     const m = Math.floor(sec / 60);
@@ -42,7 +76,9 @@ export const L11_SessionReplay: React.FC<SessionReplayProps> = ({
   };
 
   const handleSaveNotes = () => {
-    alert('Catatan evaluasi instruktur berhasil disimpan dan divalidasi ke portofolio siswa!');
+    setSavedNotice(
+      `Catatan evaluasi ${currentTenant.signers.instructorName} tersimpan untuk ${targetUser?.fullName || 'peserta'}.`
+    );
   };
 
   return (
@@ -51,15 +87,16 @@ export const L11_SessionReplay: React.FC<SessionReplayProps> = ({
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-2 border-b border-[#1e293b]">
         <div>
           <h1 className="text-xl sm:text-2xl font-bold text-white tracking-tight">
-            Investigasi Audit & Putar Ulang Sesi (Replay)
+            Investigasi Audit &amp; Putar Ulang Sesi (Replay)
           </h1>
           <p className="text-xs text-slate-400 mt-0.5">
-            Sesi Contoh Konsisten: Dimas Wahyu Pratama · IPA-06 Lonjakan Kekeruhan (Waktu, Alarm & Nilai Identik L6)
+            Peserta: <strong className="text-sky-400">{targetUser?.fullName || 'Peserta'}</strong> ({currentTenant.name}) ·{' '}
+            {focusMission ? `${focusMission.code}: ${focusMission.name}` : 'Sesi Simulasi'} (Skor {focusResult?.totalScore ?? 0} · {focusResult?.stars ?? 0}★)
           </p>
         </div>
         <button
           onClick={onBack}
-          className="px-3.5 py-1.5 rounded-xl border border-[#334155] bg-[#1e293b]/70 hover:bg-[#1e293b] text-slate-300 hover:text-white text-xs font-semibold flex items-center gap-1.5 transition-all w-fit"
+          className="px-3.5 py-1.5 rounded-xl border border-[#334155] bg-[#1e293b]/70 hover:bg-[#1e293b] text-slate-300 hover:text-white text-xs font-semibold flex items-center gap-1.5 transition-all w-fit cursor-pointer"
         >
           <ArrowLeft className="w-3.5 h-3.5" />
           <span>Kembali ke Dasbor Instruktur</span>
@@ -260,7 +297,7 @@ export const L11_SessionReplay: React.FC<SessionReplayProps> = ({
           {/* Form Evaluasi Instruktur */}
           <div className="space-y-2 pt-2 border-t border-[#1e293b]">
             <label className="block text-xs font-bold text-slate-300 uppercase tracking-wider">
-              Catatan Evaluasi Instruktur (Budi Santoso, S.T.):
+              Catatan Evaluasi Instruktur ({currentTenant.signers.instructorName}):
             </label>
             <textarea
               value={instructorNotes}
@@ -268,12 +305,18 @@ export const L11_SessionReplay: React.FC<SessionReplayProps> = ({
               rows={3}
               className="w-full p-2.5 bg-[#0b1120] border border-[#24324d] rounded-xl text-xs text-slate-200 focus:outline-hidden focus:ring-1 focus:ring-sky-500 leading-relaxed font-sans"
             />
+            {savedNotice && (
+              <div className="p-2 rounded-lg bg-emerald-500/15 border border-emerald-500/30 text-[11px] text-emerald-300 flex items-center gap-1.5">
+                <CheckCircle2 className="w-3.5 h-3.5 shrink-0" />
+                <span>{savedNotice}</span>
+              </div>
+            )}
             <button
               onClick={handleSaveNotes}
-              className="w-full py-2.5 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs uppercase tracking-wider transition-all flex items-center justify-center gap-2 shadow-md shadow-emerald-950/50"
+              className="w-full py-2.5 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs uppercase tracking-wider transition-all flex items-center justify-center gap-2 shadow-md shadow-emerald-950/50 cursor-pointer"
             >
               <Save className="w-4 h-4" />
-              <span>Simpan Catatan & Validasi Sesi</span>
+              <span>Simpan Catatan &amp; Validasi Sesi</span>
             </button>
           </div>
         </div>

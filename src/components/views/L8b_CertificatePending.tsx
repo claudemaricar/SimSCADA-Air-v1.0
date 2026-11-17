@@ -21,12 +21,57 @@ interface CertificatePendingProps {
 }
 
 export const L8b_CertificatePending: React.FC<CertificatePendingProps> = ({ onBack }) => {
-  const { currentTenant } = useApp();
+  const { currentTenant, getVisibleCertificates } = useApp();
   const [reminderSent, setReminderSent] = useState(false);
+
+  const visibleCerts = getVisibleCertificates();
+  const pendingCert = visibleCerts.find(
+    (c) => c.status === 'valid' && !c.instructorApproved
+  );
+
+  const shortSignatureName = (fullName: string) =>
+    fullName.replace(/^(Dr\.|Ir\.|Hj\.|H\.)\s+/gi, '').split(',')[0].trim();
+
+  if (!pendingCert) {
+    return (
+      <div className="max-w-[1720px] mx-auto px-4 sm:px-6 py-6 font-sans text-slate-100 space-y-6">
+        <div className="pb-2 border-b border-[#1e293b]">
+          <h1 className="text-xl sm:text-2xl font-bold text-white tracking-tight">
+            Antrean Persetujuan Piagam · {currentTenant.name}
+          </h1>
+          <p className="text-xs text-slate-400 mt-0.5">
+            Alur Verifikasi Dua Tahap PRD SimSCADA-Air §13 · Penilai: {currentTenant.signers.instructorName}
+          </p>
+        </div>
+
+        <div className="p-6 rounded-2xl bg-[#0f172a] border border-[#24324d] flex items-center justify-between gap-4">
+          <div className="flex items-center gap-3">
+            <CheckCircle2 className="w-6 h-6 text-emerald-400 shrink-0" />
+            <div>
+              <div className="text-sm font-bold text-white">
+                Tidak Ada Pengajuan Piagam yang Menunggu Persetujuan
+              </div>
+              <p className="text-xs text-slate-400 mt-0.5">
+                Seluruh piagam yang memenuhi syarat di {currentTenant.name} telah disetujui dan diterbitkan oleh {currentTenant.signers.instructorName}.
+              </p>
+            </div>
+          </div>
+          {onBack && (
+            <button
+              type="button"
+              onClick={onBack}
+              className="px-4 py-2 rounded-xl bg-sky-600 hover:bg-sky-500 text-white text-xs font-bold cursor-pointer"
+            >
+              Kembali
+            </button>
+          )}
+        </div>
+      </div>
+    );
+  }
 
   const handleSendReminder = () => {
     setReminderSent(true);
-    alert('Pengingat berhasil dikirim ke dasbor pengawasan Instruktur Budi Santoso, S.T.');
   };
 
   return (
@@ -34,7 +79,7 @@ export const L8b_CertificatePending: React.FC<CertificatePendingProps> = ({ onBa
       {/* Title Block */}
       <div className="pb-2 border-b border-[#1e293b]">
         <h1 className="text-xl sm:text-2xl font-bold text-white tracking-tight">
-          Status Piagam: Menunggu Persetujuan Instruktur · Rian Hidayat (peserta contoh)
+          Status Piagam: Menunggu Persetujuan Instruktur · {pendingCert.userName}
         </h1>
         <p className="text-xs text-slate-400 mt-0.5">
           Alur Verifikasi Dua Tahap PRD SimSCADA-Air §13 · Tombol Unduh Nonaktif Sampai Disetujui
@@ -49,7 +94,7 @@ export const L8b_CertificatePending: React.FC<CertificatePendingProps> = ({ onBa
           </div>
           <div>
             <div className="text-xs font-bold text-amber-300 uppercase tracking-wider">
-              STATUS PIAGAM: MENUNGGU PERSETUJUAN INSTRUKTUR (BUDI SANTOSO, S.T.)
+              STATUS PIAGAM: MENUNGGU PERSETUJUAN INSTRUKTUR ({currentTenant.signers.instructorName.toUpperCase()})
             </div>
             <p className="text-[11px] text-slate-300 mt-0.5">
               Seluruh misi, Misi Kelulusan, dan Post-Test telah lulus. Pengajuan penerbitan piagam telah terkirim ke dasbor instruktur L9.
@@ -83,10 +128,10 @@ export const L8b_CertificatePending: React.FC<CertificatePendingProps> = ({ onBa
                 </div>
                 <div>
                   <h2 className="text-base font-black tracking-tight text-slate-900 uppercase">
-                    BALAI DIKLAT AIR MINUM NUSANTARA
+                    {currentTenant.name}
                   </h2>
                   <p className="text-[10px] text-slate-600 uppercase font-semibold">
-                    SSA/NUS/2026/0002 (Nomor Dicadangkan) · Predikat: Lulus
+                    {pendingCert.certificateNumber} (Nomor Dicadangkan) · Predikat: {pendingCert.predicate}
                   </p>
                 </div>
               </div>
@@ -98,11 +143,11 @@ export const L8b_CertificatePending: React.FC<CertificatePendingProps> = ({ onBa
                 PIAGAM KELULUSAN
               </h3>
               <div className="text-xs font-bold text-sky-800 tracking-widest uppercase">
-                JALUR OPERATOR IPA
+                {pendingCert.trackName.toUpperCase()}
               </div>
               <p className="text-xs text-slate-600 italic">Diberikan kepada:</p>
               <div className="text-2xl font-extrabold text-slate-900 tracking-wide font-serif">
-                RIAN HIDAYAT
+                {pendingCert.userName.toUpperCase()}
               </div>
             </div>
 
@@ -115,15 +160,17 @@ export const L8b_CertificatePending: React.FC<CertificatePendingProps> = ({ onBa
                     ⏳ Menunggu Verifikasi
                   </span>
                 </div>
-                <div className="font-bold text-xs text-slate-900">Budi Santoso, S.T.</div>
+                <div className="font-bold text-xs text-slate-900">{currentTenant.signers.instructorName}</div>
               </div>
 
               <div className="text-center space-y-1">
                 <span className="text-[11px] text-slate-600 block">Pimpinan Lembaga,</span>
                 <div className="h-9 flex items-center justify-center">
-                  <span className="font-serif italic text-base text-slate-500">Bambang Sutrisno</span>
+                  <span className="font-serif italic text-base text-slate-500">
+                    {shortSignatureName(currentTenant.signers.leaderName)}
+                  </span>
                 </div>
-                <div className="font-bold text-xs text-slate-900">Dr. Ir. Bambang Sutrisno, M.Eng.</div>
+                <div className="font-bold text-xs text-slate-900">{currentTenant.signers.leaderName}</div>
               </div>
             </div>
 
@@ -148,8 +195,8 @@ export const L8b_CertificatePending: React.FC<CertificatePendingProps> = ({ onBa
                 ✓
               </div>
               <div>
-                <div className="font-bold text-white">Misi Jalur IPA Selesai (9 Misi)</div>
-                <div className="text-[10px] text-slate-400">28 Okt 2026 · 10:15 WIB</div>
+                <div className="font-bold text-white">Seluruh Misi Jalur Selesai</div>
+                <div className="text-[10px] text-slate-400">{pendingCert.issueDate}</div>
               </div>
             </div>
 
@@ -159,7 +206,7 @@ export const L8b_CertificatePending: React.FC<CertificatePendingProps> = ({ onBa
               </div>
               <div>
                 <div className="font-bold text-white">Misi Kelulusan & Post-Test Lulus</div>
-                <div className="text-[10px] text-slate-400">IPA-09: 82 · Post-test: 82 · 28 Okt 2026</div>
+                <div className="text-[10px] text-slate-400">Rata-rata skor: {pendingCert.averageScore} · {pendingCert.starsCount}★</div>
               </div>
             </div>
 
@@ -168,7 +215,7 @@ export const L8b_CertificatePending: React.FC<CertificatePendingProps> = ({ onBa
                 ⏳
               </div>
               <div>
-                <div className="font-bold text-amber-300">Menunggu persetujuan Budi Santoso, S.T.</div>
+                <div className="font-bold text-amber-300">Menunggu persetujuan {currentTenant.signers.instructorName}</div>
                 <div className="text-[10px] text-slate-400">Instruktur sedang meninjau audit replay sesi</div>
               </div>
             </div>
@@ -189,10 +236,14 @@ export const L8b_CertificatePending: React.FC<CertificatePendingProps> = ({ onBa
             <button
               onClick={handleSendReminder}
               disabled={reminderSent}
-              className="w-full py-2.5 px-3 rounded-xl bg-sky-600 hover:bg-sky-500 disabled:bg-slate-700 text-white font-bold text-xs transition-all flex items-center justify-center gap-1.5 shadow-md shadow-sky-950/50"
+              className="w-full py-2.5 px-3 rounded-xl bg-sky-600 hover:bg-sky-500 disabled:bg-slate-700 text-white font-bold text-xs transition-all flex items-center justify-center gap-1.5 shadow-md shadow-sky-950/50 cursor-pointer"
             >
               <Send className="w-3.5 h-3.5" />
-              <span>{reminderSent ? 'Pengingat Terkirim ✓' : 'KIRIM PENGINGAT KE INSTRUKTUR'}</span>
+              <span>
+                {reminderSent
+                  ? `Pengingat Terkirim ke ${currentTenant.signers.instructorName} ✓`
+                  : 'KIRIM PENGINGAT KE INSTRUKTUR'}
+              </span>
             </button>
           </div>
 
@@ -201,7 +252,7 @@ export const L8b_CertificatePending: React.FC<CertificatePendingProps> = ({ onBa
               Kenapa Membutuhkan Persetujuan?
             </span>
             <p>
-              Admin Balai Diklat Nusantara mewajibkan instruktur memverifikasi konsistensi SOP peserta pada Misi Kelulusan sebelum piagam berkode QR diterbitkan secara permanen ke database publik.
+              Admin {currentTenant.name} mewajibkan instruktur memverifikasi konsistensi SOP peserta pada Misi Kelulusan sebelum piagam berkode QR diterbitkan secara permanen ke database publik.
             </p>
           </div>
         </div>

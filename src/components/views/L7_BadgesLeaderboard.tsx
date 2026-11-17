@@ -26,7 +26,17 @@ import { BADGES_LIST, MISSIONS_LIST } from '../../data/seedData';
 import { computeBestPassedResults } from '../../utils/gamification';
 
 export const L7_BadgesLeaderboard: React.FC = () => {
-  const { currentUser, currentTenant, users, getUserXP, getUserOperatorLevel, userBadges, userMissionResults } = useApp();
+  const {
+    currentUser,
+    currentTenant,
+    users,
+    certificates,
+    getVisibleGroups,
+    getUserXP,
+    getUserOperatorLevel,
+    userBadges,
+    userMissionResults,
+  } = useApp();
   const [scopeTab, setScopeTab] = useState<'kelompok' | 'lembaga'>('kelompok');
   const [timeTab, setTimeTab] = useState<'all_time' | 'weekly'>('all_time');
 
@@ -63,6 +73,13 @@ export const L7_BadgesLeaderboard: React.FC = () => {
     }
   };
 
+  const visibleGroups = getVisibleGroups();
+  const activeGroupObj =
+    visibleGroups.find((g) => g.id === currentUser.groupId) || visibleGroups[0];
+  const groupTabLabel = activeGroupObj
+    ? activeGroupObj.name.replace(/\s*\(\d+\s*Peserta\)/i, '').toUpperCase()
+    : 'KELOMPOK SAYA';
+
   const getBadgeDetail = (id: string, unlocked: boolean) => {
     if (unlocked) {
       switch (id) {
@@ -72,17 +89,7 @@ export const L7_BadgesLeaderboard: React.FC = () => {
         default: return 'Lencana Diraih ✓';
       }
     }
-    switch (id) {
-      case 'b-penjelajah': return 'Buka semua narasi titik kontrol (i) di simulator';
-      case 'b-respons-kilat': return 'Atasi gangguan dalam < 50% target waktu skenario';
-      case 'b-tanpa-alarm-terlewat': return 'Akui dan selesaikan semua alarm dalam 1 sesi gangguan';
-      case 'b-penjaga-mutu': return 'Kekeruhan dan sisa klor di rentang normal sepanjang misi IPA';
-      case 'b-penjaga-tekanan': return 'Tekanan semua zona di rentang layanan sepanjang misi distribusi';
-      case 'b-tiga-bintang': return 'Raih minimal 3 bintang (≥95) pada 3 misi';
-      case 'b-hulu-ke-hilir': return 'Selesaikan skenario Tingkat 4 TRP-01 (Khusus Terpadu)';
-      case 'b-tanpa-petunjuk': return 'Lulus Misi Kelulusan tanpa membuka petunjuk';
-      default: return 'Terkunci';
-    }
+    return 'Status: Terkunci · Selesaikan syarat di atas untuk membuka';
   };
 
   const getUserMissionStats = (userId: string) => {
@@ -100,7 +107,7 @@ export const L7_BadgesLeaderboard: React.FC = () => {
           Galeri Lencana &amp; Papan Peringkat Kompetensi
         </h1>
         <p className="text-xs text-slate-400 mt-0.5">
-          8 Lencana PRD SimSCADA-Air §8 · Papan Peringkat Terisolasi Antar-Lembaga (FR-20, FR-21)
+          8 Lencana PRD SimSCADA-Air §8 · Papan Peringkat Terisolasi Antar-Lembaga (FR-21)
         </p>
       </div>
 
@@ -203,7 +210,7 @@ export const L7_BadgesLeaderboard: React.FC = () => {
                         : 'text-slate-400 hover:text-white'
                     }`}
                   >
-                    TAB: KELOMPOK (ANGKATAN 1)
+                    KELOMPOK ({groupTabLabel})
                   </button>
                   <button
                     onClick={() => setScopeTab('lembaga')}
@@ -213,7 +220,7 @@ export const L7_BadgesLeaderboard: React.FC = () => {
                         : 'text-slate-400 hover:text-white'
                     }`}
                   >
-                    LEMBAGA (SELURUH NUSANTARA)
+                    LEMBAGA ({currentTenant.shortName.toUpperCase()})
                   </button>
                 </div>
 
@@ -246,7 +253,13 @@ export const L7_BadgesLeaderboard: React.FC = () => {
                 {rankedUsers.slice(0, 8).map((user, idx) => {
                   const userXp = getUserXP(user.id);
                   const isCurrent = user.id === currentUser.id;
-                  const isAndi = user.username === 'peserta.lulus';
+                  const hasIssuedCert = certificates.some(
+                    (c) =>
+                      c.userId === user.id &&
+                      c.tenantId === currentTenant.id &&
+                      c.status === 'valid' &&
+                      c.instructorApproved
+                  );
                   const stats = getUserMissionStats(user.id);
 
                   return (
@@ -255,7 +268,7 @@ export const L7_BadgesLeaderboard: React.FC = () => {
                       className={`p-3 rounded-xl border flex items-center justify-between gap-3 transition-all ${
                         isCurrent
                           ? 'border-sky-500 bg-sky-950/30 ring-1 ring-sky-500/40'
-                          : isAndi
+                          : hasIssuedCert
                           ? 'border-amber-500/40 bg-amber-950/20'
                           : 'border-[#1e293b] bg-[#0b1120]'
                       }`}
@@ -277,7 +290,8 @@ export const L7_BadgesLeaderboard: React.FC = () => {
                             {isCurrent && <span className="text-sky-400 font-normal">(Anda)</span>}
                           </div>
                           <div className="text-[10px] text-slate-400">
-                            {user.username} · {getUserOperatorLevel(user.id).level} {isAndi ? '· Piagam Terbit' : ''}
+                            {user.username} · {getUserOperatorLevel(user.id).level}{' '}
+                            {hasIssuedCert ? '· Piagam Terbit' : ''}
                           </div>
                         </div>
                       </div>

@@ -29,6 +29,8 @@ import {
   SITI_MISSION_RESULTS,
   RIAN_MISSION_RESULTS,
   EKO_MISSION_RESULTS,
+  SITI_AMINAH_MISSION_RESULTS,
+  TIRTA_ALUMNI_MISSION_RESULTS,
 } from '../data/seedData';
 import {
   computeMissionXP,
@@ -117,7 +119,7 @@ interface AppContextType {
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
 
-const STORAGE_KEY = 'simscada_air_state_v1_5';
+const STORAGE_KEY = 'simscada_air_state_v1_6';
 
 export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [tenants, setTenants] = useState<Tenant[]>(INITIAL_TENANTS);
@@ -149,6 +151,8 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       'user-peserta-distribusi': [...SITI_MISSION_RESULTS],
       'user-rian-hidayat': [...RIAN_MISSION_RESULTS],
       'user-eko-prasetyo': [...EKO_MISSION_RESULTS],
+      'user-peserta-tirta': [...SITI_AMINAH_MISSION_RESULTS],
+      ...TIRTA_ALUMNI_MISSION_RESULTS,
     };
 
     const badges: Record<string, string[]> = {
@@ -161,7 +165,11 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         'b-hulu-ke-hilir', 'b-tanpa-petunjuk'
       ],
       'user-peserta-distribusi': ['b-penjelajah', 'b-penjaga-tekanan'],
+      'user-peserta-tirta': ['b-penjelajah'],
     };
+    for (let i = 1; i <= 12; i++) {
+      badges[`user-trm-${i}`] = ['b-penjelajah', 'b-penjaga-mutu', 'b-tanpa-alarm-terlewat'];
+    }
 
     // Unlocked missions
     const unlocked: Record<string, string[]> = {
@@ -170,11 +178,16 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       'user-peserta-distribusi': ['DST-01', 'DST-02', 'DST-03', 'DST-04', 'DST-05', 'DST-06'],
       'user-peserta-baru': [],
       'user-rian-hidayat': ['IPA-01', 'IPA-02', 'IPA-03', 'IPA-04', 'IPA-05', 'IPA-06', 'IPA-07', 'IPA-08', 'IPA-09'],
+      'user-peserta-tirta': ['IPA-01', 'IPA-02', 'IPA-03', 'IPA-04'],
     };
+    for (let i = 1; i <= 12; i++) {
+      unlocked[`user-trm-${i}`] = ['IPA-01', 'IPA-02', 'IPA-03', 'IPA-04', 'IPA-05', 'IPA-06', 'IPA-07', 'IPA-08', 'IPA-09'];
+    }
 
     const narratives: Record<string, string[]> = {
       'user-peserta-ipa': CONTROL_POINTS.map((cp) => cp.id),
       'user-peserta-lulus': CONTROL_POINTS.map((cp) => cp.id),
+      'user-peserta-tirta': CONTROL_POINTS.slice(0, 7).map((cp) => cp.id),
     };
 
     setUserMissionResults(results);
@@ -249,6 +262,24 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       setCurrentUserId(user.id);
       if (user.track) {
         setActiveTrackState(user.track);
+      } else {
+        const tenantObj = tenants.find((t) => t.id === user.tenantId);
+        if (tenantObj && tenantObj.license.packageTracks.length > 0) {
+          setActiveTrackState(tenantObj.license.packageTracks[0]);
+        }
+      }
+      setLastMissionResult(null);
+      const firstTenantCert = certificates.find((c) => c.tenantId === user.tenantId && c.status === 'valid');
+      setVerificationCertNo(
+        firstTenantCert ? firstTenantCert.certificateNumber : user.tenantId === 'tirta' ? 'SSA/TRM/2026/0001' : 'SSA/NUS/2026/0001'
+      );
+      if (user.role === 'peserta') {
+        setReplayUserId(user.id);
+      } else {
+        const tenantPesertaWithResults = users.find(
+          (u) => u.tenantId === user.tenantId && u.role === 'peserta' && (userMissionResults[u.id] || []).length > 0
+        );
+        setReplayUserId(tenantPesertaWithResults?.id);
       }
       saveStateToStorage(
         tenants,
@@ -830,8 +861,8 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     const t2Count = tenantId === 'nusantara' ? 35 : Math.round(activeCount * 0.833);
     const t2Rate = activeCount > 0 ? Number(((t2Count / activeCount) * 100).toFixed(1)) : 83.3;
 
-    // T3: Waktu Menuju Kelulusan = 58 Hari
-    const t3Days = 58;
+    // T3: Waktu Menuju Kelulusan = 58 Hari (Nusantara), 49 Hari (Tirta Mandiri)
+    const t3Days = tenantId === 'nusantara' ? 58 : 49;
 
     // T4: Penyelesaian Jalur (Kelulusan) = 32 Piagam / 42 Peserta Aktif = 76.2%
     const validCerts = certificates.filter((c) => c.tenantId === tenantId && c.status === 'valid');

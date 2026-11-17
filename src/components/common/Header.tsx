@@ -444,7 +444,15 @@ export const Header: React.FC<HeaderProps> = ({ currentView, onNavigate }) => {
                         {currentUser.fullName}
                       </span>
                       <span className="text-[10px] text-sky-400 font-medium whitespace-nowrap">
-                        {operatorLevel?.level || currentUser.role.replace('_', ' ')}
+                        {currentUser.role === 'peserta'
+                          ? operatorLevel?.level || 'Operator Magang'
+                          : currentUser.role === 'instruktur'
+                          ? 'Instruktur'
+                          : currentUser.role === 'admin_lembaga'
+                          ? 'Admin Lembaga'
+                          : currentUser.role === 'pimpinan_lembaga'
+                          ? 'Pimpinan Lembaga'
+                          : 'Super Admin'}
                       </span>
                     </div>
                     <ChevronDown className="w-3.5 h-3.5 text-slate-400 shrink-0" />
@@ -661,10 +669,10 @@ export const Header: React.FC<HeaderProps> = ({ currentView, onNavigate }) => {
               >
                 <div>
                   <div className="text-xs font-bold text-white group-hover:text-teal-300">
-                    admin.tirta · Admin Tirta Mandiri
+                    admin.tirta · Hj. Dewi Anggraini
                   </div>
                   <div className="text-[11px] text-teal-300/80">
-                    Admin Lembaga Tirta Mandiri · Menguji isolasi tenant mandiri
+                    Admin Lembaga Tirta Mandiri · Isolasi tenant mandiri (1 kelompok, 12 piagam)
                   </div>
                 </div>
                 <UserCheck className="w-4 h-4 text-teal-400" />
@@ -677,10 +685,10 @@ export const Header: React.FC<HeaderProps> = ({ currentView, onNavigate }) => {
               >
                 <div>
                   <div className="text-xs font-bold text-white group-hover:text-teal-300">
-                    peserta.tirta · Peserta Tirta Mandiri
+                    peserta.tirta · Siti Aminah
                   </div>
                   <div className="text-[11px] text-teal-300/80">
-                    Peserta Tirta Mandiri · Data Nusantara tidak tampak sama sekali
+                    Peserta Tirta Mandiri · Jalur IPA · Angkatan 1 Tirta Mandiri
                   </div>
                 </div>
                 <UserCheck className="w-4 h-4 text-teal-400" />

@@ -3,41 +3,111 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useApp } from '../../context/AppContext';
+import { formatDecimalID, formatIntegerID } from '../../utils/gamification';
 import { 
-  Building2, 
-  Calendar, 
-  CheckCircle2, 
-  Download, 
   FileSpreadsheet, 
   FileText, 
-  Filter, 
-  TrendingUp, 
-  Clock,
-  Award,
-  AlertTriangle,
-  Users
+  CheckCircle2,
 } from 'lucide-react';
 
 export const L14_TenantEvaluationDashboard: React.FC = () => {
-  const { currentTenant, getTenantMetrics } = useApp();
+  const { currentTenant, getTenantMetrics, getVisibleGroups, getVisibleUsers } = useApp();
 
   const [period, setPeriod] = useState('6_months');
   const [trackFilter, setTrackFilter] = useState('all');
   const [groupFilter, setGroupFilter] = useState('all');
-  const [instructorFilter, setInstructorFilter] = useState('budi');
+  const [instructorFilter, setInstructorFilter] = useState('all');
+  const [exportFeedback, setExportFeedback] = useState<string | null>(null);
 
-  // Dynamically computed metrics for current tenant
+  useEffect(() => {
+    setTrackFilter('all');
+    setGroupFilter('all');
+    setInstructorFilter('all');
+    setExportFeedback(null);
+  }, [currentTenant.id]);
+
+  // Dynamically computed metrics and lists for current tenant
   const metrics = getTenantMetrics(currentTenant.id);
+  const tenantGroups = getVisibleGroups();
+  const tenantUsers = getVisibleUsers();
+  const tenantInstructors = tenantUsers.filter((u) => u.role === 'instruktur');
+  const allowedTracks = currentTenant.license.packageTracks;
+  const isIpaOnly = !allowedTracks.includes('distribusi') && !allowedTracks.includes('terpadu');
+
+  const trackLabelMap: Record<string, string> = {
+    ipa: 'Operator IPA',
+    distribusi: 'Operator Distribusi',
+    terpadu: 'Air Minum Terpadu',
+  };
 
   const handleExportExcel = () => {
-    alert(`Mengekspor Laporan Evaluasi Pelatihan ${currentTenant.name} ke berkas Excel (.xlsx)...`);
+    setExportFeedback(`Laporan Evaluasi Pelatihan ${currentTenant.name} siap diunduh dalam format Excel (.xlsx).`);
+    setTimeout(() => setExportFeedback(null), 5000);
   };
 
   const handleExportPdf = () => {
     window.print();
   };
+
+  const hardestMissions = isIpaOnly
+    ? [
+        { title: '1. IPA-06 Gangguan Lonjakan Kekeruhan Air Baku', rate: 39, color: 'text-rose-400', bar: 'bg-rose-500' },
+        { title: '2. IPA-07 Gangguan Pompa Intake Trip', rate: 34, color: 'text-amber-400', bar: 'bg-amber-500' },
+        { title: '3. IPA-08 Gangguan Dosis Klorin Drop', rate: 29, color: 'text-amber-400', bar: 'bg-amber-500' },
+        { title: '4. IPA-04 Operasi Normal: Penyesuaian Dosis Koagulan', rate: 24, color: 'text-sky-400', bar: 'bg-sky-500' },
+        { title: '5. IPA-09 Misi Kelulusan: Pengolahan Air Lengkap', rate: 22, color: 'text-emerald-400', bar: 'bg-emerald-500' },
+      ]
+    : [
+        { title: '1. IPA-06 Gangguan Lonjakan Kekeruhan Air Baku', rate: 42, color: 'text-rose-400', bar: 'bg-rose-500' },
+        { title: '2. DST-05 Gangguan Kebocoran Pipa Distribusi', rate: 38, color: 'text-amber-400', bar: 'bg-amber-500' },
+        { title: '3. TRP-01 Gangguan Berantai Hulu ke Hilir', rate: 35, color: 'text-amber-400', bar: 'bg-amber-500' },
+        { title: '4. DST-06 Gangguan Tekanan Jaringan Drop', rate: 31, color: 'text-sky-400', bar: 'bg-sky-500' },
+        { title: '5. IPA-07 Gangguan Pompa Intake Trip', rate: 28, color: 'text-emerald-400', bar: 'bg-emerald-500' },
+      ];
+
+  const frequentErrors = isIpaOnly
+    ? [
+        {
+          title: '1. Terlambat Naikkan Koagulan saat Lonjakan Baku (19 Kejadian)',
+          detail: 'Rata-rata respons terlambat 26 detik dari target awal.',
+          wrapperClass: 'bg-rose-950/20 border-rose-500/30 text-rose-300',
+          titleClass: '',
+        },
+        {
+          title: '2. Menekan Tombol Clear saat Kondisi Masih Abnormal (14 Kejadian)',
+          detail: 'Sistem menolak dengan pesan "Penyebab belum ditangani".',
+          wrapperClass: 'bg-amber-950/20 border-amber-500/30 text-amber-300',
+          titleClass: '',
+        },
+        {
+          title: '3. Lupa Koreksi Dosis Kapur saat pH Air Olahan Turun (11 Kejadian)',
+          detail: 'Menyebabkan pH efluen turun di bawah 6,5 saat injeksi PAC tinggi.',
+          wrapperClass: 'bg-[#0b1120] border-[#1e293b] text-slate-300',
+          titleClass: 'text-sky-400',
+        },
+      ]
+    : [
+        {
+          title: '1. Terlambat Naikkan Koagulan saat Lonjakan Baku (34 Kejadian)',
+          detail: 'Rata-rata respons terlambat 28 detik dari target awal.',
+          wrapperClass: 'bg-rose-950/20 border-rose-500/30 text-rose-300',
+          titleClass: '',
+        },
+        {
+          title: '2. Menekan Tombol Clear saat Kondisi Masih Abnormal (26 Kejadian)',
+          detail: 'Sistem menolak dengan pesan "Penyebab belum ditangani".',
+          wrapperClass: 'bg-amber-950/20 border-amber-500/30 text-amber-300',
+          titleClass: '',
+        },
+        {
+          title: '3. Menutup Valve Isolasi yang Salah pada Kebocoran (18 Kejadian)',
+          detail: 'Mengakibatkan tekanan drop merembet ke zona pelanggan aktif.',
+          wrapperClass: 'bg-[#0b1120] border-[#1e293b] text-slate-300',
+          titleClass: 'text-sky-400',
+        },
+      ];
 
   return (
     <div className="max-w-[1720px] mx-auto px-4 sm:px-6 py-6 font-sans text-slate-100 space-y-6">
@@ -47,7 +117,7 @@ export const L14_TenantEvaluationDashboard: React.FC = () => {
           Dasbor Evaluasi Lembaga & ROI Pelatihan
         </h1>
         <p className="text-xs text-slate-400 mt-0.5">
-          4 Metrik Kunci Keberhasilan (T1–T4 PRD §3) · Kartu Pemakaian Lisensi & Ekspor Laporan (PRD §12)
+          {currentTenant.name} ({currentTenant.code}) · 4 Metrik Kunci Keberhasilan (T1–T4 PRD §3) · Kartu Pemakaian Lisensi & Ekspor Laporan (PRD §12)
         </p>
       </div>
 
@@ -74,10 +144,12 @@ export const L14_TenantEvaluationDashboard: React.FC = () => {
               onChange={(e) => setTrackFilter(e.target.value)}
               className="bg-[#0b1120] border border-[#334155] rounded-xl px-2.5 py-1 text-slate-200 text-xs font-semibold focus:outline-hidden"
             >
-              <option value="all">Semua Jalur</option>
-              <option value="ipa">Operator IPA</option>
-              <option value="distribusi">Operator Distribusi</option>
-              <option value="terpadu">Air Minum Terpadu</option>
+              <option value="all">Semua Jalur Paket</option>
+              {allowedTracks.map((t) => (
+                <option key={t} value={t}>
+                  {trackLabelMap[t] || t}
+                </option>
+              ))}
             </select>
           </div>
 
@@ -88,9 +160,14 @@ export const L14_TenantEvaluationDashboard: React.FC = () => {
               onChange={(e) => setGroupFilter(e.target.value)}
               className="bg-[#0b1120] border border-[#334155] rounded-xl px-2.5 py-1 text-slate-200 text-xs font-semibold focus:outline-hidden"
             >
-              <option value="all">Angkatan 1 & 2</option>
-              <option value="g1">Angkatan 1 Saja</option>
-              <option value="g2">Angkatan 2 Saja</option>
+              <option value="all">
+                {tenantGroups.length > 1 ? `Semua Kelompok (${tenantGroups.length})` : tenantGroups[0]?.name || 'Semua Kelompok'}
+              </option>
+              {tenantGroups.map((grp) => (
+                <option key={grp.id} value={grp.id}>
+                  {grp.name}
+                </option>
+              ))}
             </select>
           </div>
 
@@ -101,7 +178,16 @@ export const L14_TenantEvaluationDashboard: React.FC = () => {
               onChange={(e) => setInstructorFilter(e.target.value)}
               className="bg-[#0b1120] border border-[#334155] rounded-xl px-2.5 py-1 text-slate-200 text-xs font-semibold focus:outline-hidden"
             >
-              <option value="budi">Budi Santoso, S.T.</option>
+              <option value="all">Semua Instruktur</option>
+              {tenantInstructors.length > 0 ? (
+                tenantInstructors.map((inst) => (
+                  <option key={inst.id} value={inst.id}>
+                    {inst.fullName}
+                  </option>
+                ))
+              ) : (
+                <option value="default">{currentTenant.signers.instructorName}</option>
+              )}
             </select>
           </div>
         </div>
@@ -125,6 +211,13 @@ export const L14_TenantEvaluationDashboard: React.FC = () => {
         </div>
       </div>
 
+      {exportFeedback && (
+        <div className="p-3 rounded-xl bg-emerald-950/40 border border-emerald-500/40 text-emerald-300 text-xs font-semibold flex items-center gap-2">
+          <CheckCircle2 className="w-4 h-4 shrink-0" />
+          <span>{exportFeedback}</span>
+        </div>
+      )}
+
       {/* 4 Cards Metrik Kunci Keberhasilan (T1–T4 PRD §3) matching SVG L14 */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         
@@ -139,34 +232,34 @@ export const L14_TenantEvaluationDashboard: React.FC = () => {
             </span>
           </div>
           <div className="text-3xl font-black text-emerald-400 font-mono">
-            +{metrics.t1ImprovementPercent}%
+            +{formatDecimalID(metrics.t1ImprovementPercent, 1)}%
           </div>
           <div className="text-[11px] text-slate-300">
-            Pre-Test Rata-Rata: {metrics.t1PreAverage} | Post-Test: {metrics.t1PostAverage}
+            Pre-Test Rata-Rata: {formatDecimalID(metrics.t1PreAverage, 1)} | Post-Test: {formatDecimalID(metrics.t1PostAverage, 1)}
           </div>
           <div className="text-[10px] text-slate-500 font-mono">
-            Formula: (({metrics.t1PostAverage} − {metrics.t1PreAverage}) ÷ {metrics.t1PreAverage}) × 100% = +{metrics.t1ImprovementPercent}%
+            Formula: (({formatDecimalID(metrics.t1PostAverage, 1)} − {formatDecimalID(metrics.t1PreAverage, 1)}) ÷ {formatDecimalID(metrics.t1PreAverage, 1)}) × 100% = +{formatDecimalID(metrics.t1ImprovementPercent, 1)}%
           </div>
         </div>
 
-        {/* T2: Penguasaan 5 Gangguan Utama */}
+        {/* T2: Penguasaan Gangguan Utama */}
         <div className="p-4 rounded-2xl bg-[#0f172a] border border-sky-500/40 shadow-lg space-y-2">
           <div className="flex items-center justify-between">
             <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">
-              T2: PENGUASAAN 5 GANGGUAN UTAMA:
+              {isIpaOnly ? 'T2: PENGUASAAN GANGGUAN UTAMA IPA:' : 'T2: PENGUASAAN 5 GANGGUAN UTAMA:'}
             </span>
             <span className="px-2 py-0.5 rounded-md bg-sky-500/20 text-sky-300 font-bold text-[9px] border border-sky-500/30">
               TARGET: ≥ 80% (LULUS)
             </span>
           </div>
           <div className="text-3xl font-black text-sky-400 font-mono">
-            {metrics.t2PassingRatePercent}%
+            {formatDecimalID(metrics.t2PassingRatePercent, 1)}%
           </div>
           <div className="text-[11px] text-slate-300">
-            Lulus IPA-06, 07, 08 & DST-05, 06 (≥1★)
+            {isIpaOnly ? 'Lulus IPA-06, 07, 08 (≥1★)' : 'Lulus IPA-06, 07, 08 & DST-05, 06 (≥1★)'}
           </div>
           <div className="text-[10px] text-slate-500 font-mono">
-            {metrics.t2PassedCount} dari {metrics.activeParticipantsCount} peserta aktif lulus ke-5 gangguan
+            {metrics.t2PassedCount} dari {metrics.activeParticipantsCount} peserta aktif lulus {isIpaOnly ? 'gangguan utama IPA' : 'ke-5 gangguan'}
           </div>
         </div>
 
@@ -202,7 +295,7 @@ export const L14_TenantEvaluationDashboard: React.FC = () => {
             </span>
           </div>
           <div className="text-3xl font-black text-purple-400 font-mono">
-            {metrics.t4GraduationRatePercent}%
+            {formatDecimalID(metrics.t4GraduationRatePercent, 1)}%
           </div>
           <div className="text-[11px] text-slate-300">
             {metrics.t4GraduatesCount} Piagam Terbit ÷ {metrics.activeParticipantsCount} Peserta Aktif
@@ -237,7 +330,7 @@ export const L14_TenantEvaluationDashboard: React.FC = () => {
           <div className="p-3 rounded-xl bg-[#0b1120] border border-[#1e293b]">
             <span className="text-[10px] text-slate-400 uppercase tracking-wider block">Total Waktu Simulasi SCADA:</span>
             <div className="text-xl font-black text-sky-400 font-mono mt-0.5">
-              {metrics.totalSimulationHours} Jam Praktik
+              {formatIntegerID(metrics.totalSimulationHours)} Jam Praktik
             </div>
           </div>
 
@@ -257,105 +350,75 @@ export const L14_TenantEvaluationDashboard: React.FC = () => {
         <div className="bg-[#0f172a] rounded-2xl border border-[#24324d] p-5 space-y-4 shadow-lg">
           <div>
             <h2 className="text-sm font-bold text-white">5 Misi Paling Sulit (Tingkat Gagal Percobaan Pertama PRD §12):</h2>
-            <p className="text-[11px] text-slate-400">Bahan evaluasi materi pengajaran bagi instruktur SPAM</p>
+            <p className="text-[11px] text-slate-400">Bahan evaluasi materi pengajaran bagi instruktur {currentTenant.shortName}</p>
           </div>
 
           <div className="space-y-3 text-xs">
-            <div>
-              <div className="flex justify-between text-slate-300 mb-1">
-                <span>1. IPA-06 Gangguan Lonjakan Kekeruhan Air Baku</span>
-                <span className="font-bold text-rose-400">42% Gagal Percobaan 1</span>
+            {hardestMissions.map((item) => (
+              <div key={item.title}>
+                <div className="flex justify-between text-slate-300 mb-1">
+                  <span>{item.title}</span>
+                  <span className={`font-bold ${item.color}`}>{item.rate}% Gagal Percobaan 1</span>
+                </div>
+                <div className="w-full h-1.5 rounded-full bg-[#1e293b]">
+                  <div className={`h-full ${item.bar} rounded-full`} style={{ width: `${item.rate}%` }} />
+                </div>
               </div>
-              <div className="w-full h-1.5 rounded-full bg-[#1e293b]">
-                <div className="h-full bg-rose-500 rounded-full" style={{ width: '42%' }} />
-              </div>
-            </div>
-
-            <div>
-              <div className="flex justify-between text-slate-300 mb-1">
-                <span>2. DST-05 Gangguan Kebocoran Pipa Distribusi</span>
-                <span className="font-bold text-amber-400">38% Gagal Percobaan 1</span>
-              </div>
-              <div className="w-full h-1.5 rounded-full bg-[#1e293b]">
-                <div className="h-full bg-amber-500 rounded-full" style={{ width: '38%' }} />
-              </div>
-            </div>
-
-            <div>
-              <div className="flex justify-between text-slate-300 mb-1">
-                <span>3. TRP-01 Gangguan Berantai Hulu ke Hilir</span>
-                <span className="font-bold text-amber-400">35% Gagal Percobaan 1</span>
-              </div>
-              <div className="w-full h-1.5 rounded-full bg-[#1e293b]">
-                <div className="h-full bg-amber-500 rounded-full" style={{ width: '35%' }} />
-              </div>
-            </div>
-
-            <div>
-              <div className="flex justify-between text-slate-300 mb-1">
-                <span>4. DST-06 Gangguan Tekanan Jaringan Drop</span>
-                <span className="font-bold text-sky-400">31% Gagal Percobaan 1</span>
-              </div>
-              <div className="w-full h-1.5 rounded-full bg-[#1e293b]">
-                <div className="h-full bg-sky-500 rounded-full" style={{ width: '31%' }} />
-              </div>
-            </div>
-
-            <div>
-              <div className="flex justify-between text-slate-300 mb-1">
-                <span>5. IPA-07 Gangguan Pompa Intake Trip</span>
-                <span className="font-bold text-emerald-400">28% Gagal Percobaan 1</span>
-              </div>
-              <div className="w-full h-1.5 rounded-full bg-[#1e293b]">
-                <div className="h-full bg-emerald-500 rounded-full" style={{ width: '28%' }} />
-              </div>
-            </div>
+            ))}
           </div>
         </div>
 
         {/* Analisis Kesalahan Tersering & Komparasi Kelompok */}
         <div className="bg-[#0f172a] rounded-2xl border border-[#24324d] p-5 space-y-4 shadow-lg">
           <div>
-            <h2 className="text-sm font-bold text-white">Analisis Kesalahan Tersering & Perbandingan Angkatan (PRD §12):</h2>
-            <p className="text-[11px] text-slate-400">Bahan penyempurnaan SOP operasional dan kurikulum kelas</p>
+            <h2 className="text-sm font-bold text-white">Analisis Kesalahan Tersering & Performa Kelompok (PRD §12):</h2>
+            <p className="text-[11px] text-slate-400">Bahan penyempurnaan SOP operasional dan kurikulum kelas {currentTenant.shortName}</p>
           </div>
 
           <div className="space-y-2 text-xs">
-            <div className="p-3 rounded-xl bg-rose-950/20 border border-rose-500/30 text-rose-300 space-y-0.5">
-              <span className="font-bold">1. Terlambat Naikkan Koagulan saat Lonjakan Baku (34 Kejadian)</span>
-              <p className="text-[10px] text-slate-400">Rata-rata respons terlambat 28 detik dari target awal.</p>
-            </div>
-
-            <div className="p-3 rounded-xl bg-amber-950/20 border border-amber-500/30 text-amber-300 space-y-0.5">
-              <span className="font-bold">2. Menekan Tombol Clear saat Kondisi Masih Abnormal (26 Kejadian)</span>
-              <p className="text-[10px] text-slate-400">Sistem menolak dengan pesan "Penyebab belum ditangani".</p>
-            </div>
-
-            <div className="p-3 rounded-xl bg-[#0b1120] border border-[#1e293b] text-slate-300 space-y-0.5">
-              <span className="font-bold text-sky-400">3. Menutup Valve Isolasi yang Salah pada Kebocoran (18 Kejadian)</span>
-              <p className="text-[10px] text-slate-400">Mengakibatkan tekanan drop merembet ke zona pelanggan aktif.</p>
-            </div>
+            {frequentErrors.map((err) => (
+              <div key={err.title} className={`p-3 rounded-xl border space-y-0.5 ${err.wrapperClass}`}>
+                <span className={`font-bold ${err.titleClass}`}>{err.title}</span>
+                <p className="text-[10px] text-slate-400">{err.detail}</p>
+              </div>
+            ))}
           </div>
 
-          {/* Komparasi Kelompok */}
+          {/* Komparasi / Performa Kelompok Lembaga */}
           <div className="pt-2 border-t border-[#1e293b] space-y-2">
             <span className="text-[10px] font-bold text-sky-400 uppercase tracking-wider block">
-              KOMPARASI KELOMPOK (ANGKATAN 1 VS ANGKATAN 2):
+              {tenantGroups.length > 1
+                ? `KOMPARASI KELOMPOK ${currentTenant.shortName.toUpperCase()}:`
+                : `RINGKASAN KELOMPOK ${currentTenant.shortName.toUpperCase()}:`}
             </span>
-            <div className="grid grid-cols-2 gap-3 text-xs">
-              <div className="p-3 rounded-xl bg-[#0b1120] border border-[#1e293b]">
-                <div className="font-bold text-white text-[11px]">Angkatan 1 (Budi Santoso)</div>
-                <div className="text-[10px] text-emerald-400 mt-1 font-mono">
-                  Rata-Rata Skor: 84,2 · Kelulusan: 79%
-                </div>
-              </div>
+            <div className={`grid ${tenantGroups.length > 1 ? 'grid-cols-1 sm:grid-cols-2' : 'grid-cols-1'} gap-3 text-xs`}>
+              {tenantGroups.map((grp, idx) => {
+                const instUser = tenantUsers.find((u) => u.id === grp.instructorId);
+                const instructorLabel = instUser ? instUser.fullName.split(',')[0] : currentTenant.signers.instructorName.split(',')[0];
+                const avgScore =
+                  currentTenant.id === 'tirta'
+                    ? 82.4
+                    : idx === 0
+                    ? 84.2
+                    : 81.0;
+                const gradRate =
+                  currentTenant.id === 'tirta'
+                    ? metrics.t4GraduationRatePercent
+                    : idx === 0
+                    ? 79
+                    : 71;
 
-              <div className="p-3 rounded-xl bg-[#0b1120] border border-[#1e293b]">
-                <div className="font-bold text-white text-[11px]">Angkatan 2 (Budi Santoso)</div>
-                <div className="text-[10px] text-sky-400 mt-1 font-mono">
-                  Rata-Rata Skor: 81,0 · Kelulusan: 71%
-                </div>
-              </div>
+                return (
+                  <div key={grp.id} className="p-3 rounded-xl bg-[#0b1120] border border-[#1e293b]">
+                    <div className="font-bold text-white text-[11px]">
+                      {grp.name} ({instructorLabel})
+                    </div>
+                    <div className={`text-[10px] mt-1 font-mono ${idx === 0 ? 'text-emerald-400' : 'text-sky-400'}`}>
+                      Rata-Rata Skor: {formatDecimalID(avgScore, 1)} · Kelulusan: {formatDecimalID(gradRate, 1)}%
+                    </div>
+                  </div>
+                );
+              })}
             </div>
           </div>
         </div>

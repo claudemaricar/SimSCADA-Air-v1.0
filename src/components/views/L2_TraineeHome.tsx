@@ -24,6 +24,7 @@ import {
 } from 'lucide-react';
 import { BADGES_LIST } from '../../data/seedData';
 import { LearningTrack, Mission, MissionResult } from '../../types';
+import { formatDecimalID } from '../../utils/gamification';
 
 interface TraineeHomeProps {
   onSelectMission: (missionCode: string) => void;
@@ -250,7 +251,7 @@ export const L2_TraineeHome: React.FC<TraineeHomeProps> = ({
   // Post-test improvement %
   const t1Improvement =
     preTest && postTest && preTest.score > 0
-      ? (((postTest.score - preTest.score) / preTest.score) * 100).toFixed(1)
+      ? formatDecimalID(((postTest.score - preTest.score) / preTest.score) * 100, 1)
       : null;
 
   // Group trackMissions by level 1..5

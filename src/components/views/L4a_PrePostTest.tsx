@@ -19,6 +19,7 @@ import {
   TrendingUp,
 } from 'lucide-react';
 import { LearningTrack } from '../../types';
+import { formatDecimalID } from '../../utils/gamification';
 
 interface PrePostTestProps {
   initialMode?: 'auto' | 'pre' | 'post';
@@ -189,7 +190,7 @@ export const L4a_PrePostTest: React.FC<PrePostTestProps> = ({
   const t1Diff = preTest && postTest ? postTest.score - preTest.score : null;
   const t1Pct =
     preTest && postTest && preTest.score > 0
-      ? (((postTest.score - preTest.score) / preTest.score) * 100).toFixed(1)
+      ? formatDecimalID(((postTest.score - preTest.score) / preTest.score) * 100, 1)
       : null;
 
   const firstMissionCode = trackMissions[0]?.code || 'IPA-01';
